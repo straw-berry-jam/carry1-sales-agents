@@ -379,7 +379,7 @@ export default function SetupPage() {
                         <label className="block text-sm font-medium text-white/60 mb-2">{agentConfig.onboarding.companyLabel}</label>
                         <input
                           type="text"
-                          placeholder="e.g. Google, Stripe, etc."
+                          placeholder="e.g. ACME Buyer Co."
                           className="w-full bg-white/5 border border-white/10 rounded-xl px-6 py-4 text-xl focus:outline-none focus:border-white/30 transition-colors"
                           value={formData.company}
                           onChange={(e) => setFormData({ ...formData, company: e.target.value })}
@@ -393,17 +393,6 @@ export default function SetupPage() {
                           value={formData.jobDescription}
                           onChange={(e) => setFormData({ ...formData, jobDescription: e.target.value })}
                         />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-white/60 mb-2">What should we call you?</label>
-                        <input
-                          type="text"
-                          placeholder="e.g., Steve, Audrey, Tommy, etc..."
-                          className="w-full bg-white/5 border border-white/10 rounded-xl px-6 py-4 text-xl focus:outline-none focus:border-white/30 transition-colors"
-                          value={formData.preferredName}
-                          onChange={(e) => setFormData({ ...formData, preferredName: e.target.value })}
-                        />
-                        <p className="mt-2 text-xs text-white/40">We'll use this to make the experience feel more personal</p>
                       </div>
                     </div>
                   )}
