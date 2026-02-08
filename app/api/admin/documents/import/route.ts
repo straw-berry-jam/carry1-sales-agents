@@ -123,7 +123,7 @@ export async function POST(req: NextRequest) {
     }
 
     const coach = await prisma.coach.findFirst({
-      where: { slug: 'sei-interview-coach' },
+      where: { slug: 'sei-sales-coach' },
     });
     if (!coach) {
       return NextResponse.json({ error: 'Coach not found' }, { status: 404 });

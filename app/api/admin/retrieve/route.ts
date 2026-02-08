@@ -18,7 +18,7 @@ export async function POST(req: NextRequest) {
 
     // Get the default coach
     const coach = await prisma.coach.findFirst({
-      where: { slug: 'sei-interview-coach' },
+      where: { slug: 'sei-sales-coach' },
     });
 
     if (!coach) {

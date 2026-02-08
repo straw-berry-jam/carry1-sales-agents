@@ -64,7 +64,7 @@ export async function PUT(
     } = body;
 
     const coach = await prisma.coach.findFirst({
-      where: { slug: 'sei-interview-coach' },
+      where: { slug: 'sei-sales-coach' },
     });
 
     if (!coach) {
