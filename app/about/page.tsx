@@ -26,17 +26,17 @@ export default function AboutPage() {
             </p>
             
             <p>
-              Over three decades, SEI has combined deep industry expertise with cutting-edge technology to create tools and platforms that drive real outcomes. We focus on understanding what makes organizations succeed and embedding that knowledge into solutions our clients can use every day.
+              For over three decades, SEI has combined deep industry expertise with cutting-edge technology to create tools and platforms that drive real outcomes. We focus on understanding what makes organizations succeed and embedding that knowledge into intelligent solutions our clients can use every day.
             </p>
 
             <p>
-              Our commitment to excellence has earned Consulting Magazine's #1 "Best Firm to Work For" multiple years in a row and built a culture our people genuinely love. We bring that same rigor and insight to everything we build.
+              Our approach is simple: we start with your data, your methodology, and your goals, then build AI that works the way your team already does, only faster and at scale.
             </p>
 
             <p>
               If you'd like to learn more about how we work and what we do, visit{' '}
               <a 
-                href="https://sei.com" 
+                href="https://www.sei.com" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="text-white hover:text-gradient-red transition-colors inline-flex items-center gap-1 font-semibold"
