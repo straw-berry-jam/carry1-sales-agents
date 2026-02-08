@@ -33,8 +33,6 @@ export const agentConfig = {
       "Product Demo",
       "Objection Handling",
       "Negotiation & Close",
-      "Executive Pitch",
-      "Renewal / Upsell",
     ],
     durationLabel: "Session Duration",
     durations: [
@@ -102,15 +100,15 @@ export const agentConfig = {
 
   landing: {
     hero: {
-      badge: "Enterprise AI Solution",
+      badge: "SEI ENTERPRISE AI SOLUTION",
       headline: "Your Custom AI Sales Coach",
-      subheadline: "An intelligent voice agent trained on your playbooks, CRM data, and product catalog — helping your team practice, prepare, and perform.",
+      subheadline: "An intelligent voice agent trained on your playbooks, CRM data, and product catalog, helping your team practice, prepare, and perform.",
       primaryCta: "Try the Demo",
       secondaryCta: "Contact Us",
       secondaryCtaHref: "mailto:cminer@sei.com?subject=SEI%20Sales%20Coach%20Inquiry",
       stats: [
-        { value: "CRM-Connected", label: "Built on Your Data" },
-        { value: "Voice + Text", label: "Dual Interaction Modes" },
+        { value: "CRM Connected", label: "Built on Your Data" },
+        { value: "Voice & Text", label: "Dual Interaction Modes" },
         { value: "Rapid Deployment", label: "Weeks, Not Months" },
       ],
     },
@@ -124,7 +122,7 @@ export const agentConfig = {
         },
         {
           title: "Practice Any Scenario",
-          description: "From discovery calls to upsell conversations to executive pitches — reps rehearse against realistic AI simulations tailored to their accounts and pipeline.",
+          description: "From discovery calls to upsell conversations to executive pitches, reps rehearse against realistic AI simulations tailored to their accounts and pipeline.",
         },
         {
           title: "Admin Control & Visibility",
