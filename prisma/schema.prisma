@@ -1,0 +1,129 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+datasource db {
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  extensions = [pgvector(map: "vector")]
+}
+
+model Coach {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name        String
+  slug        String   @unique
+  description String?
+  isActive    Boolean  @default(true) @map("is_active")
+  features    Json     @default("{\"enable_user_ratings\": true, \"rating_method\": \"in-app\", \"enable_post_session_email\": false, \"email_delay_hours\": 24}")
+  llmConfig   Json     @default("{\"content_strategy\": \"curated_only\", \"web_search_enabled\": false, \"agent_mode\": \"coach\", \"personality\": {\"tone\": \"professional_coach\", \"transparency_level\": \"low\"}, \"model\": \"claude-sonnet-4-5-20250929\", \"temperature\": 0.7, \"max_tokens\": 500}") @map("llm_config")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  taxonomies        Taxonomy[]
+  documents         CoachDocument[]
+  interviewSessions InterviewSession[]
+
+  @@map("coaches")
+}
+
+model Taxonomy {
+  id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  coachId      String   @map("coach_id") @db.Uuid
+  taxonomyType String   @map("taxonomy_type")
+  name         String
+  slug         String
+  parentId     String?  @map("parent_id") @db.Uuid
+  metadata     Json     @default("{}")
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  coach              Coach              @relation(fields: [coachId], references: [id], onDelete: Cascade)
+  parent             Taxonomy?          @relation("TaxonomyHierarchy", fields: [parentId], references: [id])
+  children           Taxonomy[]         @relation("TaxonomyHierarchy")
+  documentTaxonomies DocumentTaxonomy[]
+
+  @@unique([coachId, taxonomyType, slug])
+  @@index([coachId])
+  @@index([taxonomyType])
+  @@index([parentId])
+  @@map("taxonomies")
+}
+
+model CoachDocument {
+  id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  coachId      String   @map("coach_id") @db.Uuid
+  title        String
+  content      String
+  documentType String   @map("document_type")
+  status             String   @default("draft")
+  strictnessOverride Int?     @map("strictness_override")
+  metadata           Json     @default("{}")
+  createdBy    String?  @map("created_by")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  coach              Coach              @relation(fields: [coachId], references: [id], onDelete: Cascade)
+  documentTaxonomies DocumentTaxonomy[]
+  chunks             CoachChunk[]
+
+  @@index([coachId])
+  @@index([documentType])
+  @@index([status])
+  @@map("coach_documents")
+}
+
+model DocumentTaxonomy {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  documentId String   @map("document_id") @db.Uuid
+  taxonomyId String   @map("taxonomy_id") @db.Uuid
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  document CoachDocument @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  taxonomy Taxonomy      @relation(fields: [taxonomyId], references: [id], onDelete: Cascade)
+
+  @@unique([documentId, taxonomyId])
+  @@index([documentId])
+  @@index([taxonomyId])
+  @@map("document_taxonomies")
+}
+
+model CoachChunk {
+  id         String                       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  documentId String                       @map("document_id") @db.Uuid
+  chunkText  String                       @map("chunk_text")
+  embedding  Unsupported("vector(1536)")?
+  chunkIndex Int                          @map("chunk_index")
+  metadata   Json                         @default("{}")
+  createdAt  DateTime                     @default(now()) @map("created_at")
+
+  document CoachDocument @relation(fields: [documentId], references: [id], onDelete: Cascade)
+
+  @@index([documentId])
+  @@map("coach_chunks")
+}
+
+model InterviewSession {
+  id               String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  coachId          String    @map("coach_id") @db.Uuid
+  userEmail        String?   @map("user_email")
+  userName         String?   @map("user_name")
+  interviewConfig  Json      @map("interview_config")
+  transcript       String?
+  scorecardData    Json?     @map("scorecard_data")
+  userRating       Int?      @map("user_rating")
+  ratingSource     String?   @map("rating_source")
+  userFeedback     String?   @map("user_feedback")
+  ratingCapturedAt DateTime? @map("rating_captured_at")
+  retrievedChunks  Json?     @map("retrieved_chunks")
+  aiModelUsed      String?   @map("ai_model_used")
+  promptVersion    String?   @map("prompt_version")
+  createdAt        DateTime  @default(now()) @map("created_at")
+  completedAt      DateTime? @map("completed_at")
+
+  coach Coach @relation(fields: [coachId], references: [id], onDelete: Cascade)
+
+  @@index([coachId])
+  @@index([userRating])
+  @@index([createdAt])
+  @@map("interview_sessions")
+}
