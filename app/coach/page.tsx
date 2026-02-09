@@ -39,6 +39,9 @@ export default function CoachPage() {
   const [totalQuestions, setTotalQuestions] = useState(8);
   const [timeLeft, setTimeLeft] = useState(15);
 
+  const [userMessageCount, setUserMessageCount] = useState(0);
+  const demoEnded = userMessageCount >= 4;
+
   useEffect(() => {
     const data = localStorage.getItem('onboarding-data');
     if (data) {
@@ -251,6 +254,7 @@ export default function CoachPage() {
   const handleSendMessage = async () => {
     if (!inputValue.trim() || isLoading) return;
     
+    setUserMessageCount(prev => prev + 1);
     const userMsg: { role: 'ai' | 'user'; text: string } = { role: 'user', text: inputValue };
     const newMessages = [...messages, userMsg];
     setMessages(newMessages);
@@ -474,18 +478,35 @@ export default function CoachPage() {
                       value={inputValue}
                       onChange={(e) => setInputValue(e.target.value)}
                       placeholder={isStarted ? "Type your response..." : "Connecting..."}
-                      disabled={!isStarted || isRecording || isLoading}
+                      disabled={!isStarted || isRecording || isLoading || demoEnded}
                       className="flex-grow bg-white/5 border border-white/10 rounded-xl px-6 py-4 focus:outline-none focus:border-white/30 transition-colors disabled:opacity-50"
                     />
                     <button 
                       type="submit"
-                      disabled={!isStarted || !inputValue.trim() || isRecording || isLoading}
+                      disabled={!isStarted || !inputValue.trim() || isRecording || isLoading || demoEnded}
                       className="bg-white/10 hover:bg-white/20 p-4 rounded-xl transition-colors disabled:opacity-50"
                     >
                       <Send className="w-5 h-5" />
                     </button>
                   </div>
                 </form>
+                {demoEnded && (
+                  <div className="mt-6 space-y-4">
+                    <p className="text-white/80 text-sm">
+                      Thanks for trying the demo! To experience a full coaching session built on your team's data,{' '}
+                      <a
+                        href="mailto:cminer@sei.com?subject=SEI%20Sales%20Agent%20Platform%20Inquiry"
+                        className="text-white font-medium underline hover:text-white/90 transition-colors"
+                      >
+                        get in touch with us
+                      </a>
+                      .
+                    </p>
+                    <Link href="/scorecard" className="btn-primary w-full py-4 px-6 text-center block shadow-glow transition-all hover:scale-[1.02]">
+                      {agentConfig.coachPage.endSessionLabel}
+                    </Link>
+                  </div>
+                )}
               </div>
             </motion.div>
           </div>
@@ -559,7 +580,10 @@ export default function CoachPage() {
 
             <motion.div initial={false} animate={{ opacity: 1, y: 0 }}>
               {isStarted ? (
-                <Link href="/scorecard" className="btn-primary w-full py-4 px-6 text-center block shadow-glow transition-all hover:scale-[1.02]">
+                <Link
+                  href="/scorecard"
+                  className={`btn-primary w-full py-4 px-6 text-center block shadow-glow transition-all hover:scale-[1.02] ${demoEnded ? 'ring-2 ring-white/40 ring-offset-2 ring-offset-transparent' : ''}`}
+                >
                   {agentConfig.coachPage.endSessionLabel}
                 </Link>
               ) : (
