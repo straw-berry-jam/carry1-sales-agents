@@ -73,16 +73,20 @@ export default function Hero() {
           <div className="max-w-2xl mx-auto mt-12 mb-8">
             <p className="text-xs uppercase tracking-widest text-white/40 text-center mb-3">Live Demo Preview</p>
             <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 space-y-4">
-              <div>
+              <div className="text-left">
                 <p className="text-xs text-white/40 mb-1">AI Coach</p>
-                <div className="bg-white/10 rounded-2xl rounded-tl-sm px-4 py-3 max-w-[80%] text-sm text-white/80">
+                <div className="bg-white/10 rounded-2xl rounded-tl-sm px-4 py-3 max-w-[80%] text-sm text-white/80 text-left">
                   Tell me about your prospect's main challenge.
                 </div>
               </div>
               <div className="text-right">
-                <p className="text-xs text-white/40 mb-1">You</p>
-                <div className="bg-gradient-primary rounded-2xl rounded-tr-sm px-4 py-3 max-w-[80%] ml-auto text-sm text-white/90">
+                <div className="bg-gradient-primary rounded-2xl rounded-tr-sm px-4 py-3 max-w-[70%] ml-auto text-sm text-white/90">
                   They're struggling with long sales cycles and getting executive buy-in...
+                </div>
+              </div>
+              <div className="text-left">
+                <div className="bg-white/10 rounded-2xl rounded-tl-sm px-4 py-3 max-w-[80%] text-sm text-white/80 text-left">
+                  How does your solution specifically address the executive buy-in challenge?
                 </div>
               </div>
               <div className="flex items-center justify-center gap-2 py-2">
