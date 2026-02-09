@@ -39,15 +39,13 @@ export default function CoachPage() {
   const [totalQuestions, setTotalQuestions] = useState(8);
   const [timeLeft, setTimeLeft] = useState(15);
 
-  const [userMessageCount, setUserMessageCount] = useState(0);
-  const [voiceDemoEnded, setVoiceDemoEnded] = useState(false);
-  const demoEnded = userMessageCount >= 2 || voiceDemoEnded;
+  const [demoEnded, setDemoEnded] = useState(false);
 
   useEffect(() => {
-    if (!isStarted || mode !== 'voice') return;
-    const timer = setTimeout(() => setVoiceDemoEnded(true), 120 * 1000);
+    if (!isStarted) return;
+    const timer = setTimeout(() => setDemoEnded(true), 90 * 1000);
     return () => clearTimeout(timer);
-  }, [isStarted, mode]);
+  }, [isStarted]);
 
   useEffect(() => {
     const data = localStorage.getItem('onboarding-data');
@@ -261,7 +259,6 @@ export default function CoachPage() {
   const handleSendMessage = async () => {
     if (!inputValue.trim() || isLoading) return;
     
-    setUserMessageCount(prev => prev + 1);
     const userMsg: { role: 'ai' | 'user'; text: string } = { role: 'user', text: inputValue };
     const newMessages = [...messages, userMsg];
     setMessages(newMessages);
