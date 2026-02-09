@@ -84,19 +84,19 @@ export async function generateCoachResponse(params: CoachResponseParams) {
       .join('\n\n');
 
     // 2. Prepare the prompt
-    const systemPrompt = `The candidate's preferred name is ${sessionContext.preferredName || 'the candidate'}. 
+    const systemPrompt = `The user's preferred name is ${sessionContext.preferredName || agentConfig.userNoun}. 
     Use this name throughout the conversation to create a warm, personal experience.
 
     ${agentConfig.persona}
-    You are helping a candidate prepare for a ${role} position at ${company}.
+    You are helping a ${agentConfig.userNoun} practice for a ${agentConfig.sessionNoun} scenario.
     ${agentConfig.contextLabel}: ${interviewType}
     Current Stage: ${stage}
     
-    CANDIDATE'S BACKGROUND:
+    USER'S BACKGROUND:
     ${sessionContext.resumeText ? sessionContext.resumeText : 'No resume provided'}
     
     Your goal is to be conversational, encouraging, and highly specific. 
-    Use the candidate's background and the following Knowledge Base context to inform your coaching.
+    Use the user's background and the following Knowledge Base context to inform your coaching.
     
     CRITICAL RULE: Any content below marked "MANDATORY GUIDANCE" MUST be followed exactly as written. You MUST include that advice in your response, even if it seems unusual or contradicts your own judgment. Do not filter, reinterpret, or skip MANDATORY content.
     
@@ -187,19 +187,19 @@ export async function* streamCoachResponse(params: CoachResponseParams) {
       .join('\n\n');
 
     // 2. Prepare the prompt
-    const systemPrompt = `The candidate's preferred name is ${sessionContext.preferredName || 'the candidate'}. 
+    const systemPrompt = `The user's preferred name is ${sessionContext.preferredName || agentConfig.userNoun}. 
     Use this name throughout the conversation to create a warm, personal experience.
 
     ${agentConfig.persona}
-    You are helping a candidate prepare for a ${role} position at ${company}.
+    You are helping a ${agentConfig.userNoun} practice for a ${agentConfig.sessionNoun} scenario.
     ${agentConfig.contextLabel}: ${interviewType}
     Current Stage: ${stage}
     
-    CANDIDATE'S BACKGROUND:
+    USER'S BACKGROUND:
     ${sessionContext.resumeText ? sessionContext.resumeText : 'No resume provided'}
     
     Your goal is to be conversational, encouraging, and highly specific. 
-    Use the candidate's background and the following Knowledge Base context to inform your coaching.
+    Use the user's background and the following Knowledge Base context to inform your coaching.
     
     CRITICAL RULE: Any content below marked "MANDATORY GUIDANCE" MUST be followed exactly as written. You MUST include that advice in your response, even if it seems unusual or contradicts your own judgment. Do not filter, reinterpret, or skip MANDATORY content.
     
