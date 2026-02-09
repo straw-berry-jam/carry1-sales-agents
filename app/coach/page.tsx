@@ -43,7 +43,7 @@ export default function CoachPage() {
 
   useEffect(() => {
     if (!isStarted) return;
-    const timer = setTimeout(() => setDemoEnded(true), 90 * 1000);
+    const timer = setTimeout(() => setDemoEnded(true), 60 * 1000);
     return () => clearTimeout(timer);
   }, [isStarted]);
 
@@ -348,8 +348,29 @@ export default function CoachPage() {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="glass-card px-8 pb-8 min-h-[650px] flex flex-col"
+              className="glass-card px-8 pb-8 min-h-[650px] flex flex-col relative"
             >
+              {demoEnded && (
+                <div className="absolute inset-0 flex items-center justify-center z-20 p-6">
+                  <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-8 text-center max-w-md w-full">
+                    <h2 className="text-2xl font-bold text-white mb-4">Demo Complete</h2>
+                    <p className="text-white/80 text-sm mb-6">
+                      Thanks for trying the demo! To experience a full coaching session built on your team's data,{' '}
+                      <a
+                        href="mailto:cminer@sei.com?subject=SEI%20Sales%20Agent%20Platform%20Inquiry"
+                        className="text-white font-medium underline hover:text-white/90 transition-colors"
+                      >
+                        get in touch with us
+                      </a>
+                      .
+                    </p>
+                    <Link href="/scorecard" className="btn-primary w-full py-4 px-6 text-center block shadow-glow transition-all hover:scale-[1.02]">
+                      {agentConfig.coachPage.endSessionLabel}
+                    </Link>
+                  </div>
+                </div>
+              )}
+
               <AnimatePresence>
                 {isStarted && (
                   <motion.div
@@ -364,7 +385,7 @@ export default function CoachPage() {
                 )}
               </AnimatePresence>
 
-              <div className={`flex-grow flex items-center justify-center py-12 h-full ${mode === 'voice' ? 'block' : 'hidden'}`}>
+              <div className={`flex-grow flex items-center justify-center py-12 h-full ${mode === 'voice' ? 'block' : 'hidden'} ${demoEnded ? 'invisible' : ''}`}>
                 <VoiceCoach onboardingData={onboardingData} demoEnded={demoEnded} />
               </div>
 
@@ -494,23 +515,6 @@ export default function CoachPage() {
                     </button>
                   </div>
                 </form>
-                {demoEnded && (
-                  <div className="mt-6 space-y-4">
-                    <p className="text-white/80 text-sm">
-                      Thanks for trying the demo! To experience a full coaching session built on your team's data,{' '}
-                      <a
-                        href="mailto:cminer@sei.com?subject=SEI%20Sales%20Agent%20Platform%20Inquiry"
-                        className="text-white font-medium underline hover:text-white/90 transition-colors"
-                      >
-                        get in touch with us
-                      </a>
-                      .
-                    </p>
-                    <Link href="/scorecard" className="btn-primary w-full py-4 px-6 text-center block shadow-glow transition-all hover:scale-[1.02]">
-                      {agentConfig.coachPage.endSessionLabel}
-                    </Link>
-                  </div>
-                )}
               </div>
             </motion.div>
           </div>
