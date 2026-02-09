@@ -12,7 +12,7 @@ export default function Hero() {
       <div className="absolute inset-0 bg-gradient-radial from-gradient-red/20 via-gradient-purple/20 to-transparent opacity-50 pointer-events-none" />
 
       {/* Main Content - Takes up remaining space and centers its content */}
-      <div className="relative z-10 flex-grow flex flex-col items-center justify-center px-6 pt-32 pb-32">
+      <div className="relative z-10 flex-grow flex flex-col items-center justify-center px-6 pt-24 pb-24">
         <div className="max-w-5xl mx-auto text-center">
           {/* Small badge */}
           <motion.div
@@ -70,8 +70,7 @@ export default function Hero() {
           </motion.div>
 
           {/* Chat preview mockup – decorative */}
-          <div className="max-w-2xl mx-auto mt-12 mb-8">
-            <p className="text-xs uppercase tracking-widest text-white/40 text-center mb-3">Live Demo Preview</p>
+          <div className="max-w-2xl mx-auto mt-8 mb-4">
             <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 space-y-4">
               <div className="text-left">
                 <p className="text-xs text-white/40 mb-1">AI Coach</p>
@@ -80,7 +79,7 @@ export default function Hero() {
                 </div>
               </div>
               <div className="text-right">
-                <div className="bg-gradient-primary rounded-2xl rounded-tr-sm px-4 py-3 max-w-[70%] ml-auto text-sm text-white/90">
+                <div className="bg-white/15 rounded-2xl rounded-tr-sm px-4 py-3 max-w-[70%] ml-auto text-sm text-white/90">
                   They're struggling with long sales cycles and getting executive buy-in...
                 </div>
               </div>
@@ -92,24 +91,26 @@ export default function Hero() {
               <div className="flex items-center justify-center gap-2 py-2">
                 <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse" />
                 <div className="flex gap-1 items-center">
-                  <div className="w-1 h-3 rounded-full bg-white/30" />
-                  <div className="w-1 h-5 rounded-full bg-white/30" />
-                  <div className="w-1 h-8 rounded-full bg-white/30" />
-                  <div className="w-1 h-6 rounded-full bg-white/30" />
-                  <div className="w-1 h-4 rounded-full bg-white/30" />
-                  <div className="w-1 h-7 rounded-full bg-white/30" />
-                  <div className="w-1 h-3 rounded-full bg-white/30" />
+                  {[3, 5, 8, 6, 4, 7, 3].map((h, index) => (
+                    <div
+                      key={index}
+                      className="w-1 rounded-full bg-white/30"
+                      style={{ height: `${h * 0.25}rem`, animation: 'waveform 1.2s ease-in-out infinite', animationDelay: `${index * 0.15}s` }}
+                    />
+                  ))}
                 </div>
                 <span className="text-xs text-white/40 italic">Listening...</span>
               </div>
               <div className="flex items-center justify-center gap-2 pt-2">
                 <Mic className="w-4 h-4 text-white/30" />
                 <div className="flex gap-0.5 items-end">
-                  <div className="w-0.5 h-2 rounded-full bg-white/30" />
-                  <div className="w-0.5 h-3 rounded-full bg-white/30" />
-                  <div className="w-0.5 h-4 rounded-full bg-white/30" />
-                  <div className="w-0.5 h-3 rounded-full bg-white/30" />
-                  <div className="w-0.5 h-2 rounded-full bg-white/30" />
+                  {[2, 3, 4, 3, 2].map((h, index) => (
+                    <div
+                      key={index}
+                      className="w-0.5 rounded-full bg-white/30"
+                      style={{ height: `${h * 0.25}rem`, animation: 'waveform 1.2s ease-in-out infinite', animationDelay: `${index * 0.15}s` }}
+                    />
+                  ))}
                 </div>
                 <span className="text-xs text-white/30">Real-time Voice Coaching</span>
               </div>
@@ -125,7 +126,7 @@ export default function Hero() {
         transition={{ duration: 0.6, delay: 0.4 }}
         className="relative z-10 bg-black/30 backdrop-blur-sm border-t border-white/10"
       >
-        <div className="max-w-7xl mx-auto px-6 py-24 text-center">
+        <div className="max-w-7xl mx-auto px-6 py-16 text-center">
           <div className="mb-8">
             <span className="text-white/60 text-base font-semibold tracking-widest uppercase">
               Built on Real Experience

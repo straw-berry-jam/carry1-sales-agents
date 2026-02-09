@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+@keyframes waveform {
+  0%, 100% { transform: scaleY(1); }
+  50% { transform: scaleY(1.8); }
+}
+
 @layer base {
   :root {
     --font-heading: 'Inter', system-ui, sans-serif;
