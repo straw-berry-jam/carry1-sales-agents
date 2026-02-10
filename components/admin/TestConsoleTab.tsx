@@ -106,31 +106,41 @@ export default function TestConsoleTab() {
   }, [results]);
 
   return (
-    <div className="min-h-screen bg-[#FDFBF7] pt-8 pb-8 px-8 text-gray-900">
-      <div className="max-w-5xl mx-auto">
-        {/* Header */}
-        <header className="mb-10">
-          <h1 className="text-3xl font-bold text-plum-dark">Knowledge Base Testing Dashboard</h1>
-          <p className="text-gray-500 mt-2 font-medium max-w-2xl">Manage and monitor our model&apos;s ability to retrieve relevant documents based on specific questions and answers.</p>
+    <div className="min-h-screen bg-[#FDFBF7] p-8 text-gray-900">
+      <div className="max-w-7xl mx-auto">
+        {/* Header — match Knowledge Base: same flex, gap-6, title left, two buttons right with gap-4 */}
+        <header className="mb-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
+          <div className="min-w-0">
+            <h1 className="text-3xl font-bold text-plum-dark">Knowledge Base Testing Dashboard</h1>
+            <p className="text-gray-500 mt-2 font-medium max-w-2xl">Manage and monitor our model&apos;s ability to retrieve relevant documents based on specific questions and answers.</p>
+          </div>
+          <div className="flex items-center gap-4 flex-shrink-0">
+            <button
+              type="button"
+              onClick={() => { setMode('candidate'); setResults([]); setQuery(''); }}
+              className={`rounded-xl font-semibold shadow-sm transition-all flex items-center gap-2 whitespace-nowrap px-6 py-3 ${
+                mode === 'candidate'
+                  ? 'bg-[#3A2449] text-white hover:bg-[#2D1B3D]'
+                  : 'bg-white border-2 border-plum/20 text-plum-dark hover:bg-plum/5 hover:border-plum/40'
+              }`}
+            >
+              <User size={20} />
+              <span>User Asks Coach</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => { setMode('coach'); setResults([]); setQuery(''); }}
+              className={`rounded-xl font-semibold shadow-sm transition-all flex items-center gap-2 whitespace-nowrap px-8 py-3 ${
+                mode === 'coach'
+                  ? 'bg-[#3A2449] text-white hover:bg-[#2D1B3D]'
+                  : 'bg-white border-2 border-plum/20 text-plum-dark hover:bg-plum/5 hover:border-plum/40'
+              }`}
+            >
+              <Bot size={20} />
+              <span>Coach Asks User</span>
+            </button>
+          </div>
         </header>
-
-        {/* Mode Toggle */}
-        <div className="bg-white p-1.5 rounded-2xl border border-plum/10 shadow-sm flex mb-8 w-fit">
-          <button 
-            onClick={() => { setMode('candidate'); setResults([]); setQuery(''); }}
-            className={`px-6 py-2.5 rounded-xl text-sm font-bold transition-all flex items-center space-x-2 ${mode === 'candidate' ? 'bg-plum-dark text-white shadow-md' : 'text-plum/40 hover:text-plum-dark'}`}
-          >
-            <User size={16} />
-            <span>User Asks Coach</span>
-          </button>
-          <button 
-            onClick={() => { setMode('coach'); setResults([]); setQuery(''); }}
-            className={`px-6 py-2.5 rounded-xl text-sm font-bold transition-all flex items-center space-x-2 ${mode === 'coach' ? 'bg-plum-dark text-white shadow-md' : 'text-plum/40 hover:text-plum-dark'}`}
-          >
-            <Bot size={16} />
-            <span>Coach Asks User</span>
-          </button>
-        </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left Column: Search Form */}
