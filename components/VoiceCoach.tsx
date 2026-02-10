@@ -98,16 +98,8 @@ export const VoiceCoach = memo(function VoiceCoach({ onboardingData, demoEnded }
       const { signedUrl, sessionId } = await response.json();
       console.log('Voice session context stored with ID:', sessionId);
 
-      // 2. Start conversation with dynamic variables
-      await conversation.startSession({
-        signedUrl,
-        dynamicVariables: {
-          user_name: onboardingData?.preferredName || 'Candidate',
-          target_role: onboardingData?.role || 'Software Engineer',
-          target_company: onboardingData?.company || 'SEI',
-          session_id: sessionId,
-        }
-      });
+      // 2. Start conversation with signed URL only (no overrides/dynamicVariables — not supported with signed URL + Custom LLM)
+      await conversation.startSession({ signedUrl });
 
     } catch (error: any) {
       console.error('Failed to start voice session:', error);
