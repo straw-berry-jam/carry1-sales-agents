@@ -1,0 +1,291 @@
+'use client';
+
+import React, { useState, useEffect } from 'react';
+import { Loader2, AlertCircle, Check } from 'lucide-react';
+
+type Agent = {
+  agent_id: string;
+  name: string;
+  prompt: string | null;
+  document_tags: string[] | null;
+  status: string;
+  created_at: string;
+};
+
+const EMPTY_MESSAGE =
+  'No agents configured. Agents are added by a developer.';
+
+function parseDocumentTags(value: string): string[] {
+  return value
+    .split(',')
+    .map((s) => s.trim())
+    .filter(Boolean);
+}
+
+function formatDocumentTags(tags: string[] | null): string {
+  if (!tags || tags.length === 0) return '';
+  return tags.join(', ');
+}
+
+export default function PromptControlTab() {
+  const [agents, setAgents] = useState<Agent[]>([]);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [name, setName] = useState('');
+  const [status, setStatus] = useState<'draft' | 'active'>('draft');
+  const [prompt, setPrompt] = useState('');
+  const [documentTagsText, setDocumentTagsText] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [saveError, setSaveError] = useState<string | null>(null);
+  const [saveSuccess, setSaveSuccess] = useState<string | null>(null);
+  const [nameError, setNameError] = useState<string | null>(null);
+
+  const selectedAgent = agents.find((a) => a.agent_id === selectedId);
+
+  useEffect(() => {
+    setError(null);
+    fetch('/api/admin/agents')
+      .then((res) => {
+        if (!res.ok) throw new Error('Could not load agents.');
+        return res.json();
+      })
+      .then((data: Agent[]) => {
+        setAgents(data);
+        if (data.length > 0) {
+          setSelectedId(data[0].agent_id);
+        }
+      })
+      .catch((err) => {
+        setError(err.message || 'Something went wrong');
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, []);
+
+  // When selected agent changes, fill form from that agent
+  useEffect(() => {
+    if (!selectedAgent) return;
+    setName(selectedAgent.name);
+    setStatus((selectedAgent.status as 'draft' | 'active') || 'draft');
+    setPrompt(selectedAgent.prompt ?? '');
+    setDocumentTagsText(formatDocumentTags(selectedAgent.document_tags));
+    setSaveError(null);
+    setSaveSuccess(null);
+    setNameError(null);
+  }, [selectedAgent]);
+
+  const handleSave = () => {
+    setSaveError(null);
+    setSaveSuccess(null);
+    setNameError(null);
+    const trimmedName = name.trim();
+    if (!trimmedName) {
+      setNameError('Name is required');
+      return;
+    }
+    if (!selectedId) return;
+    setIsSaving(true);
+    const documentTags = parseDocumentTags(documentTagsText);
+    fetch(`/api/admin/agents/${selectedId}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: trimmedName,
+        status,
+        prompt: prompt || null,
+        document_tags: documentTags,
+      }),
+    })
+      .then((res) => {
+        const data = res.json();
+        if (!res.ok) {
+          return data.then((body: { error?: string }) => {
+            throw new Error(body.error || 'Could not save. Please try again.');
+          });
+        }
+        return data;
+      })
+      .then((updated: Agent) => {
+        setSaveSuccess(`Saved at ${new Date().toLocaleTimeString()}`);
+        setAgents((prev) =>
+          prev.map((a) => (a.agent_id === updated.agent_id ? updated : a))
+        );
+        setSelectedId(updated.agent_id);
+      })
+      .catch((err) => {
+        setSaveError(err.message || 'Could not save. Please try again.');
+      })
+      .finally(() => {
+        setIsSaving(false);
+      });
+  };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-[#FDFBF7] p-8 text-gray-900 flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4 text-plum-dark">
+          <Loader2 className="w-10 h-10 animate-spin" />
+          <p className="font-bold">Loading agents...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-[#FDFBF7] p-8 text-gray-900">
+        <div className="max-w-7xl mx-auto">
+          <div className="bg-red-50 border border-red-200 rounded-2xl p-6 flex items-center gap-3 text-red-800">
+            <AlertCircle className="w-6 h-6 flex-shrink-0" />
+            <p className="font-medium">{error}</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (agents.length === 0) {
+    return (
+      <div className="min-h-screen bg-[#FDFBF7] p-8 text-gray-900">
+        <div className="max-w-7xl mx-auto">
+          <p className="text-gray-700 font-medium rounded-2xl border border-plum/10 bg-white p-8 shadow-sm">
+            {EMPTY_MESSAGE}
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-[#FDFBF7] p-8 text-gray-900">
+      <div className="max-w-7xl mx-auto">
+        <header className="mb-10">
+          <h1 className="text-3xl font-bold text-plum-dark">Prompt Control</h1>
+          <p className="text-gray-500 mt-2 font-medium max-w-2xl">
+            View and edit existing coach agents. Agents are added by a developer.
+          </p>
+        </header>
+
+        <div className="space-y-6">
+          <section className="bg-white rounded-2xl border border-plum/10 p-6 shadow-sm">
+            <label className="text-[10px] font-bold text-plum/40 uppercase tracking-widest mb-2 block">
+              Agent
+            </label>
+            <select
+              value={selectedId ?? ''}
+              onChange={(e) => setSelectedId(e.target.value || null)}
+              className="w-full max-w-md px-4 py-2.5 rounded-xl border border-plum/20 text-plum-dark font-medium bg-white focus:outline-none focus:ring-2 focus:ring-plum/30"
+            >
+              {agents.map((a) => (
+                <option key={a.agent_id} value={a.agent_id}>
+                  {a.name}
+                </option>
+              ))}
+            </select>
+          </section>
+
+          <section className="bg-white rounded-2xl border border-plum/10 p-6 shadow-sm space-y-6">
+            <div>
+              <label className="text-[10px] font-bold text-plum/40 uppercase tracking-widest mb-2 block">
+                Agent name <span className="text-[#E84855]">*</span>
+              </label>
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => {
+                  setName(e.target.value);
+                  setNameError(null);
+                }}
+                className={`w-full px-4 py-2.5 rounded-xl border text-gray-900 ${
+                  nameError ? 'border-red-400' : 'border-plum/20'
+                } focus:outline-none focus:ring-2 focus:ring-plum/30`}
+                placeholder="e.g. SPIN Sales Coach"
+              />
+              {nameError && (
+                <p className="text-[#E84855] text-xs font-medium mt-1">
+                  {nameError}
+                </p>
+              )}
+            </div>
+
+            <div>
+              <label className="text-[10px] font-bold text-plum/40 uppercase tracking-widest mb-2 block">
+                Status
+              </label>
+              <select
+                value={status}
+                onChange={(e) =>
+                  setStatus(e.target.value as 'draft' | 'active')
+                }
+                className="w-full max-w-xs px-4 py-2.5 rounded-xl border border-plum/20 text-plum-dark font-medium bg-white focus:outline-none focus:ring-2 focus:ring-plum/30"
+              >
+                <option value="draft">Draft (off)</option>
+                <option value="active">Active (on)</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="text-[10px] font-bold text-plum/40 uppercase tracking-widest mb-2 block">
+                System prompt
+              </label>
+              <textarea
+                value={prompt}
+                onChange={(e) => setPrompt(e.target.value)}
+                rows={12}
+                className="w-full px-4 py-2.5 rounded-xl border border-plum/20 text-gray-900 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-plum/30 resize-y"
+                placeholder="Full system prompt for this agent..."
+              />
+            </div>
+
+            <div>
+              <label className="text-[10px] font-bold text-plum/40 uppercase tracking-widest mb-2 block">
+                Document tags (comma-separated)
+              </label>
+              <input
+                type="text"
+                value={documentTagsText}
+                onChange={(e) => setDocumentTagsText(e.target.value)}
+                className="w-full px-4 py-2.5 rounded-xl border border-plum/20 text-gray-900 focus:outline-none focus:ring-2 focus:ring-plum/30"
+                placeholder="e.g. spin_framework, client_persona, sei_positioning"
+              />
+            </div>
+
+            {saveError && (
+              <div className="bg-red-50 border border-red-200 rounded-xl p-4 flex items-center gap-2 text-red-800">
+                <AlertCircle className="w-5 h-5 flex-shrink-0" />
+                <p className="text-sm font-medium">{saveError}</p>
+              </div>
+            )}
+
+            {saveSuccess && (
+              <div className="bg-green-50 border border-green-200 rounded-xl p-4 flex items-center gap-2 text-green-800">
+                <Check className="w-5 h-5 flex-shrink-0" />
+                <p className="text-sm font-medium">{saveSuccess}</p>
+              </div>
+            )}
+
+            <div className="pt-2">
+              <button
+                type="button"
+                onClick={handleSave}
+                disabled={isSaving}
+                className="flex items-center gap-2 px-6 py-3 rounded-xl bg-plum-dark text-white font-bold text-sm shadow-md hover:bg-plum-dark/90 disabled:opacity-60 disabled:cursor-not-allowed transition-all"
+              >
+                {isSaving ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    Saving...
+                  </>
+                ) : (
+                  'Save Changes'
+                )}
+              </button>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  );
+}
