@@ -46,6 +46,9 @@ export default function SpinSetupPage() {
     interviewType: '',
     duration: '',
     interactionMode: 'text' as 'voice' | 'text',
+    // Session type for SPIN scoring: mode + duration
+    sessionMode: 'outreach' as 'outreach' | 'discovery',
+    sessionDuration: '15' as '15' | '30',
   });
 
   useEffect(() => {
@@ -368,6 +371,60 @@ export default function SpinSetupPage() {
                   {step === 1 && (
                     <div className="space-y-6">
                       <div>
+                        <label className="block text-sm font-medium text-white/60 mb-2">Session Mode</label>
+                        <div className="flex gap-2">
+                          <button
+                            type="button"
+                            onClick={() => setFormData({ ...formData, sessionMode: 'outreach' })}
+                            className={`flex-1 py-3 px-4 rounded-xl border transition-all text-sm font-medium ${
+                              formData.sessionMode === 'outreach'
+                                ? 'bg-white/10 border-white/40'
+                                : 'bg-white/5 border-white/10 hover:border-white/20'
+                            }`}
+                          >
+                            Outreach
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setFormData({ ...formData, sessionMode: 'discovery' })}
+                            className={`flex-1 py-3 px-4 rounded-xl border transition-all text-sm font-medium ${
+                              formData.sessionMode === 'discovery'
+                                ? 'bg-white/10 border-white/40'
+                                : 'bg-white/5 border-white/10 hover:border-white/20'
+                            }`}
+                          >
+                            Discovery
+                          </button>
+                        </div>
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-white/60 mb-2">Session Duration</label>
+                        <div className="flex gap-2">
+                          <button
+                            type="button"
+                            onClick={() => setFormData({ ...formData, sessionDuration: '15' })}
+                            className={`flex-1 py-3 px-4 rounded-xl border transition-all text-sm font-medium ${
+                              formData.sessionDuration === '15'
+                                ? 'bg-white/10 border-white/40'
+                                : 'bg-white/5 border-white/10 hover:border-white/20'
+                            }`}
+                          >
+                            15 min
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setFormData({ ...formData, sessionDuration: '30' })}
+                            className={`flex-1 py-3 px-4 rounded-xl border transition-all text-sm font-medium ${
+                              formData.sessionDuration === '30'
+                                ? 'bg-white/10 border-white/40'
+                                : 'bg-white/5 border-white/10 hover:border-white/20'
+                            }`}
+                          >
+                            30 min
+                          </button>
+                        </div>
+                      </div>
+                      <div>
                         <label className="block text-sm font-medium text-white/60 mb-2">What should we call you?</label>
                         <input
                           type="text"
@@ -620,7 +677,8 @@ export default function SpinSetupPage() {
                     <button
                       onClick={async () => {
                         await handleStartCoaching();
-                        router.push('/coach/spin/session');
+                        const sessionType = `${formData.sessionMode}_${formData.sessionDuration}` as 'outreach_15' | 'outreach_30' | 'discovery_15' | 'discovery_30';
+                        router.push(`/coach/spin/session?sessionType=${sessionType}`);
                       }}
                       disabled={isSyncing}
                       className={`btn-primary w-full block text-center flex items-center justify-center gap-2 ${
