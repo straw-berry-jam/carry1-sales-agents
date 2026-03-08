@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import {
   PlusCircle,
   X,
@@ -9,6 +9,7 @@ import {
   Loader2,
   Database,
   FileText,
+  Upload,
 } from 'lucide-react';
 
 export type KBCategory =
@@ -110,6 +111,42 @@ export default function KnowledgeBaseTab() {
 
   const [errors, setErrors] = useState<Record<string, string>>({});
   const drawerScrollRef = React.useRef<HTMLDivElement>(null);
+  const contentFileInputRef = useRef<HTMLInputElement>(null);
+  const [contentDragOver, setContentDragOver] = useState(false);
+
+  const applyContentFromFile = (text: string) => {
+    setFormData((prev) => ({ ...prev, content: text }));
+  };
+
+  const handleContentFile = (file: File) => {
+    const ext = file.name.toLowerCase().slice(file.name.lastIndexOf('.'));
+    if (ext !== '.md' && ext !== '.txt') {
+      return;
+    }
+    const existingContent = formData.content.trim();
+    const reader = new FileReader();
+    reader.onload = () => {
+      const text = (reader.result ?? '') as string;
+      if (existingContent.length > 0 && !window.confirm('Content already exists. Overwrite with the uploaded file?')) {
+        return;
+      }
+      applyContentFromFile(text);
+    };
+    reader.readAsText(file);
+  };
+
+  const onContentFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) handleContentFile(file);
+    e.target.value = '';
+  };
+
+  const onContentDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setContentDragOver(false);
+    const file = e.dataTransfer.files?.[0];
+    if (file) handleContentFile(file);
+  };
 
   const fetchDocuments = async () => {
     const params = new URLSearchParams();
@@ -391,16 +428,16 @@ export default function KnowledgeBaseTab() {
               {/* 1. Document Category */}
               <div>
                 <label className="text-xs font-bold text-plum/40 uppercase tracking-[0.2em] mb-3 block">Document Category <span className="text-[#E84855]">*</span></label>
-                <div className="space-y-3">
+                <div className="space-y-1">
                   {CATEGORIES.map((c) => (
                     <button
                       key={c.id}
                       type="button"
                       onClick={() => setFormData((prev) => ({ ...prev, category: c.id, personaType: prev.category === 'buyer_persona' ? prev.personaType : null }))}
-                      className={`w-full text-left p-4 rounded-xl border transition-all ${formData.category === c.id ? 'bg-plum-dark text-white border-plum-dark' : 'bg-white text-plum/70 border-plum/10 hover:border-plum/30'}`}
+                      className={`w-full text-left py-2 px-3 rounded-md border transition-all ${formData.category === c.id ? 'bg-plum-dark text-white border-plum-dark' : 'bg-white text-plum/70 border-plum/10 hover:border-plum/30'}`}
                     >
-                      <span className="font-semibold block">{c.label}</span>
-                      <span className={`text-xs mt-1 block ${formData.category === c.id ? 'text-white/80' : 'text-plum/50'}`}>{c.desc}</span>
+                      <span className="text-[13px] font-medium block">{c.label}</span>
+                      <span className={`text-[11px] mt-0.5 block ${formData.category === c.id ? 'text-white/80' : 'text-plum/50'}`}>{c.desc}</span>
                     </button>
                   ))}
                 </div>
@@ -453,6 +490,25 @@ export default function KnowledgeBaseTab() {
               {/* 4. Content */}
               <div>
                 <label className="text-xs font-bold text-plum/40 uppercase tracking-[0.2em] mb-2 block">Content <span className="text-[#E84855]">*</span></label>
+                <input
+                  ref={contentFileInputRef}
+                  type="file"
+                  accept=".md,.txt"
+                  className="hidden"
+                  onChange={onContentFileInputChange}
+                />
+                <div
+                  role="button"
+                  tabIndex={0}
+                  onClick={() => contentFileInputRef.current?.click()}
+                  onDragOver={(e) => { e.preventDefault(); setContentDragOver(true); }}
+                  onDragLeave={() => setContentDragOver(false)}
+                  onDrop={onContentDrop}
+                  className={`mb-2 flex items-center justify-center gap-2 py-2 px-3 rounded-md border border-dashed text-sm font-medium cursor-pointer transition-all ${contentDragOver ? 'border-plum bg-plum/10 text-plum-dark' : 'border-plum/20 text-plum/60 hover:border-plum/40 hover:text-plum-dark'}`}
+                >
+                  <Upload size={14} />
+                  <span>Upload .md or .txt file</span>
+                </div>
                 <textarea
                   placeholder="Paste or write document content here. Markdown is supported."
                   value={formData.content}
