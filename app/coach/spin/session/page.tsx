@@ -64,6 +64,15 @@ export default function SpinSessionPage() {
     }
   }, [searchParams]);
 
+  // Persist conversation transcript for scorecard: turn-by-turn "Coach: ... / Rep: ..." so scoring API can read it
+  useEffect(() => {
+    if (typeof window === 'undefined' || !messages.length) return;
+    const transcript = messages
+      .map((m) => (m.role === 'ai' ? `Coach: ${m.text}` : `Rep: ${m.text}`))
+      .join('\n\n');
+    window.localStorage.setItem('spinTranscript', transcript);
+  }, [messages]);
+
   useEffect(() => {
     const data = localStorage.getItem('onboarding-data');
     if (data) {
