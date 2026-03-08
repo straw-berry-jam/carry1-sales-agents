@@ -12,12 +12,21 @@ import { SCORING_PROMPTS, VALID_SESSION_TYPES } from '@/lib/scoringPrompts';
 const NO_ACTIVE_AGENT_MESSAGE =
   'No active SPIN Sales Coach agent found. Set status to active in Prompt Control.';
 
-function stripMarkdownFences(raw: string): string {
+/**
+ * Prepares raw model output for JSON.parse: trim, strip markdown fences,
+ * and extract only the substring from first { to last }.
+ */
+function prepareForJsonParse(raw: string): string {
   let s = raw.trim();
-  const jsonBlock = /^```(?:json)?\s*\n?([\s\S]*?)\n?```\s*$/;
-  const m = s.match(jsonBlock);
-  if (m) s = m[1].trim();
-  return s;
+  // Strip ```json ... ``` or ``` ... ``` fences (multiline)
+  s = s.replace(/^```(?:json)?\s*\n?/i, '').replace(/\n?```\s*$/i, '').trim();
+  // Keep only from first { to last } so we don't fail on leading/trailing text
+  const firstBrace = s.indexOf('{');
+  const lastBrace = s.lastIndexOf('}');
+  if (firstBrace !== -1 && lastBrace !== -1 && lastBrace >= firstBrace) {
+    s = s.slice(firstBrace, lastBrace + 1);
+  }
+  return s.trim();
 }
 
 export async function POST(request: NextRequest) {
@@ -107,12 +116,15 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const stripped = stripMarkdownFences(responseText);
+  // Log raw response for debugging when parsing fails
+  console.log('Score session: raw API response text (length=%d):', responseText.length, responseText);
+
+  const stripped = prepareForJsonParse(responseText);
   let scorecard: unknown;
   try {
     scorecard = JSON.parse(stripped);
-  } catch {
-    console.error('Score session: invalid JSON from model');
+  } catch (parseErr) {
+    console.error('Score session: invalid JSON from model. Stripped length=%d:', stripped.length, parseErr);
     return NextResponse.json(
       { error: 'Scoring response could not be parsed' },
       { status: 500 }
