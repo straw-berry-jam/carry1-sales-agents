@@ -237,7 +237,11 @@ export default function KnowledgeBaseTab() {
   };
 
   const handleSave = async (status: 'draft' | 'published') => {
-    if (!validate()) return;
+    setErrors({});
+    if (!validate()) {
+      drawerScrollRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
     const payload = {
       ...formData,
       agents: getAgentsPayload(),
@@ -247,6 +251,7 @@ export default function KnowledgeBaseTab() {
       (payload as any).personaType = formData.personaType;
     }
     setIsSaving(true);
+    setErrors((prev) => ({ ...prev, submit: '' }));
     try {
       const url = drawerMode === 'edit' && selectedDoc ? `/api/admin/documents/${selectedDoc.id}` : '/api/admin/documents';
       const method = drawerMode === 'edit' ? 'PUT' : 'POST';
@@ -255,12 +260,17 @@ export default function KnowledgeBaseTab() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
-      if (!res.ok) throw new Error('Failed to save');
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        throw new Error(typeof data?.error === 'string' ? data.error : 'Failed to save');
+      }
       await fetchDocuments();
       closeDrawer();
     } catch (err) {
+      const message = err instanceof Error ? err.message : 'Failed to save document';
       console.error(err);
-      setErrors({ submit: 'Failed to save document' });
+      setErrors((prev) => ({ ...prev, submit: message }));
+      drawerScrollRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
     } finally {
       setIsSaving(false);
     }
@@ -438,7 +448,7 @@ export default function KnowledgeBaseTab() {
                     <button
                       key={c.id}
                       type="button"
-                      onClick={() => setFormData((prev) => ({ ...prev, category: c.id, personaType: prev.category === 'buyer_persona' ? prev.personaType : null }))}
+                      onClick={() => setFormData((prev) => ({ ...prev, category: c.id, personaType: c.id === 'buyer_persona' ? 'archetype' : null }))}
                       className={`w-full flex items-center gap-3 h-9 px-3 text-left transition-all ${formData.category === c.id ? 'bg-plum/10 border-l-4 border-plum-dark text-plum-dark' : 'border-l-4 border-transparent text-gray-700 hover:bg-plum/5'}`}
                     >
                       <span className={`flex h-4 w-4 shrink-0 items-center justify-center rounded-full border-2 ${formData.category === c.id ? 'border-plum-dark bg-plum-dark' : 'border-plum/40'}`}>
@@ -449,24 +459,6 @@ export default function KnowledgeBaseTab() {
                     </button>
                   ))}
                 </div>
-                {formData.category === 'buyer_persona' && (
-                  <div className="mt-4 flex gap-2">
-                    <button
-                      type="button"
-                      onClick={() => setFormData((prev) => ({ ...prev, personaType: 'archetype' }))}
-                      className={`px-4 py-2 rounded-lg text-sm font-semibold border transition-all ${formData.personaType === 'archetype' ? 'bg-plum-dark text-white border-plum-dark' : 'bg-white border-plum/20 text-plum/70 hover:border-plum/40'}`}
-                    >
-                      Archetype / Persona
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setFormData((prev) => ({ ...prev, personaType: 'real_account' }))}
-                      className={`px-4 py-2 rounded-lg text-sm font-semibold border transition-all ${formData.personaType === 'real_account' ? 'bg-plum-dark text-white border-plum-dark' : 'bg-white border-plum/20 text-plum/70 hover:border-plum/40'}`}
-                    >
-                      Real Account
-                    </button>
-                  </div>
-                )}
                 {errors.category && <p className="text-[#E84855] text-[10px] font-bold mt-1">{errors.category}</p>}
               </div>
 
@@ -605,7 +597,7 @@ export default function KnowledgeBaseTab() {
               <button
                 type="button"
                 onClick={() => handleSave('published')}
-                disabled={!canPublish || isSaving}
+                disabled={isSaving}
                 className="bg-[#3A2449] text-white py-2 px-8 rounded-xl font-bold hover:bg-[#2D1B3D] transition-all text-sm uppercase tracking-widest disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isSaving ? 'Publishing...' : 'Publish'}
