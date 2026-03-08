@@ -277,19 +277,6 @@ export default function PromptControlTab() {
               />
             </div>
 
-            <div>
-              <label className="text-[10px] font-bold text-plum/40 uppercase tracking-widest mb-2 block">
-                Document tags (comma-separated)
-              </label>
-              <input
-                type="text"
-                value={documentTagsText}
-                onChange={(e) => setDocumentTagsText(e.target.value)}
-                className="w-full px-4 py-2.5 rounded-xl border border-plum/20 text-gray-900 focus:outline-none focus:ring-2 focus:ring-plum/30"
-                placeholder="e.g. spin_framework, client_persona, sei_positioning"
-              />
-            </div>
-
             {saveError && (
               <div className="bg-red-50 border border-red-200 rounded-xl p-4 flex items-center gap-2 text-red-800">
                 <AlertCircle className="w-5 h-5 flex-shrink-0" />

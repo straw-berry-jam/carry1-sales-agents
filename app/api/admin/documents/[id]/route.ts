@@ -14,6 +14,11 @@ const VALID_CATEGORIES = [
 
 const VALID_PERSONA_TYPES = ['archetype', 'real_account'] as const;
 
+function clampWeight(v: unknown): number {
+  const n = typeof v === 'number' && !Number.isNaN(v) ? v : 5;
+  return Math.min(10, Math.max(1, n));
+}
+
 export async function GET(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -36,6 +41,7 @@ export async function GET(
       personaType: doc.personaType,
       content: doc.content,
       agents: doc.agents,
+      weight: doc.weight,
       status: doc.status,
       createdAt: doc.createdAt.toISOString(),
       updatedAt: doc.updatedAt.toISOString().split('T')[0],
@@ -60,6 +66,7 @@ export async function PUT(
       personaType,
       content,
       agents,
+      weight: bodyWeight,
       status,
     } = body;
 
@@ -79,6 +86,7 @@ export async function PUT(
     }
 
     const agentList: string[] = Array.isArray(agents) && agents.length > 0 ? agents : [];
+    const weight = clampWeight(bodyWeight);
 
     const doc = await prisma.knowledgeBaseDocument.update({
       where: { id },
@@ -89,6 +97,7 @@ export async function PUT(
         personaType: category === 'buyer_persona' ? (personaType ?? null) : null,
         content,
         agents: agentList,
+        weight,
         status: status === 'published' ? 'published' : 'draft',
       },
     });
@@ -113,6 +122,7 @@ export async function PUT(
       personaType: doc.personaType,
       content: doc.content,
       agents: doc.agents,
+      weight: doc.weight,
       status: doc.status,
       createdAt: doc.createdAt.toISOString(),
       updatedAt: doc.updatedAt.toISOString().split('T')[0],

@@ -40,6 +40,14 @@ export interface CoachResponseParams {
   sessionContext: SessionContext;
 }
 
+/** Adherence note prepended to each chunk in RAG context based on document weight (1-10). */
+function getWeightNote(weight: number): string {
+  const w = Math.min(10, Math.max(1, weight));
+  if (w <= 4) return '(Background context — use only if directly relevant)\n';
+  if (w <= 5) return '(Supporting context — use when relevant)\n';
+  return '(Core reference — follow this closely)\n';
+}
+
 /**
  * Generates a response from the AI coach using RAG context and Claude.
  */
@@ -80,7 +88,7 @@ export async function generateCoachResponse(params: CoachResponseParams) {
       .sort((a, b) => b[1].level - a[1].level) // Sort by strictness level descending
       .map(([header, data]) => {
         const docsText = data.docs
-          .map(d => `[Source: ${d.documentTitle} (${d.documentType})]\n${d.chunkText}`)
+          .map(d => `[Source: ${d.documentTitle} (${d.documentType})]\n${getWeightNote(d.weight ?? 5)}${d.chunkText}`)
           .join('\n\n');
         
         return `=== ${header.toUpperCase()} ===\n${data.instruction}\n\n${docsText}`;
@@ -186,7 +194,7 @@ export async function* streamCoachResponse(params: CoachResponseParams) {
       .sort((a, b) => b[1].level - a[1].level)
       .map(([header, data]) => {
         const docsText = data.docs
-          .map(d => `[Source: ${d.documentTitle} (${d.documentType})]\n${d.chunkText}`)
+          .map(d => `[Source: ${d.documentTitle} (${d.documentType})]\n${getWeightNote(d.weight ?? 5)}${d.chunkText}`)
           .join('\n\n');
         
         return `=== ${header.toUpperCase()} ===\n${data.instruction}\n\n${docsText}`;

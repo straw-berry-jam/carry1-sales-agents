@@ -48,6 +48,7 @@ export async function GET(req: NextRequest) {
       personaType: doc.personaType,
       content: doc.content,
       agents: doc.agents,
+      weight: doc.weight,
       status: doc.status,
       createdAt: doc.createdAt.toISOString(),
       updatedAt: doc.updatedAt.toISOString().split('T')[0],
@@ -60,6 +61,11 @@ export async function GET(req: NextRequest) {
   }
 }
 
+function clampWeight(v: unknown): number {
+  const n = typeof v === 'number' && !Number.isNaN(v) ? v : 5;
+  return Math.min(10, Math.max(1, n));
+}
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
@@ -70,6 +76,7 @@ export async function POST(req: NextRequest) {
       personaType,
       content,
       agents,
+      weight: bodyWeight,
       status,
     } = body;
 
@@ -92,6 +99,7 @@ export async function POST(req: NextRequest) {
       ? agents
       : [];
 
+    const weight = clampWeight(bodyWeight);
     const doc = await prisma.knowledgeBaseDocument.create({
       data: {
         title,
@@ -100,6 +108,7 @@ export async function POST(req: NextRequest) {
         personaType: category === 'buyer_persona' ? (personaType ?? null) : null,
         content,
         agents: agentList,
+        weight,
         status: status === 'published' ? 'published' : 'draft',
       },
     });
@@ -124,6 +133,7 @@ export async function POST(req: NextRequest) {
       personaType: doc.personaType,
       content: doc.content,
       agents: doc.agents,
+      weight: doc.weight,
       status: doc.status,
       createdAt: doc.createdAt.toISOString(),
       updatedAt: doc.updatedAt.toISOString().split('T')[0],

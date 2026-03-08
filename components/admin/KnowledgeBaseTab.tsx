@@ -37,6 +37,7 @@ export interface KBDocumentRecord {
   personaType: string | null;
   content: string;
   agents: string[];
+  weight: number;
   status: string;
   createdAt: string;
   updatedAt: string;
@@ -97,6 +98,7 @@ export default function KnowledgeBaseTab() {
     title: string;
     description: string;
     content: string;
+    weight: number;
     agents: string[];
     allAgents: boolean;
   }>({
@@ -105,6 +107,7 @@ export default function KnowledgeBaseTab() {
     title: '',
     description: '',
     content: '',
+    weight: 5,
     agents: [],
     allAgents: false,
   });
@@ -187,6 +190,7 @@ export default function KnowledgeBaseTab() {
       title: '',
       description: '',
       content: '',
+      weight: 5,
       agents: [],
       allAgents: false,
     });
@@ -202,6 +206,7 @@ export default function KnowledgeBaseTab() {
       title: doc.title,
       description: doc.description ?? '',
       content: doc.content,
+      weight: typeof doc.weight === 'number' ? Math.min(10, Math.max(1, doc.weight)) : 5,
       agents: doc.agents.includes('all') ? [] : doc.agents,
       allAgents: doc.agents.includes('all'),
     });
@@ -427,17 +432,20 @@ export default function KnowledgeBaseTab() {
             <div ref={drawerScrollRef} className="flex-grow overflow-y-auto p-8 space-y-8">
               {/* 1. Document Category */}
               <div>
-                <label className="text-xs font-bold text-plum/40 uppercase tracking-[0.2em] mb-3 block">Document Category <span className="text-[#E84855]">*</span></label>
-                <div className="space-y-1">
+                <label className="text-xs font-bold text-plum-dark/80 uppercase tracking-[0.2em] mb-2 block">Document Category <span className="text-[#E84855]">*</span></label>
+                <div className="space-y-0">
                   {CATEGORIES.map((c) => (
                     <button
                       key={c.id}
                       type="button"
                       onClick={() => setFormData((prev) => ({ ...prev, category: c.id, personaType: prev.category === 'buyer_persona' ? prev.personaType : null }))}
-                      className={`w-full text-left py-2 px-3 rounded-md border transition-all ${formData.category === c.id ? 'bg-plum-dark text-white border-plum-dark' : 'bg-white text-plum/70 border-plum/10 hover:border-plum/30'}`}
+                      className={`w-full flex items-center gap-3 h-9 px-3 text-left transition-all ${formData.category === c.id ? 'bg-plum/10 border-l-4 border-plum-dark text-plum-dark' : 'border-l-4 border-transparent text-gray-700 hover:bg-plum/5'}`}
                     >
-                      <span className="text-[13px] font-medium block">{c.label}</span>
-                      <span className={`text-[11px] mt-0.5 block ${formData.category === c.id ? 'text-white/80' : 'text-plum/50'}`}>{c.desc}</span>
+                      <span className={`flex h-4 w-4 shrink-0 items-center justify-center rounded-full border-2 ${formData.category === c.id ? 'border-plum-dark bg-plum-dark' : 'border-plum/40'}`}>
+                        {formData.category === c.id && <span className="h-1.5 w-1.5 rounded-full bg-white" />}
+                      </span>
+                      <span className="text-[13px] font-medium shrink-0">{c.label}</span>
+                      <span className={`text-[11px] truncate ${formData.category === c.id ? 'text-plum/70' : 'text-gray-500'}`}>{c.desc}</span>
                     </button>
                   ))}
                 </div>
@@ -464,32 +472,50 @@ export default function KnowledgeBaseTab() {
 
               {/* 2. Title */}
               <div>
-                <label className="text-xs font-bold text-plum/40 uppercase tracking-[0.2em] mb-2 block">Title <span className="text-[#E84855]">*</span></label>
+                <label className="text-xs font-bold text-plum-dark/80 uppercase tracking-[0.2em] mb-2 block">Title <span className="text-[#E84855]">*</span></label>
                 <input
                   type="text"
                   placeholder={formData.category ? TITLE_PLACEHOLDERS[formData.category] : 'Select a category first'}
                   value={formData.title}
                   onChange={(e) => setFormData((prev) => ({ ...prev, title: e.target.value }))}
-                  className={`w-full bg-white border ${errors.title ? 'border-[#E84855]' : 'border-plum/10'} rounded-xl px-4 py-3 text-plum-dark focus:outline-none focus:border-[#3A2449]/50 transition-all shadow-sm font-medium`}
+                  className={`w-full bg-white border ${errors.title ? 'border-[#E84855]' : 'border-plum/20'} rounded-lg px-4 py-3 text-plum-dark font-medium focus:outline-none focus:border-[#3A2449]/50 transition-all shadow-sm`}
                 />
                 {errors.title && <p className="text-[#E84855] text-[10px] mt-1 font-bold">{errors.title}</p>}
               </div>
 
               {/* 3. Description */}
               <div>
-                <label className="text-xs font-bold text-plum/40 uppercase tracking-[0.2em] mb-2 block">Description (optional)</label>
+                <label className="text-xs font-bold text-plum-dark/80 uppercase tracking-[0.2em] mb-2 block">Description (optional)</label>
                 <input
                   type="text"
                   placeholder="One-line summary for admin reference."
                   value={formData.description}
                   onChange={(e) => setFormData((prev) => ({ ...prev, description: e.target.value }))}
-                  className="w-full bg-white border border-plum/10 rounded-xl px-4 py-3 text-plum-dark focus:outline-none focus:border-[#3A2449]/50 transition-all shadow-sm font-medium"
+                  className="w-full bg-white border border-plum/20 rounded-lg px-4 py-3 text-plum-dark font-medium focus:outline-none focus:border-[#3A2449]/50 transition-all shadow-sm"
                 />
+              </div>
+
+              {/* Adherence (Document Weight) */}
+              <div>
+                <label className="text-xs font-bold text-plum-dark/80 uppercase tracking-[0.2em] mb-2 block">Adherence</label>
+                <div className="flex items-center gap-3">
+                  <span className="text-[11px] font-medium text-gray-500 shrink-0 w-24">Background context</span>
+                  <input
+                    type="range"
+                    min={1}
+                    max={10}
+                    value={formData.weight}
+                    onChange={(e) => setFormData((prev) => ({ ...prev, weight: parseInt(e.target.value, 10) }))}
+                    className="flex-1 h-2 bg-plum/10 rounded-full appearance-none cursor-pointer accent-[#3A2449]"
+                  />
+                  <span className="text-[11px] font-medium text-gray-500 shrink-0 w-24 text-right">Follow strictly</span>
+                </div>
+                <p className="text-[10px] text-plum/50 mt-1 font-medium">Weight: {formData.weight}</p>
               </div>
 
               {/* 4. Content */}
               <div>
-                <label className="text-xs font-bold text-plum/40 uppercase tracking-[0.2em] mb-2 block">Content <span className="text-[#E84855]">*</span></label>
+                <label className="text-xs font-bold text-plum-dark/80 uppercase tracking-[0.2em] mb-2 block">Content <span className="text-[#E84855]">*</span></label>
                 <input
                   ref={contentFileInputRef}
                   type="file"
@@ -504,7 +530,7 @@ export default function KnowledgeBaseTab() {
                   onDragOver={(e) => { e.preventDefault(); setContentDragOver(true); }}
                   onDragLeave={() => setContentDragOver(false)}
                   onDrop={onContentDrop}
-                  className={`mb-2 flex items-center justify-center gap-2 py-2 px-3 rounded-md border border-dashed text-sm font-medium cursor-pointer transition-all ${contentDragOver ? 'border-plum bg-plum/10 text-plum-dark' : 'border-plum/20 text-plum/60 hover:border-plum/40 hover:text-plum-dark'}`}
+                  className={`mb-2 flex items-center justify-center gap-2 py-2 px-3 rounded-lg border border-dashed text-sm font-medium cursor-pointer transition-all ${contentDragOver ? 'border-plum bg-plum/10 text-plum-dark' : 'border-plum/20 text-plum-dark/80 hover:border-plum/40 hover:bg-plum/5'}`}
                 >
                   <Upload size={14} />
                   <span>Upload .md or .txt file</span>
@@ -513,7 +539,7 @@ export default function KnowledgeBaseTab() {
                   placeholder="Paste or write document content here. Markdown is supported."
                   value={formData.content}
                   onChange={(e) => setFormData((prev) => ({ ...prev, content: e.target.value }))}
-                  className={`w-full bg-white border ${errors.content ? 'border-[#E84855]' : 'border-plum/10'} rounded-xl px-4 py-3 text-plum-dark focus:outline-none focus:border-[#3A2449]/50 transition-all min-h-[200px] resize-y shadow-sm font-medium`}
+                  className={`w-full bg-white border ${errors.content ? 'border-[#E84855]' : 'border-plum/20'} rounded-lg px-4 py-3 text-plum-dark font-medium focus:outline-none focus:border-[#3A2449]/50 transition-all min-h-[200px] resize-y shadow-sm`}
                 />
                 <p className="text-[10px] text-plum/40 mt-1 font-bold uppercase tracking-wider">{formData.content.length} characters</p>
                 {errors.content && <p className="text-[#E84855] text-[10px] mt-1 font-bold">{errors.content}</p>}
@@ -521,21 +547,21 @@ export default function KnowledgeBaseTab() {
 
               {/* 5. Assign to Agents */}
               <div>
-                <label className="text-xs font-bold text-plum/40 uppercase tracking-[0.2em] mb-2 block">Assign to Agents <span className="text-[#E84855]">*</span></label>
-                <div className="space-y-2">
-                  <label className={`flex items-center gap-3 p-3 rounded-xl border cursor-pointer transition-all ${formData.allAgents ? 'bg-plum-dark text-white border-plum-dark' : 'bg-white border-plum/10 hover:border-plum/30'}`}>
+                <label className="text-xs font-bold text-plum-dark/80 uppercase tracking-[0.2em] mb-2 block">Assign to Agents <span className="text-[#E84855]">*</span></label>
+                <div className="space-y-1">
+                  <label className={`flex items-center gap-3 py-2.5 px-3 rounded-lg border cursor-pointer transition-all ${formData.allAgents ? 'bg-plum-dark text-white border-plum-dark' : 'bg-white border-plum/20 hover:bg-plum/5 hover:border-plum/30'}`}>
                     <input
                       type="checkbox"
                       checked={formData.allAgents}
                       onChange={(e) => setFormData((prev) => ({ ...prev, allAgents: e.target.checked, agents: e.target.checked ? [] : prev.agents }))}
-                      className="rounded border-plum/30 text-plum-dark focus:ring-plum"
+                      className="rounded border-plum/30 text-[#3A2449] focus:ring-[#3A2449] accent-[#3A2449]"
                     />
-                    <span className="font-semibold">All Agents</span>
+                    <span className={`font-semibold ${formData.allAgents ? 'text-white' : 'text-plum-dark'}`}>All Agents</span>
                   </label>
                   {agents.map((a) => (
                     <label
                       key={a.id}
-                      className={`flex items-center gap-3 p-3 rounded-xl border cursor-pointer transition-all ${formData.allAgents ? 'opacity-50 pointer-events-none' : ''} ${formData.agents.includes(a.id) ? 'bg-plum/10 border-plum/30' : 'bg-white border-plum/10 hover:border-plum/30'}`}
+                      className={`flex items-center gap-3 py-2.5 px-3 rounded-lg border cursor-pointer transition-all ${formData.allAgents ? 'opacity-50 pointer-events-none' : ''} ${formData.agents.includes(a.id) ? 'bg-plum/10 border-plum/30' : 'bg-white border-plum/20 hover:bg-plum/5 hover:border-plum/30'}`}
                     >
                       <input
                         type="checkbox"
@@ -548,7 +574,7 @@ export default function KnowledgeBaseTab() {
                             agents: e.target.checked ? [...prev.agents, a.id] : prev.agents.filter((id) => id !== a.id),
                           }));
                         }}
-                        className="rounded border-plum/30 text-plum-dark focus:ring-plum"
+                        className="rounded border-plum/30 text-[#3A2449] focus:ring-[#3A2449] accent-[#3A2449]"
                       />
                       <span className="font-medium text-plum-dark">{a.name}</span>
                       <span className={`ml-auto text-[10px] font-bold uppercase px-2 py-0.5 rounded ${a.status === 'active' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'}`}>

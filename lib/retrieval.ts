@@ -14,6 +14,8 @@ export interface RetrievalResult {
   documentType: string;
   strictnessOverride: number | null;
   metadata: any;
+  /** Document adherence weight 1-10: 1-4 background, 5 supporting, 6-10 core */
+  weight: number;
 }
 
 /**
@@ -59,7 +61,8 @@ export async function retrieveRelevantContext(
         d.title as "documentTitle",
         d.category as "documentType",
         NULL::int as "strictnessOverride",
-        NULL::jsonb as "metadata"
+        NULL::jsonb as "metadata",
+        COALESCE(d.weight, 5)::int as "weight"
       FROM knowledge_base_chunks c
       JOIN knowledge_base_documents d ON c.document_id = d.id
       WHERE d.status = 'published'
@@ -79,6 +82,7 @@ export async function retrieveRelevantContext(
       documentType: r.documentType,
       strictnessOverride: r.strictnessOverride,
       metadata: r.metadata ?? {},
+      weight: typeof r.weight === 'number' ? r.weight : 5,
     }));
   } catch (error: any) {
     console.error('ERROR in retrieveRelevantContext:', error);

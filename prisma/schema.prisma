@@ -67,6 +67,7 @@ model KnowledgeBaseDocument {
   personaType  String?  @map("persona_type")
   content      String
   agents       String[]
+  weight       Int      @default(5)
   status       String   @default("draft")
   createdAt    DateTime @default(now()) @map("created_at")
   updatedAt    DateTime @updatedAt @map("updated_at")
