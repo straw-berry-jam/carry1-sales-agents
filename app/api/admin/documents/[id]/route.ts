@@ -4,11 +4,12 @@ import { chunkDocument, generateEmbeddings, storeChunks } from '@/lib/embeddings
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const doc = await prisma.coachDocument.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: {
         documentTaxonomies: {
           include: {
@@ -52,9 +53,10 @@ export async function GET(
 
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const body = await req.json();
     const { 
       type, title, content, status, 
@@ -74,7 +76,7 @@ export async function PUT(
     const updatedDoc = await prisma.$transaction(async (tx) => {
       // 1. Update the document
       const doc = await tx.coachDocument.update({
-        where: { id: params.id },
+        where: { id },
         data: {
           documentType: type,
           title,
@@ -87,7 +89,7 @@ export async function PUT(
 
       // 2. Clear old taxonomies
       await tx.documentTaxonomy.deleteMany({
-        where: { documentId: params.id },
+        where: { documentId: id },
       });
 
       // 3. Connect new taxonomies
@@ -132,11 +134,12 @@ export async function PUT(
 
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     await prisma.coachDocument.delete({
-      where: { id: params.id },
+      where: { id },
     });
 
     return NextResponse.json({ success: true });

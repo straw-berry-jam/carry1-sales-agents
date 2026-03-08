@@ -3,7 +3,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { useState, useEffect, useRef, useMemo } from 'react';
+import { useState, useEffect, useRef, useMemo, Suspense } from 'react';
 import { ChevronLeft, Send, Mic, Info, CheckCircle2, Trophy, MicOff, Loader2, Star, Target, Zap, Users, MessageSquare, Headphones, Keyboard } from 'lucide-react';
 import { VoiceCoach } from '@/components/VoiceCoach';
 import { agentConfig } from '@/lib/agentConfig';
@@ -11,8 +11,17 @@ import DemoBanner from '@/components/DemoBanner';
 
 const VALID_SESSION_TYPES = ['outreach_15', 'outreach_30', 'discovery_15', 'discovery_30'] as const;
 
+/** Wrapper so useSearchParams is inside Suspense (Next.js 14+ requirement for static export). */
+export default function SpinSessionPageWrapper() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-textured-gradient flex items-center justify-center"><Loader2 className="w-10 h-10 animate-spin text-white/60" /></div>}>
+      <SpinSessionPage />
+    </Suspense>
+  );
+}
+
 /** SPIN coaching session — copied from app/coach/page.tsx. Links point to SPIN flow only. */
-export default function SpinSessionPage() {
+function SpinSessionPage() {
   const searchParams = useSearchParams();
   const [isStarted, setIsStarted] = useState(false);
   const [mode, setMode] = useState<'text' | 'voice'>('text');
