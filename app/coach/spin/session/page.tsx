@@ -586,38 +586,20 @@ function SpinSessionPage() {
                 <h3 className="font-bold">Key Objectives</h3>
               </div>
               <ul className="space-y-4">
-                {isLoadingObjectives ? (
-                  <div className="flex flex-col gap-3">
-                    {[1, 2, 3, 4].map((i) => (
-                      <div key={i} className="flex items-center gap-3">
-                        <div className="w-1.5 h-1.5 rounded-full bg-white/10" />
-                        <div className="h-4 w-full bg-white/5 rounded animate-pulse" />
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  keyObjectives.length > 0 ? (
-                    keyObjectives.map((obj, i) => (
-                      <li key={i} className="flex items-start gap-3 text-sm text-white/70">
-                        <div className="mt-1.5">
-                          {i === 0 && <Zap className="w-3.5 h-3.5 text-yellow-400" />}
-                          {i === 1 && <Target className="w-3.5 h-3.5 text-blue-400" />}
-                          {i === 2 && <Users className="w-3.5 h-3.5 text-green-400" />}
-                          {i === 3 && <Trophy className="w-3.5 h-3.5 text-purple-400" />}
-                          {i >= 4 && <div className="w-1.5 h-1.5 rounded-full bg-white/20" />}
-                        </div>
-                        <span className="leading-tight">{obj}</span>
-                      </li>
-                    ))
-                  ) : (
-                    ['Uncover prospect pain points', 'Articulate clear value proposition', 'Handle objections confidently', 'Ask discovery questions'].map((obj, i) => (
-                      <li key={obj} className="flex items-center gap-3 text-sm text-white/70">
-                        <div className="w-1.5 h-1.5 rounded-full bg-white/20" />
-                        {obj}
-                      </li>
-                    ))
-                  )
-                )}
+                {[
+                  { letter: 'S', name: 'Situation', tip: 'Confirm context quickly. Do your homework first — don\'t ask what you should already know.' },
+                  { letter: 'P', name: 'Problem', tip: 'Find the real pain. Dig past the stated issue to what\'s actually not working.' },
+                  { letter: 'I', name: 'Implication', tip: 'Explore the consequences. What happens if this doesn\'t get solved?' },
+                  { letter: 'N', name: 'Need-Payoff', tip: 'Let them say the value. Ask what solving this would mean — don\'t tell them.' },
+                ].map(({ letter, name, tip }) => (
+                  <li key={letter} className="flex items-start gap-3 text-sm">
+                    <span className="font-semibold text-gradient flex-shrink-0" aria-hidden>{letter}</span>
+                    <div>
+                      <span className="font-bold text-white/90">{name}</span>
+                      <p className="text-xs text-white/60 mt-0.5 leading-snug">{tip}</p>
+                    </div>
+                  </li>
+                ))}
               </ul>
             </motion.div>
 
