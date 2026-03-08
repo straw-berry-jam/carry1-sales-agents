@@ -74,7 +74,8 @@ export default function SpinScorecardPage() {
     const sessionType = typeof window !== 'undefined' ? window.localStorage.getItem('spinSessionType') : null;
     const transcript = typeof window !== 'undefined' ? window.localStorage.getItem('spinTranscript') : null;
 
-    const hasValidTranscript = transcript != null && transcript.trim().length > 0;
+    const trimmedTranscript = transcript?.trim() ?? '';
+    const hasValidTranscript = trimmedTranscript.length >= 50;
     const validSessionTypes = VALID_SESSION_TYPES as unknown as string[];
     const normalizedSessionType =
       sessionType && validSessionTypes.includes(sessionType) ? sessionType : 'outreach_15';
@@ -88,7 +89,7 @@ export default function SpinScorecardPage() {
     fetch('/api/score-session', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ transcript: transcript.trim(), sessionType: normalizedSessionType }),
+      body: JSON.stringify({ transcript: trimmedTranscript, sessionType: normalizedSessionType }),
     })
       .then((res) => {
         if (!res.ok) {
@@ -115,17 +116,18 @@ export default function SpinScorecardPage() {
     setErrorMessage('');
     const sessionType = typeof window !== 'undefined' ? window.localStorage.getItem('spinSessionType') : null;
     const transcript = typeof window !== 'undefined' ? window.localStorage.getItem('spinTranscript') : null;
+    const trimmedTranscript = transcript?.trim() ?? '';
     const validSessionTypes = VALID_SESSION_TYPES as unknown as string[];
     const normalizedSessionType =
       sessionType && validSessionTypes.includes(sessionType) ? sessionType : 'outreach_15';
-    if (!transcript?.trim()) {
+    if (trimmedTranscript.length < 50) {
       setState('no_data');
       return;
     }
     fetch('/api/score-session', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ transcript: transcript.trim(), sessionType: normalizedSessionType }),
+      body: JSON.stringify({ transcript: trimmedTranscript, sessionType: normalizedSessionType }),
     })
       .then((res) => {
         if (!res.ok) return res.json().then((body) => { throw new Error((body && body.error) || String(res.status)); });
