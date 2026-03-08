@@ -187,6 +187,60 @@ export default function PromptControlTab() {
           </section>
 
           <section className="bg-white rounded-2xl border border-plum/10 p-6 shadow-sm space-y-6">
+            {/* Agent Status toggle — first thing admin sees */}
+            <div>
+              <label className="text-[10px] font-bold text-plum/40 uppercase tracking-widest mb-2 block">
+                Agent Status
+              </label>
+              <div className="flex items-center gap-3">
+                <span
+                  className={`text-sm font-medium ${
+                    status === 'draft' ? 'text-plum-dark' : 'text-gray-400'
+                  }`}
+                >
+                  Inactive
+                </span>
+                <button
+                  type="button"
+                  role="switch"
+                  aria-checked={status === 'active'}
+                  aria-label="Agent status: Inactive or Active"
+                  onClick={() =>
+                    setStatus((s) => (s === 'active' ? 'draft' : 'active'))
+                  }
+                  className={`relative inline-flex h-7 w-12 flex-shrink-0 rounded-full border-2 border-transparent transition-colors focus:outline-none focus:ring-2 focus:ring-plum/40 focus:ring-offset-2 ${
+                    status === 'active'
+                      ? 'bg-plum-dark'
+                      : 'bg-gray-200'
+                  }`}
+                >
+                  <span
+                    className={`pointer-events-none inline-block h-6 w-6 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-out ${
+                      status === 'active' ? 'translate-x-5' : 'translate-x-0.5'
+                    }`}
+                  />
+                </button>
+                <span
+                  className={`text-sm font-medium ${
+                    status === 'active' ? 'text-plum-dark' : 'text-gray-400'
+                  }`}
+                >
+                  Active
+                </span>
+              </div>
+              {/* Status banner — reactive to toggle */}
+              <div
+                className={`mt-3 rounded-xl border px-4 py-2.5 text-sm font-medium ${
+                  status === 'active'
+                    ? 'bg-green-50 border-green-200 text-green-800'
+                    : 'bg-amber-50 border-amber-200 text-amber-800'
+                }`}
+              >
+                This agent is currently{' '}
+                {status === 'active' ? 'Active' : 'Draft (Inactive)'}.
+              </div>
+            </div>
+
             <div>
               <label className="text-[10px] font-bold text-plum/40 uppercase tracking-widest mb-2 block">
                 Agent name <span className="text-[#E84855]">*</span>
@@ -208,22 +262,6 @@ export default function PromptControlTab() {
                   {nameError}
                 </p>
               )}
-            </div>
-
-            <div>
-              <label className="text-[10px] font-bold text-plum/40 uppercase tracking-widest mb-2 block">
-                Status
-              </label>
-              <select
-                value={status}
-                onChange={(e) =>
-                  setStatus(e.target.value as 'draft' | 'active')
-                }
-                className="w-full max-w-xs px-4 py-2.5 rounded-xl border border-plum/20 text-plum-dark font-medium bg-white focus:outline-none focus:ring-2 focus:ring-plum/30"
-              >
-                <option value="draft">Draft (off)</option>
-                <option value="active">Active (on)</option>
-              </select>
             </div>
 
             <div>

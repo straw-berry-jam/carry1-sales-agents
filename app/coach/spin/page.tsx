@@ -43,10 +43,7 @@ export default function SpinSetupPage() {
     resumeFile: null as File | null,
     preferredName: '',
     company: '',
-    interviewType: '',
-    duration: '',
     interactionMode: 'text' as 'voice' | 'text',
-    // Session type for SPIN scoring: mode + duration
     sessionMode: 'outreach' as 'outreach' | 'discovery',
     sessionDuration: '15' as '15' | '30',
   });
@@ -65,7 +62,7 @@ export default function SpinSetupPage() {
   }, []);
 
   useEffect(() => {
-    // Cleanup mic if moving away from step 3 or on unmount
+    // Cleanup mic if moving away from step 2 or on unmount
     const cleanup = () => {
       if (streamRef.current) {
         streamRef.current.getTracks().forEach(track => track.stop());
@@ -77,7 +74,7 @@ export default function SpinSetupPage() {
       }
     };
 
-    if (step !== 3) {
+    if (step !== 2) {
       cleanup();
       setMicTestResult(null);
       setIsTestingMic(false);
@@ -162,8 +159,8 @@ export default function SpinSetupPage() {
     role: 'Sales Rep',
     company: data.company,
     resumeText: data.jobDescription || '',
-    interviewType: data.interviewType,
-    duration: data.duration,
+    interviewType: 'SPIN Practice',
+    duration: data.sessionDuration === '15' ? 'quick' : 'intro',
     interactionMode: data.interactionMode,
     ...(existingSessionId != null && { sessionId: existingSessionId }),
   });
@@ -348,9 +345,9 @@ export default function SpinSetupPage() {
               >
                 <div className="mb-12">
                   <div className="flex items-center justify-between mb-4">
-                    <span className="text-sm font-semibold uppercase tracking-wider text-gradient-red">Step {step} of 3</span>
+                    <span className="text-sm font-semibold uppercase tracking-wider text-gradient-red">Step {step} of 2</span>
                     <div className="flex gap-2">
-                      {[1, 2, 3].map((s) => (
+                      {[1, 2].map((s) => (
                         <div
                           key={s}
                           className={`w-12 h-1 rounded-full ${
@@ -361,9 +358,8 @@ export default function SpinSetupPage() {
                     </div>
                   </div>
                   <h1 className="text-3xl font-bold">
-                    {step === 1 && agentConfig.onboarding.step1Title}
-                    {step === 2 && agentConfig.onboarding.step3Title}
-                    {step === 3 && "How would you like to practice?"}
+                    {step === 1 && "Tell us about the deal"}
+                    {step === 2 && "How would you like to practice?"}
                   </h1>
                 </div>
 
@@ -435,7 +431,7 @@ export default function SpinSetupPage() {
                         />
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-white/60 mb-2">{agentConfig.onboarding.companyLabel}</label>
+                        <label className="block text-sm font-medium text-white/60 mb-2">Prospect Company</label>
                         <input
                           type="text"
                           placeholder="e.g. ACME Buyer Co."
@@ -445,10 +441,10 @@ export default function SpinSetupPage() {
                         />
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-white/60 mb-2">{agentConfig.onboarding.contextDetailLabel}</label>
+                        <label className="block text-sm font-medium text-white/60 mb-2">Deal Context <span className="text-white/40">(optional)</span></label>
                         <textarea
                           placeholder={agentConfig.onboarding.jobDescriptionPlaceholder}
-                          className="w-full bg-white/5 border border-white/10 rounded-xl px-6 py-4 text-lg focus:outline-none focus:border-white/30 transition-colors min-h-[200px] resize-none"
+                          className="w-full bg-white/5 border border-white/10 rounded-xl px-6 py-4 text-lg focus:outline-none focus:border-white/30 transition-colors min-h-[120px] resize-none"
                           value={formData.jobDescription}
                           onChange={(e) => setFormData({ ...formData, jobDescription: e.target.value })}
                         />
@@ -457,55 +453,6 @@ export default function SpinSetupPage() {
                   )}
 
                   {step === 2 && (
-                    <div className="space-y-8">
-                      <div>
-                        <label className="block text-sm font-medium text-white/60 mb-4">{agentConfig.onboarding.contextTypeLabel}</label>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                          {agentConfig.onboarding.contextTypes.map((type) => (
-                            <button
-                              key={type}
-                              onClick={() => setFormData({ ...formData, interviewType: type })}
-                              className={`p-6 rounded-xl border transition-all text-left ${
-                                formData.interviewType === type
-                                  ? 'bg-white/10 border-white/40'
-                                  : 'bg-white/5 border-white/10 hover:border-white/20'
-                              }`}
-                            >
-                              <span className="text-lg font-medium">{type}</span>
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-
-                      <div>
-                        <label className="block text-sm font-medium text-white/60 mb-4">{agentConfig.onboarding.durationLabel}</label>
-                        <div className="space-y-4">
-                          {agentConfig.onboarding.durations.map((opt) => (
-                            <button
-                              key={opt.id}
-                              onClick={() => setFormData({ ...formData, duration: opt.id })}
-                              className={`w-full p-6 rounded-xl border transition-all text-left flex gap-6 ${
-                                formData.duration === opt.id
-                                  ? 'bg-white/10 border-white/40'
-                                  : 'bg-white/5 border-white/10 hover:border-white/20'
-                              }`}
-                            >
-                              <div className="flex-grow">
-                                <div className="flex items-center gap-3 mb-1">
-                                  <span className="text-lg font-bold">{opt.label}</span>
-                                  <span className="text-sm text-white/40">({opt.duration})</span>
-                                </div>
-                                <div className="text-sm text-white/60 mb-2">{opt.stats} • {opt.desc}</div>
-                                <div className="text-xs text-white/40 font-medium">Good for: {opt.use}</div>
-                              </div>
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
-                  {step === 3 && (
                     <div className="space-y-6">
                       <div className="grid grid-cols-1 gap-4">
                         <button
@@ -653,14 +600,13 @@ export default function SpinSetupPage() {
                 </div>
 
                 <div className="pt-8">
-                  {step < 3 ? (
+                  {step < 2 ? (
                     <button
                       onClick={handleNext}
                       disabled={
                         isParsing ||
                         isSyncing ||
-                        (step === 1 && (!formData.role || !formData.company)) ||
-                        (step === 2 && (!formData.interviewType || !formData.duration))
+                        (step === 1 && (!formData.role || !formData.company))
                       }
                       className="btn-primary w-full disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                     >

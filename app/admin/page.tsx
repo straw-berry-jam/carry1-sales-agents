@@ -3,21 +3,22 @@
 import React, { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { Database, FlaskConical, ChevronLeft } from 'lucide-react';
+import { Database, Sliders, ChevronLeft, ChevronRight } from 'lucide-react';
 import KnowledgeBaseTab from '@/components/admin/KnowledgeBaseTab';
 import TestConsoleTab from '@/components/admin/TestConsoleTab';
+import PromptControlTab from '@/components/admin/PromptControlTab';
 
-type AdminTab = 'kb' | 'test';
+type AdminTab = 'kb' | 'test' | 'prompt';
 
-const TABS: { id: AdminTab; label: string; icon: typeof Database }[] = [
+const TOGGLE_TABS: { id: AdminTab; label: string; icon: typeof Database }[] = [
   { id: 'kb', label: 'Knowledge Base', icon: Database },
-  { id: 'test', label: 'Test Console', icon: FlaskConical },
+  { id: 'prompt', label: 'Prompt Control', icon: Sliders },
 ];
 
 function AdminPageContent() {
   const searchParams = useSearchParams();
   const tabParam = searchParams.get('tab') as AdminTab | null;
-  const validTab = tabParam === 'kb' || tabParam === 'test' ? tabParam : 'kb';
+  const validTab = tabParam === 'kb' || tabParam === 'test' || tabParam === 'prompt' ? tabParam : 'kb';
   const [activeTab, setActiveTab] = useState<AdminTab>(validTab);
 
   useEffect(() => {
@@ -45,24 +46,39 @@ function AdminPageContent() {
               Back to app
             </Link>
           </div>
-          <div className="flex gap-1 p-1 bg-plum/5 rounded-xl border border-plum/10 w-fit">
-            {TABS.map((tab) => {
-              const Icon = tab.icon;
-              return (
-                <button
-                  key={tab.id}
-                  onClick={() => setTab(tab.id)}
-                  className={`flex items-center gap-2 px-6 py-3 rounded-lg text-sm font-bold transition-all ${
-                    activeTab === tab.id
-                      ? 'bg-plum-dark text-white shadow-md'
-                      : 'text-plum/60 hover:text-plum-dark hover:bg-plum/10'
-                  }`}
-                >
-                  <Icon className="w-4 h-4" />
-                  {tab.label}
-                </button>
-              );
-            })}
+          <div className="flex flex-wrap items-center gap-4">
+            {/* Knowledge Base | Prompt Control toggles */}
+            <div className="flex gap-1 p-1 bg-plum/5 rounded-xl border border-plum/10">
+              {TOGGLE_TABS.map((tab) => {
+                const Icon = tab.icon;
+                return (
+                  <button
+                    key={tab.id}
+                    onClick={() => setTab(tab.id)}
+                    className={`flex items-center gap-2 px-6 py-3 rounded-lg text-sm font-bold transition-all ${
+                      activeTab === tab.id
+                        ? 'bg-plum-dark text-white shadow-md'
+                        : 'text-plum/60 hover:text-plum-dark hover:bg-plum/10'
+                    }`}
+                  >
+                    <Icon className="w-4 h-4" />
+                    {tab.label}
+                  </button>
+                );
+              })}
+            </div>
+            {/* Test Console as its own button */}
+            <button
+              onClick={() => setTab('test')}
+              className={`flex items-center gap-2 px-6 py-3 rounded-xl border text-sm font-bold transition-all ${
+                activeTab === 'test'
+                  ? 'bg-plum-dark text-white border-plum-dark shadow-md'
+                  : 'border-plum/20 text-plum/60 hover:text-plum-dark hover:border-plum/40 hover:bg-plum/5'
+              }`}
+            >
+              Test Console
+              <ChevronRight className="w-4 h-4" />
+            </button>
           </div>
         </div>
       </div>
@@ -71,6 +87,7 @@ function AdminPageContent() {
       <div className="max-w-7xl mx-auto">
         {activeTab === 'kb' && <KnowledgeBaseTab />}
         {activeTab === 'test' && <TestConsoleTab />}
+        {activeTab === 'prompt' && <PromptControlTab />}
       </div>
     </div>
   );

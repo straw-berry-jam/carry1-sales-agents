@@ -310,7 +310,7 @@ export default function SpinScorecardPage() {
                 <div className="text-sm font-medium text-white/60 uppercase tracking-wider mb-2">Overall Score</div>
                 <div className="text-4xl font-bold">
                   <AnimatedPercentage
-                    target={Math.round(((typeof scorecard.scores.overall === 'number' ? scorecard.scores.overall : 0) / 5) * 100)}
+                    target={Math.round(((Number(scorecard.scores.overall) || 0) / 5) * 100)}
                     duration={0.8}
                   />
                 </div>
