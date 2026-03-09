@@ -193,6 +193,7 @@ Example: `specs/user-auth/plan.md`. Create the directory if it doesn't exist.
 - **Which libraries/tools** — Use Tech Stack Anchoring table
 - **How to structure code** — Use Architectural Constraints and Module Boundaries
 - **Testing approach** — Use TDD requirements (test framework, location, coverage)
+- **Agents (when the plan adds or changes agent rows)** — If the feature introduces new agents (e.g. via migration/SQL), the plan MUST ask/specify: *When adding a new agent, will developers set `agent_type` in the insert (e.g. 'Guide') or leave it null so the admin assigns it in Prompt Control before activating?* Include this in the plan's Deployment Plan or Implementation Notes and in any migration/spec so the choice is documented. See CLAUDE.md Gotchas ("Adding new agents").
 
 ---
 

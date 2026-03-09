@@ -220,7 +220,7 @@ specs/
 
 ## Gotchas (Project-Specific)
 
-*(To be filled as issues are discovered during development. Examples: onboarding data mapping, voice disconnect on demo end, RAG filter alignment with schema.)*
+- **Adding new agents** — Creating agents is a **developer task** (no "create agent" in the admin UI). New agents appear in Prompt Control only after they are added via migration or SQL. When adding an agent, **decide**: set `agent_type` in the insert (e.g. `'Guide'`) so the admin sees the type pre-set, or leave `agent_type` null so the admin must choose "Select type…" in Prompt Control and assign a type before toggling the agent to Active. Document the choice in the migration comment or implementation log. See `specs/agent-type-picklist/implementation-log.md` ("For developers adding new agents") and migration `20260309150000_agent_type_nullable_for_new_agents.sql`.
 
 ---
 
