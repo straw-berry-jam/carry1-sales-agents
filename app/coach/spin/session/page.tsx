@@ -55,9 +55,11 @@ function SpinSessionPage() {
 
   const [demoEnded, setDemoEnded] = useState(false);
 
+  // SPIN demo limit: 3 minutes (main coach branch uses 30s)
+  const DEMO_LIMIT_MS = 180_000;
   useEffect(() => {
     if (!isStarted) return;
-    const timer = setTimeout(() => setDemoEnded(true), 30 * 1000);
+    const timer = setTimeout(() => setDemoEnded(true), DEMO_LIMIT_MS);
     return () => clearTimeout(timer);
   }, [isStarted]);
 
