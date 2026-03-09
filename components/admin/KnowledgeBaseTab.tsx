@@ -582,10 +582,16 @@ export default function KnowledgeBaseTab() {
               {errors.submit && <p className="text-[#E84855] text-sm font-bold">{errors.submit}</p>}
             </div>
 
-            <div className="p-8 border-t border-plum/5 bg-plum/5 flex items-center justify-end gap-4">
-              <button type="button" onClick={closeDrawer} className="px-6 py-2 text-xs font-bold uppercase tracking-widest text-plum/40 hover:text-plum-dark transition-all">
-                Cancel
-              </button>
+            <div className="p-8 border-t border-plum/5 bg-plum/5 flex items-center gap-4 flex-wrap">
+              {errors.submit && (
+                <p className="text-[#E84855] text-sm font-bold flex-1 min-w-0 basis-full sm:basis-auto sm:flex-initial order-first sm:order-none">
+                  {errors.submit}
+                </p>
+              )}
+              <div className="flex items-center justify-end gap-4 ml-auto">
+                <button type="button" onClick={closeDrawer} className="px-6 py-2 text-xs font-bold uppercase tracking-widest text-plum/40 hover:text-plum-dark transition-all">
+                  Cancel
+                </button>
               <button
                 type="button"
                 onClick={() => handleSave('draft')}
@@ -602,6 +608,7 @@ export default function KnowledgeBaseTab() {
               >
                 {isSaving ? 'Publishing...' : 'Publish'}
               </button>
+              </div>
             </div>
           </div>
         </aside>

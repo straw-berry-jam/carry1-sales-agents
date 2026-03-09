@@ -122,6 +122,13 @@ export async function POST(req: NextRequest) {
         }
       } catch (embError) {
         console.error('Embedding generation failed for document:', doc.id, embError);
+        const message = embError instanceof Error ? embError.message : 'Chunking or embedding failed';
+        return NextResponse.json(
+          {
+            error: `Publish failed: ${message}. The document was created; edit and publish again to retry.`,
+          },
+          { status: 500 }
+        );
       }
     }
 

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Loader2, AlertCircle, Check } from 'lucide-react';
 
 type Agent = {
@@ -42,6 +42,7 @@ export default function PromptControlTab() {
   const [nameError, setNameError] = useState<string | null>(null);
 
   const selectedAgent = agents.find((a) => a.agent_id === selectedId);
+  const prevSelectedIdRef = useRef<string | null>(null);
 
   useEffect(() => {
     setError(null);
@@ -64,17 +65,20 @@ export default function PromptControlTab() {
       });
   }, []);
 
-  // When selected agent changes, fill form from that agent
+  // When user switches to a different agent, fill form and clear save feedback
   useEffect(() => {
     if (!selectedAgent) return;
     setName(selectedAgent.name);
     setStatus((selectedAgent.status as 'draft' | 'active') || 'draft');
     setPrompt(selectedAgent.prompt ?? '');
     setDocumentTagsText(formatDocumentTags(selectedAgent.document_tags));
-    setSaveError(null);
-    setSaveSuccess(null);
     setNameError(null);
-  }, [selectedAgent]);
+    if (prevSelectedIdRef.current !== selectedId) {
+      setSaveError(null);
+      setSaveSuccess(null);
+      prevSelectedIdRef.current = selectedId;
+    }
+  }, [selectedId, selectedAgent]);
 
   const handleSave = () => {
     setSaveError(null);
