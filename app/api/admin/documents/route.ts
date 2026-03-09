@@ -145,8 +145,12 @@ export async function POST(req: NextRequest) {
       createdAt: doc.createdAt.toISOString(),
       updatedAt: doc.updatedAt.toISOString().split('T')[0],
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error creating document:', error);
-    return NextResponse.json({ error: 'Failed to create document' }, { status: 500 });
+    const message = error instanceof Error ? error.message : String(error);
+    return NextResponse.json(
+      { error: `Failed to create document: ${message}` },
+      { status: 500 }
+    );
   }
 }
