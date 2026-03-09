@@ -5,6 +5,22 @@
  * Calibration differs by session type per spec (SEI-27).
  */
 
+/**
+ * Fallback rubric used when no evaluation_criteria documents are found in the KB.
+ * Ensures scoring never runs with zero rubric context. Import and use in score-session route.
+ */
+export const FALLBACK_RUBRIC = `EVALUATION CRITERIA (fallback — no KB docs found)
+
+Situation (1-5): Did the rep establish context clearly? Strong scores for specific, relevant background (role, company, initiative). Penalize vague or missing context. Commentary must reference a specific moment in the transcript.
+
+Problem (1-5): Did the rep uncover or acknowledge a clear problem/pain? Strong scores for a well-articulated problem tied to the situation. Penalize skipping problem or multiple shallow problems. Reward depth on one core problem.
+
+Implication (1-5): Did the rep explore consequences or stakes of the problem? Strong scores for clear "so what" — cost, risk, or impact. Penalize missing or superficial implication. In short sessions this may be partial.
+
+Need-payoff (1-5): Did the rep connect to value, capability, or next step? Strong scores for explicit link to solution value or clear next step. In outreach/short sessions this may be light; in discovery it should be present.
+
+Overall (1-5): Average the four dimensions with professional judgment. Weight dimensions per session type (e.g. outreach prioritizes S+P).`;
+
 const OUTPUT_SCHEMA = `
 Return ONLY a valid JSON object with this exact structure. No preamble, no markdown, no explanation.
 {
