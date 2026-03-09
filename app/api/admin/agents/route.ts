@@ -23,6 +23,14 @@ export async function GET() {
     );
   } catch (error: unknown) {
     console.error('Error fetching agents:', error);
-    return NextResponse.json({ error: 'Failed to fetch agents' }, { status: 500 });
+    const message = error instanceof Error ? error.message : '';
+    const hint =
+      /agent_type|column.*does not exist/i.test(message)
+        ? ' The database may be missing the agent_type column. Run the SEI-36 migrations in Supabase (20260309140000 and 20260309140001).'
+        : '';
+    return NextResponse.json(
+      { error: `Failed to fetch agents.${hint}` },
+      { status: 500 }
+    );
   }
 }

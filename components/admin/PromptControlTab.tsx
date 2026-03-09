@@ -12,12 +12,12 @@ type Agent = {
   prompt: string | null;
   document_tags: string[] | null;
   status: string;
-  agent_type?: string;
+  agent_type?: string | null;
   created_at: string;
 };
 
-const EMPTY_MESSAGE =
-  'No agents configured. Agents are added by a developer.';
+const EMPTY_MESSAGE = 'No agents configured. Agents are added by a developer.';
+const AGENT_TYPE_UNSET = '' as const;
 
 function parseDocumentTags(value: string): string[] {
   return value
@@ -44,7 +44,7 @@ export default function PromptControlTab() {
   const [saveError, setSaveError] = useState<string | null>(null);
   const [saveSuccess, setSaveSuccess] = useState<string | null>(null);
   const [nameError, setNameError] = useState<string | null>(null);
-  const [agentType, setAgentType] = useState<AgentType>('Guide');
+  const [agentType, setAgentType] = useState<AgentType | typeof AGENT_TYPE_UNSET>(AGENT_TYPE_UNSET);
   const [agentTypeError, setAgentTypeError] = useState<string | null>(null);
 
   const selectedAgent = agents.find((a) => a.agent_id === selectedId);
@@ -78,8 +78,10 @@ export default function PromptControlTab() {
     setStatus((selectedAgent.status as 'draft' | 'active') || 'draft');
     setPrompt(selectedAgent.prompt ?? '');
     setDocumentTagsText(formatDocumentTags(selectedAgent.document_tags));
-    const rawType = selectedAgent.agent_type ?? 'Guide';
-    setAgentType(AGENT_TYPES.includes(rawType as AgentType) ? (rawType as AgentType) : 'Guide');
+    const rawType = selectedAgent.agent_type;
+    setAgentType(
+      rawType && AGENT_TYPES.includes(rawType as AgentType) ? (rawType as AgentType) : AGENT_TYPE_UNSET
+    );
     setNameError(null);
     setAgentTypeError(null);
     if (prevSelectedIdRef.current !== selectedId) {
@@ -99,8 +101,8 @@ export default function PromptControlTab() {
       setNameError('Name is required');
       return;
     }
-    if (!agentType || !AGENT_TYPES.includes(agentType)) {
-      setAgentTypeError('Agent Type is required');
+    if (!agentType || !AGENT_TYPES.includes(agentType as AgentType)) {
+      setAgentTypeError(status === 'active' ? 'Assign an Agent Type before activating.' : 'Assign an Agent Type before saving.');
       return;
     }
     if (!selectedId) return;
@@ -129,7 +131,7 @@ export default function PromptControlTab() {
       .then((updated: Agent) => {
         setSaveSuccess(`Saved at ${new Date().toLocaleTimeString()}`);
         setAgents((prev) =>
-          prev.map((a) => (a.agent_id === updated.agent_id ? updated : a))
+          prev.map((a) => (a.agent_id === updated.agent_id ? { ...updated, agent_type: updated.agent_type ?? null } : a))
         );
         setSelectedId(updated.agent_id);
       })
@@ -169,6 +171,12 @@ export default function PromptControlTab() {
     return (
       <div className="min-h-screen bg-[#FDFBF7] p-8 text-gray-900">
         <div className="max-w-7xl mx-auto">
+          <header className="mb-10">
+            <h1 className="text-3xl font-bold text-plum-dark">Prompt Control</h1>
+            <p className="text-gray-500 mt-2 font-medium max-w-2xl">
+              View and edit existing coach agents. Agents are added by a developer.
+            </p>
+          </header>
           <p className="text-gray-700 font-medium rounded-2xl border border-plum/10 bg-white p-8 shadow-sm">
             {EMPTY_MESSAGE}
           </p>
@@ -177,13 +185,15 @@ export default function PromptControlTab() {
     );
   }
 
+  const hasAgentTypeAssigned = agentType !== AGENT_TYPE_UNSET && AGENT_TYPES.includes(agentType as AgentType);
+
   return (
     <div className="min-h-screen bg-[#FDFBF7] p-8 text-gray-900">
       <div className="max-w-7xl mx-auto">
         <header className="mb-10">
           <h1 className="text-3xl font-bold text-plum-dark">Prompt Control</h1>
           <p className="text-gray-500 mt-2 font-medium max-w-2xl">
-            View and edit existing coach agents. Agents are added by a developer.
+            View and edit existing coach agents. Agents are added by a developer. New agents appear as Inactive; assign an Agent Type before toggling to Active.
           </p>
         </header>
 
@@ -199,7 +209,7 @@ export default function PromptControlTab() {
             >
               {agents.map((a) => (
                 <option key={a.agent_id} value={a.agent_id}>
-                  {a.name}
+                  {a.name} ({a.status === 'active' ? 'Active' : 'Inactive'})
                 </option>
               ))}
             </select>
@@ -211,7 +221,7 @@ export default function PromptControlTab() {
               <select
                 value={agentType}
                 onChange={(e) => {
-                  setAgentType(e.target.value as AgentType);
+                  setAgentType(e.target.value === '' ? AGENT_TYPE_UNSET : (e.target.value as AgentType));
                   setAgentTypeError(null);
                 }}
                 className={`w-full max-w-md px-4 py-2.5 rounded-xl border text-plum-dark font-medium bg-white focus:outline-none focus:ring-2 focus:ring-plum/30 ${
@@ -220,12 +230,18 @@ export default function PromptControlTab() {
                 aria-required
                 aria-invalid={!!agentTypeError}
               >
+                <option value={AGENT_TYPE_UNSET}>Select type...</option>
                 {AGENT_TYPES.map((t) => (
                   <option key={t} value={t}>
                     {t}
                   </option>
                 ))}
               </select>
+              {!hasAgentTypeAssigned && (
+                <p className="text-gray-500 text-xs font-medium mt-1">
+                  Select an Agent Type to enable Active.
+                </p>
+              )}
               {agentTypeError && (
                 <p className="text-[#E84855] text-xs font-medium mt-1">
                   {agentTypeError}
@@ -235,7 +251,7 @@ export default function PromptControlTab() {
           </section>
 
           <section className="bg-white rounded-2xl border border-plum/10 p-6 shadow-sm space-y-6">
-            {/* Agent Status toggle — first thing admin sees */}
+            {/* Agent Status toggle — Active disabled until Agent Type is assigned */}
             <div>
               <label className="text-[10px] font-bold text-plum/40 uppercase tracking-widest mb-2 block">
                 Agent Status
@@ -252,14 +268,18 @@ export default function PromptControlTab() {
                   type="button"
                   role="switch"
                   aria-checked={status === 'active'}
-                  aria-label="Agent status: Inactive or Active"
-                  onClick={() =>
-                    setStatus((s) => (s === 'active' ? 'draft' : 'active'))
-                  }
+                  aria-label={hasAgentTypeAssigned ? 'Agent status: Inactive or Active' : 'Assign an Agent Type to enable Active'}
+                  aria-disabled={!hasAgentTypeAssigned}
+                  onClick={() => {
+                    if (!hasAgentTypeAssigned) return;
+                    setStatus((s) => (s === 'active' ? 'draft' : 'active'));
+                  }}
                   className={`relative inline-flex h-7 w-12 flex-shrink-0 rounded-full border-2 border-transparent transition-colors focus:outline-none focus:ring-2 focus:ring-plum/40 focus:ring-offset-2 ${
                     status === 'active'
                       ? 'bg-plum-dark'
-                      : 'bg-gray-200'
+                      : !hasAgentTypeAssigned
+                        ? 'bg-gray-200 cursor-not-allowed opacity-60'
+                        : 'bg-gray-200'
                   }`}
                 >
                   <span
@@ -276,16 +296,21 @@ export default function PromptControlTab() {
                   Active
                 </span>
               </div>
-              {/* Status banner — reactive to toggle */}
+              {/* Status banner — reactive to toggle and type */}
               <div
                 className={`mt-3 rounded-xl border px-4 py-2.5 text-sm font-medium ${
                   status === 'active'
                     ? 'bg-green-50 border-green-200 text-green-800'
-                    : 'bg-amber-50 border-amber-200 text-amber-800'
+                    : !hasAgentTypeAssigned
+                      ? 'bg-gray-50 border-gray-200 text-gray-600'
+                      : 'bg-amber-50 border-amber-200 text-amber-800'
                 }`}
               >
-                This agent is currently{' '}
-                {status === 'active' ? 'Active' : 'Draft (Inactive)'}.
+                {!hasAgentTypeAssigned
+                  ? 'Assign an Agent Type above to enable Active.'
+                  : status === 'active'
+                    ? 'This agent is currently Active.'
+                    : 'This agent is currently Inactive. Toggle to Active when ready.'}
               </div>
             </div>
 

@@ -51,7 +51,14 @@ No automated tests were added; the project has no existing test suite (`__tests_
 
 ## Deployment Note
 
-Run the two Supabase migrations (in order) before or during deploy so the `agent_type` column exists. Prisma schema is already updated; `prisma generate` is part of the build. If the DB is not yet migrated, Prisma may error at runtime when reading/writing agents — run migrations first.
+Run the Supabase migrations (in order) before or during deploy so the `agent_type` column exists. Prisma schema is already updated; `prisma generate` is part of the build. If the DB is not yet migrated, Prisma may error at runtime when reading/writing agents — run migrations first.
+
+## For developers adding new agents
+
+When you add a new agent (e.g. via migration or SQL), choose one:
+
+- **Set `agent_type` in the insert** (e.g. `'Guide'`) — The agent appears in Prompt Control with that type already selected; the admin can change it or set the agent to Active without an extra step.
+- **Leave `agent_type` null** — The agent appears with “Select type…” in Prompt Control; the admin must assign an Agent Type before they can toggle the agent to Active. Use this when you want the type to be chosen in the UI.
 
 ## Timeline
 
