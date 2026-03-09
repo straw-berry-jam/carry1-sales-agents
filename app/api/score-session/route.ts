@@ -1,12 +1,14 @@
 /**
  * POST /api/score-session
  * Scores a session transcript using the active SPIN Sales Coach prompt from the DB
- * and returns a structured JSON scorecard. System prompt is never hardcoded.
+ * and returns a structured JSON scorecard. When present, KB evaluation_criteria
+ * documents (assigned to the active agent) are injected above the transcript as rubric.
  */
 
 import { NextRequest, NextResponse } from 'next/server';
 import Anthropic from '@anthropic-ai/sdk';
-import { getActiveSpinCoachPrompt } from '@/lib/agents';
+import prisma from '@/lib/prisma';
+import { getActiveSpinCoachPromptAndAgentId } from '@/lib/agents';
 import { SCORING_PROMPTS, VALID_SESSION_TYPES } from '@/lib/scoringPrompts';
 
 const NO_ACTIVE_AGENT_MESSAGE =
@@ -62,23 +64,55 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  let systemPrompt: string | null;
+  let systemPrompt: string;
+  let agentUuid: string;
   try {
-    systemPrompt = await getActiveSpinCoachPrompt();
+    const active = await getActiveSpinCoachPromptAndAgentId();
+    systemPrompt = active.prompt;
+    agentUuid = active.agentId;
   } catch (err) {
-    console.error('Score session: failed to fetch agent prompt', err);
-    return NextResponse.json(
-      { error: 'Failed to load scoring configuration' },
-      { status: 500 }
-    );
-  }
-
-  if (!systemPrompt) {
+    console.error('Score session: failed to fetch active SPIN agent (prompt + id)', err);
     return NextResponse.json(
       { error: NO_ACTIVE_AGENT_MESSAGE },
       { status: 404 }
     );
   }
+
+  let evalDocs: { id: string; content: string }[] = [];
+  let evalError: string | null = null;
+  console.log('[score-session] fetching eval docs for agentId:', agentUuid);
+  try {
+    evalDocs = await prisma.knowledgeBaseDocument.findMany({
+      where: {
+        category: 'evaluation_criteria',
+        status: 'published',
+        OR: [
+          { agents: { has: 'all' } },
+          { agents: { has: agentUuid } },
+        ],
+      },
+      orderBy: { weight: 'desc' },
+      select: { id: true, content: true },
+    });
+  } catch (err) {
+    evalError = err instanceof Error ? err.message : String(err);
+    console.error('Score session: failed to fetch evaluation criteria docs', err);
+  }
+
+  console.log('[score-session] eval docs retrieved:', {
+    count: evalDocs?.length ?? 0,
+    ids: evalDocs?.map((d) => d.id) ?? [],
+    error: evalError,
+  });
+
+  const rubric =
+    evalDocs && evalDocs.length > 0
+      ? evalDocs.map((d) => d.content).join('\n\n')
+      : null;
+  const transcriptBlock =
+    rubric != null
+      ? `${rubric}\n\n<transcript>\n${String(transcript)}\n</transcript>`
+      : `<transcript>\n${String(transcript)}\n</transcript>`;
 
   const template = SCORING_PROMPTS[sessionType];
   if (!template) {
@@ -87,7 +121,7 @@ export async function POST(request: NextRequest) {
       { status: 400 }
     );
   }
-  const userMessage = template.replace('{{TRANSCRIPT}}', String(transcript));
+  const userMessage = template.replace('{{TRANSCRIPT}}', transcriptBlock);
 
   const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) {

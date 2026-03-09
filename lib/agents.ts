@@ -34,21 +34,52 @@ function getSupabase(): SupabaseClient {
 }
 
 /**
- * Returns the system prompt for the active SPIN Sales Coach agent, or null if none.
- * Used by the score-session API so the scoring system prompt is always from the DB (Prompt Control).
+ * Returns the system prompt and agent_id for the active SPIN Sales Coach agent in a single Supabase call.
+ * Throws if no agent with name 'SPIN Sales Coach' and status 'active' is found, or if prompt is empty.
+ * Used by the score-session API so one agent fetch drives both scoring prompt and KB eval-docs filter.
  */
-export async function getActiveSpinCoachPrompt(): Promise<string | null> {
+export async function getActiveSpinCoachPromptAndAgentId(): Promise<{ prompt: string; agentId: string }> {
   const supabase = getSupabase();
   const { data, error } = await supabase
     .from('agents')
-    .select('prompt')
+    .select('prompt, agent_id')
     .eq('name', 'SPIN Sales Coach')
     .eq('status', 'active')
     .limit(1)
     .maybeSingle();
   if (error) throw error;
   const prompt = data?.prompt;
-  return typeof prompt === 'string' && prompt.trim() ? prompt : null;
+  const agentId = data?.agent_id;
+  if (!agentId || typeof agentId !== 'string') {
+    throw new Error('No active SPIN Sales Coach agent found. Set an agent with name "SPIN Sales Coach" to active in Prompt Control.');
+  }
+  if (!prompt || typeof prompt !== 'string' || !prompt.trim()) {
+    throw new Error('No active SPIN Sales Coach agent found. Set an agent with name "SPIN Sales Coach" to active in Prompt Control.');
+  }
+  return { prompt: prompt.trim(), agentId };
+}
+
+/**
+ * Returns the agent_id (UUID) for the active SPIN Sales Coach agent.
+ * Throws if no agent with name 'SPIN Sales Coach' and status 'active' is found.
+ * Used by the score-session API to filter KB evaluation criteria documents.
+ */
+export async function getActiveSpinCoachAgentId(): Promise<string> {
+  const { agentId } = await getActiveSpinCoachPromptAndAgentId();
+  return agentId;
+}
+
+/**
+ * Returns the system prompt for the active SPIN Sales Coach agent, or null if none.
+ * Used by the score-session API so the scoring system prompt is always from the DB (Prompt Control).
+ */
+export async function getActiveSpinCoachPrompt(): Promise<string | null> {
+  try {
+    const { prompt } = await getActiveSpinCoachPromptAndAgentId();
+    return prompt;
+  } catch {
+    return null;
+  }
 }
 
 /**
