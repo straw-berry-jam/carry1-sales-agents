@@ -93,6 +93,7 @@ export default function KnowledgeBaseTab() {
 
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
   const [agentFilter, setAgentFilter] = useState<string>('all');
+  const [agentTypeFilter, setAgentTypeFilter] = useState<string>('all');
   const [statusFilter, setStatusFilter] = useState<string>('all');
 
   const [formData, setFormData] = useState<{
@@ -164,6 +165,7 @@ export default function KnowledgeBaseTab() {
     const params = new URLSearchParams();
     if (categoryFilter !== 'all') params.set('category', categoryFilter);
     if (agentFilter !== 'all') params.set('agent', agentFilter);
+    if (agentTypeFilter !== 'all') params.set('agentType', agentTypeFilter);
     if (statusFilter !== 'all') params.set('status', statusFilter);
     const res = await fetch(`/api/admin/documents?${params}`);
     if (!res.ok) throw new Error('Failed to fetch documents');
@@ -184,12 +186,8 @@ export default function KnowledgeBaseTab() {
   }, []);
 
   useEffect(() => {
-    if (categoryFilter !== 'all' || agentFilter !== 'all' || statusFilter !== 'all') {
-      fetchDocuments();
-    } else {
-      fetchDocuments();
-    }
-  }, [categoryFilter, agentFilter, statusFilter]);
+    fetchDocuments();
+  }, [categoryFilter, agentFilter, agentTypeFilter, statusFilter]);
 
   useEffect(() => {
     return () => {
@@ -408,6 +406,20 @@ export default function KnowledgeBaseTab() {
               {agents.map((a) => (
                 <option key={a.id} value={a.id}>{a.name}</option>
               ))}
+            </select>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-bold text-plum/40 uppercase tracking-wider">Agent Type</span>
+            <select
+              value={agentTypeFilter}
+              onChange={(e) => setAgentTypeFilter(e.target.value)}
+              className="bg-white border border-plum/10 rounded-xl px-4 py-2.5 text-sm font-medium text-plum-dark focus:outline-none focus:ring-2 focus:ring-plum/20"
+            >
+              <option value="all">All</option>
+              <option value="Guide">Guide</option>
+              <option value="Analyst">Analyst</option>
+              <option value="Builder">Builder</option>
+              <option value="Orchestrator">Orchestrator</option>
             </select>
           </div>
           <div className="flex items-center gap-2">

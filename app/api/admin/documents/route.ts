@@ -14,26 +14,44 @@ const VALID_CATEGORIES = [
 
 const VALID_PERSONA_TYPES = ['archetype', 'real_account'] as const;
 
+const VALID_AGENT_TYPES = ['Guide', 'Analyst', 'Builder', 'Orchestrator'] as const;
+
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
     const category = searchParams.get('category') || undefined;
     const agentId = searchParams.get('agent') || undefined;
     const status = searchParams.get('status') || undefined;
+    const agentType = searchParams.get('agentType') || searchParams.get('agent_type') || undefined;
 
-    const where: {
-      category?: string;
-      status?: string;
-      OR?: Array<{ agents: { has: string } }>;
-    } = {};
-    if (category) where.category = category;
-    if (status && status !== 'all') where.status = status;
+    // Build AND list so category, status, agent filter, and agentType filter combine correctly.
+    const andConditions: object[] = [];
+    if (category) andConditions.push({ category });
+    if (status && status !== 'all') andConditions.push({ status });
     if (agentId) {
-      where.OR = [
-        { agents: { has: 'all' } },
-        { agents: { has: agentId } },
-      ];
+      andConditions.push({
+        OR: [
+          { agents: { has: 'all' } },
+          { agents: { has: agentId } },
+        ],
+      });
     }
+    // SEI-36: Filter by agent type — show docs assigned to that type OR assigned to all agents.
+    if (agentType && VALID_AGENT_TYPES.includes(agentType as (typeof VALID_AGENT_TYPES)[number])) {
+      const agentsOfType = await prisma.agent.findMany({
+        where: { agentType },
+        select: { id: true },
+      });
+      const agentIdsOfType = agentsOfType.map((a) => a.id);
+      andConditions.push({
+        OR: [
+          { agents: { has: 'all' } },
+          { agents: { hasSome: agentIdsOfType } },
+        ],
+      });
+    }
+
+    const where = andConditions.length > 0 ? { AND: andConditions } : {};
 
     const documents = await prisma.knowledgeBaseDocument.findMany({
       where,
