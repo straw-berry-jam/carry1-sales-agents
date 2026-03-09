@@ -3,12 +3,16 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Loader2, AlertCircle, Check } from 'lucide-react';
 
+const AGENT_TYPES = ['Guide', 'Analyst', 'Builder', 'Orchestrator'] as const;
+type AgentType = (typeof AGENT_TYPES)[number];
+
 type Agent = {
   agent_id: string;
   name: string;
   prompt: string | null;
   document_tags: string[] | null;
   status: string;
+  agent_type?: string;
   created_at: string;
 };
 
@@ -40,6 +44,8 @@ export default function PromptControlTab() {
   const [saveError, setSaveError] = useState<string | null>(null);
   const [saveSuccess, setSaveSuccess] = useState<string | null>(null);
   const [nameError, setNameError] = useState<string | null>(null);
+  const [agentType, setAgentType] = useState<AgentType>('Guide');
+  const [agentTypeError, setAgentTypeError] = useState<string | null>(null);
 
   const selectedAgent = agents.find((a) => a.agent_id === selectedId);
   const prevSelectedIdRef = useRef<string | null>(null);
@@ -72,7 +78,10 @@ export default function PromptControlTab() {
     setStatus((selectedAgent.status as 'draft' | 'active') || 'draft');
     setPrompt(selectedAgent.prompt ?? '');
     setDocumentTagsText(formatDocumentTags(selectedAgent.document_tags));
+    const rawType = selectedAgent.agent_type ?? 'Guide';
+    setAgentType(AGENT_TYPES.includes(rawType as AgentType) ? (rawType as AgentType) : 'Guide');
     setNameError(null);
+    setAgentTypeError(null);
     if (prevSelectedIdRef.current !== selectedId) {
       setSaveError(null);
       setSaveSuccess(null);
@@ -84,9 +93,14 @@ export default function PromptControlTab() {
     setSaveError(null);
     setSaveSuccess(null);
     setNameError(null);
+    setAgentTypeError(null);
     const trimmedName = name.trim();
     if (!trimmedName) {
       setNameError('Name is required');
+      return;
+    }
+    if (!agentType || !AGENT_TYPES.includes(agentType)) {
+      setAgentTypeError('Agent Type is required');
       return;
     }
     if (!selectedId) return;
@@ -98,6 +112,7 @@ export default function PromptControlTab() {
       body: JSON.stringify({
         name: trimmedName,
         status,
+        agent_type: agentType,
         prompt: prompt || null,
         document_tags: documentTags,
       }),
@@ -188,6 +203,35 @@ export default function PromptControlTab() {
                 </option>
               ))}
             </select>
+
+            <div className="mt-6">
+              <label className="text-[10px] font-bold text-plum/40 uppercase tracking-widest mb-2 block">
+                Agent Type <span className="text-[#E84855]">*</span>
+              </label>
+              <select
+                value={agentType}
+                onChange={(e) => {
+                  setAgentType(e.target.value as AgentType);
+                  setAgentTypeError(null);
+                }}
+                className={`w-full max-w-md px-4 py-2.5 rounded-xl border text-plum-dark font-medium bg-white focus:outline-none focus:ring-2 focus:ring-plum/30 ${
+                  agentTypeError ? 'border-red-400' : 'border-plum/20'
+                }`}
+                aria-required
+                aria-invalid={!!agentTypeError}
+              >
+                {AGENT_TYPES.map((t) => (
+                  <option key={t} value={t}>
+                    {t}
+                  </option>
+                ))}
+              </select>
+              {agentTypeError && (
+                <p className="text-[#E84855] text-xs font-medium mt-1">
+                  {agentTypeError}
+                </p>
+              )}
+            </div>
           </section>
 
           <section className="bg-white rounded-2xl border border-plum/10 p-6 shadow-sm space-y-6">
