@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useMemo, useEffect, useRef } from 'react';
+import Link from 'next/link';
 import {
   PlusCircle,
   X,
@@ -12,6 +13,7 @@ import {
   Upload,
   CheckCircle,
 } from 'lucide-react';
+
 
 export type KBCategory =
   | 'methodology'
@@ -120,6 +122,10 @@ export default function KnowledgeBaseTab() {
   const contentFileInputRef = useRef<HTMLInputElement>(null);
   const [contentDragOver, setContentDragOver] = useState(false);
 
+  // System Health banner: show when recent warn/error events exist; dismissible (state only so banner reappears on next page load per spec)
+  const [hasRecentWarnOrError, setHasRecentWarnOrError] = useState(false);
+  const [systemHealthBannerDismissed, setSystemHealthBannerDismissed] = useState(false);
+
   const applyContentFromFile = (text: string) => {
     setFormData((prev) => ({ ...prev, content: text }));
   };
@@ -189,6 +195,20 @@ export default function KnowledgeBaseTab() {
     return () => {
       if (successTimeoutRef.current) clearTimeout(successTimeoutRef.current);
     };
+  }, []);
+
+  // Fetch system-events summary to show banner when there are recent warn/error events (fail closed: no banner if API fails)
+  useEffect(() => {
+    let cancelled = false;
+    fetch('/api/admin/system-events')
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (cancelled || !data?.summary) return;
+        const { errorsLast24h = 0, warningsLast24h = 0 } = data.summary;
+        if (errorsLast24h > 0 || warningsLast24h > 0) setHasRecentWarnOrError(true);
+      })
+      .catch(() => {});
+    return () => { cancelled = true; };
   }, []);
 
   const clearSuccessMessage = () => {
@@ -315,9 +335,32 @@ export default function KnowledgeBaseTab() {
     ? `Assigned to: ${formData.agents.map((id) => agents.find((a) => a.id === id)?.name ?? id).join(', ')}`
     : '';
 
+  const showSystemHealthBanner = hasRecentWarnOrError && !systemHealthBannerDismissed;
+
   return (
     <div className="min-h-screen bg-[#FDFBF7] p-8 text-gray-900 relative">
       <div className="max-w-7xl mx-auto">
+        {showSystemHealthBanner && (
+          <div className="mb-6 flex items-center justify-between gap-4 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-amber-800">
+            <p className="font-medium">
+              System warning: retrieval issues detected in the last 24 hours.{' '}
+              <Link href="/admin/system-health" className="underline font-semibold hover:text-amber-900">
+                View System Health →
+              </Link>
+            </p>
+            <button
+              type="button"
+              onClick={() => {
+                setSystemHealthBannerDismissed(true);
+                if (typeof window !== 'undefined') window.localStorage.setItem('system-health-banner-dismissed', '1');
+              }}
+              className="shrink-0 p-1 rounded hover:bg-amber-100 text-amber-700"
+              aria-label="Dismiss banner"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+        )}
         <header className="mb-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
           <div className="min-w-0">
             <h1 className="text-3xl font-bold text-plum-dark">Knowledge Base</h1>

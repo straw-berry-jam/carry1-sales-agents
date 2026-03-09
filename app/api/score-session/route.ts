@@ -9,7 +9,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import Anthropic from '@anthropic-ai/sdk';
 import prisma from '@/lib/prisma';
 import { getActiveSpinCoachPromptAndAgentId } from '@/lib/agents';
-import { SCORING_PROMPTS, VALID_SESSION_TYPES } from '@/lib/scoringPrompts';
+import { FALLBACK_RUBRIC, SCORING_PROMPTS, VALID_SESSION_TYPES } from '@/lib/scoringPrompts';
+import { logSystemEvent } from '@/lib/logSystemEvent';
 
 const NO_ACTIVE_AGENT_MESSAGE =
   'No active SPIN Sales Coach agent found. Set status to active in Prompt Control.';
@@ -97,6 +98,14 @@ export async function POST(request: NextRequest) {
   } catch (err) {
     evalError = err instanceof Error ? err.message : String(err);
     console.error('Score session: failed to fetch evaluation criteria docs', err);
+    await logSystemEvent({
+      route: '/api/score-session',
+      event_type: 'eval_docs_retrieval_error',
+      severity: 'error',
+      agent_id: agentUuid,
+      message: 'Prisma error retrieving eval docs from KB.',
+      metadata: { error: evalError, agentUuid },
+    });
   }
 
   console.log('[score-session] eval docs retrieved:', {
@@ -105,14 +114,24 @@ export async function POST(request: NextRequest) {
     error: evalError,
   });
 
-  const rubric =
+  let rubric: string =
     evalDocs && evalDocs.length > 0
       ? evalDocs.map((d) => d.content).join('\n\n')
-      : null;
+      : '';
+  if (!evalDocs || evalDocs.length === 0) {
+    console.warn('[score-session] no eval docs found, falling back to hardcoded rubric');
+    rubric = FALLBACK_RUBRIC;
+    await logSystemEvent({
+      route: '/api/score-session',
+      event_type: 'eval_docs_fallback',
+      severity: 'warn',
+      agent_id: agentUuid,
+      message: 'No evaluation criteria docs found in KB. Fell back to hardcoded rubric.',
+      metadata: { agentUuid, sessionType },
+    });
+  }
   const transcriptBlock =
-    rubric != null
-      ? `${rubric}\n\n<transcript>\n${String(transcript)}\n</transcript>`
-      : `<transcript>\n${String(transcript)}\n</transcript>`;
+    `${rubric}\n\n<transcript>\n${String(transcript)}\n</transcript>`;
 
   const template = SCORING_PROMPTS[sessionType];
   if (!template) {

@@ -3,7 +3,7 @@
 import React, { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { Database, Sliders, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Database, Sliders, ChevronLeft, ChevronRight, Activity } from 'lucide-react';
 import KnowledgeBaseTab from '@/components/admin/KnowledgeBaseTab';
 import TestConsoleTab from '@/components/admin/TestConsoleTab';
 import PromptControlTab from '@/components/admin/PromptControlTab';
@@ -79,6 +79,14 @@ function AdminPageContent() {
               Test Console
               <ChevronRight className="w-4 h-4" />
             </button>
+            {/* System Health — permanent link so admins can open anytime */}
+            <Link
+              href="/admin/system-health"
+              className="flex items-center gap-2 px-6 py-3 rounded-xl border border-plum/20 text-plum/60 hover:text-plum-dark hover:border-plum/40 hover:bg-plum/5 text-sm font-bold transition-all"
+            >
+              <Activity className="w-4 h-4" />
+              System Health
+            </Link>
           </div>
         </div>
       </div>
