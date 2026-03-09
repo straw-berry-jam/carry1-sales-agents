@@ -69,7 +69,7 @@ export default function SpinScorecardPage() {
   const [scorecard, setScorecard] = useState<ApiScorecard | null>(null);
   const [errorMessage, setErrorMessage] = useState<string>('');
 
-  // Client-only: read localStorage and either show no_data or start API request
+  // Client-only: transcript comes from session page (localStorage.spinTranscript, set from messages state)
   useEffect(() => {
     const sessionType = typeof window !== 'undefined' ? window.localStorage.getItem('spinSessionType') : null;
     const transcript = typeof window !== 'undefined' ? window.localStorage.getItem('spinTranscript') : null;

@@ -8,9 +8,11 @@ import { agentConfig } from '@/lib/agentConfig';
 interface VoiceCoachProps {
   onboardingData?: any;
   demoEnded?: boolean;
+  /** Called when a voice session starts and we have an ElevenLabs conversation_id (for fetching transcript later). */
+  onConversationId?: (conversationId: string) => void;
 }
 
-export const VoiceCoach = memo(function VoiceCoach({ onboardingData, demoEnded }: VoiceCoachProps) {
+export const VoiceCoach = memo(function VoiceCoach({ onboardingData, demoEnded, onConversationId }: VoiceCoachProps) {
   const [isConnecting, setIsConnecting] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const [connectionError, setConnectionError] = useState<string | null>(null);
@@ -95,8 +97,11 @@ export const VoiceCoach = memo(function VoiceCoach({ onboardingData, demoEnded }
         throw new Error(`Signed URL error: ${errText}`);
       }
       
-      const { signedUrl, sessionId } = await response.json();
+      const { signedUrl, sessionId, conversationId } = await response.json();
       console.log('Voice session context stored with ID:', sessionId);
+      if (conversationId && onConversationId) {
+        onConversationId(conversationId);
+      }
 
       // 2. Start conversation with signed URL only. Pass empty dynamicVariables so the SDK
       //    doesn't send any custom variables that could mismatch the agent dashboard and cause silent disconnect.
@@ -108,7 +113,7 @@ export const VoiceCoach = memo(function VoiceCoach({ onboardingData, demoEnded }
       setIsConnecting(false);
       connectionAttemptRef.current = false;
     }
-  }, [conversation, onboardingData]);
+  }, [conversation, onboardingData, onConversationId]);
 
   const stopConversation = useCallback(async () => {
     await conversation.endSession();

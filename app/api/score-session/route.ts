@@ -3,6 +3,12 @@
  * Scores a session transcript using the active SPIN Sales Coach prompt from the DB
  * and returns a structured JSON scorecard. When present, KB evaluation_criteria
  * documents (assigned to the active agent) are injected above the transcript as rubric.
+ *
+ * Transcript source (when called after demo): Client reads localStorage.spinTranscript
+ * and sends it in the POST body. That value is set on the SPIN session page
+ * (app/coach/spin/session/page.tsx) in a useEffect that builds it from the `messages`
+ * state (turn-by-turn "Coach: ... / Rep: ..."). So only text-mode turns are included;
+ * voice-only conversation does not update `messages`, so transcript can be empty/short.
  */
 
 import { NextRequest, NextResponse } from 'next/server';
@@ -64,6 +70,11 @@ export async function POST(request: NextRequest) {
       { status: 400 }
     );
   }
+
+  // Debug: verify transcript being evaluated (client sends from localStorage.spinTranscript)
+  const transcriptLength = typeof transcript === 'string' ? transcript.length : 0;
+  const transcriptPreview = typeof transcript === 'string' ? transcript.slice(0, 500) : String(transcript);
+  console.log('[score-session] transcript length:', transcriptLength, '| first 500 chars:', transcriptPreview);
 
   let systemPrompt: string;
   let agentUuid: string;

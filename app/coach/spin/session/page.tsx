@@ -2,7 +2,7 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useState, useEffect, useRef, useMemo, Suspense } from 'react';
 import { ChevronLeft, Send, Mic, Info, CheckCircle2, Trophy, MicOff, Loader2, Star, Target, Zap, Users, MessageSquare, Headphones, Keyboard } from 'lucide-react';
 import { VoiceCoach } from '@/components/VoiceCoach';
@@ -28,9 +28,16 @@ export default function SpinSessionPageWrapper() {
 
 /** SPIN coaching session — copied from app/coach/page.tsx. Links point to SPIN flow only. */
 function SpinSessionPage() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const [isStarted, setIsStarted] = useState(false);
   const [mode, setMode] = useState<'text' | 'voice'>('text');
+  /** ElevenLabs conversation ID when in voice mode; used to fetch transcript for scorecard. */
+  const [voiceConversationId, setVoiceConversationId] = useState<string | null>(null);
+  const [isFetchingTranscript, setIsFetchingTranscript] = useState(false);
+  const [transcriptLoadingMessageIndex, setTranscriptLoadingMessageIndex] = useState(0);
+
+  const TRANSCRIPT_LOADING_MESSAGES = ['Reviewing your session...', 'Generating your report...', 'Finishing up...'];
   const [isRecording, setIsRecording] = useState(false);
   const [messages, setMessages] = useState<{ role: 'ai' | 'user'; text: string }[]>([]);
   const [inputValue, setInputValue] = useState('');
@@ -79,7 +86,9 @@ function SpinSessionPage() {
     }
   }, [searchParams]);
 
-  // Persist conversation transcript for scorecard: turn-by-turn "Coach: ... / Rep: ..." so scoring API can read it
+  // Persist conversation transcript for scorecard (source for POST /api/score-session).
+  // Built from `messages` state only — text turns. Voice turns are not in messages,
+  // so voice-only sessions yield short/empty transcript and scorecard may score poorly.
   useEffect(() => {
     if (typeof window === 'undefined' || !messages.length) return;
     const transcript = messages
@@ -218,6 +227,57 @@ function SpinSessionPage() {
       setIsLoading(false);
     }
   };
+
+  /** Navigate to scorecard. In voice mode with conversation ID, fetch transcript from ElevenLabs first and store in localStorage. Retries once after 2s on 404 or empty transcript. */
+  const handleGoToScorecard = async () => {
+    if (mode === 'voice' && voiceConversationId) {
+      setIsFetchingTranscript(true);
+      setTranscriptLoadingMessageIndex(0);
+      const fetchOnce = async (): Promise<{ transcript: string; status: number }> => {
+        const res = await fetch('/api/elevenlabs-conversation-transcript', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ conversationId: voiceConversationId }),
+        });
+        const data = await res.json();
+        const transcript = (data.transcript ?? '').trim();
+        return { transcript, status: res.status };
+      };
+      try {
+        let result = await fetchOnce();
+        if (result.status === 404 || !result.transcript) {
+          await new Promise((r) => setTimeout(r, 2000));
+          result = await fetchOnce();
+        }
+        if (result.status !== 200) {
+          throw new Error('Failed to fetch transcript');
+        }
+        if (!result.transcript) {
+          throw new Error('Conversation transcript is not ready yet. Please try again in a moment.');
+        }
+        if (typeof window !== 'undefined') {
+          window.localStorage.setItem('spinTranscript', result.transcript);
+        }
+        router.push('/coach/spin/scorecard');
+      } catch (err) {
+        console.error('Failed to fetch voice transcript:', err);
+        alert(err instanceof Error ? err.message : 'Could not load conversation transcript. Try again or use text mode.');
+      } finally {
+        setIsFetchingTranscript(false);
+      }
+    } else {
+      router.push('/coach/spin/scorecard');
+    }
+  };
+
+  // Cycle transcript loading overlay message every 2s while fetching
+  useEffect(() => {
+    if (!isFetchingTranscript) return;
+    const interval = setInterval(() => {
+      setTranscriptLoadingMessageIndex((prev) => (prev + 1) % TRANSCRIPT_LOADING_MESSAGES.length);
+    }, 2000);
+    return () => clearInterval(interval);
+  }, [isFetchingTranscript]);
 
   useEffect(() => {
     if (mode === 'voice' && recognition) {
@@ -386,6 +446,44 @@ function SpinSessionPage() {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-6">
+            {isFetchingTranscript && (
+              <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 backdrop-blur-sm p-6">
+                <div className="flex flex-col items-center justify-center text-center p-12 space-y-8 max-w-md">
+                  <div className="relative">
+                    <motion.div
+                      animate={{
+                        scale: [1, 1.1, 1],
+                        rotate: 360,
+                      }}
+                      transition={{
+                        scale: { duration: 2, repeat: Infinity, ease: 'easeInOut' },
+                        rotate: { duration: 3, repeat: Infinity, ease: 'linear' },
+                      }}
+                      className="w-16 h-16 rounded-full border-4 border-white/5 border-t-white/20 relative"
+                    />
+                    <motion.div
+                      animate={{ scale: [1, 1.2, 1], opacity: [0.1, 0.2, 0.1] }}
+                      transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+                      className="absolute inset-0 bg-white/10 rounded-full blur-xl"
+                    />
+                  </div>
+                  <div className="space-y-3">
+                    <h2 className="text-xl font-bold text-white/80">Preparing your scorecard...</h2>
+                    <AnimatePresence mode="wait">
+                      <motion.p
+                        key={transcriptLoadingMessageIndex}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        className="text-white/40 font-medium text-sm"
+                      >
+                        {TRANSCRIPT_LOADING_MESSAGES[transcriptLoadingMessageIndex]}
+                      </motion.p>
+                    </AnimatePresence>
+                  </div>
+                </div>
+              </div>
+            )}
             {demoEnded && (
               <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-6">
                 <div className="bg-[#2A1C30] border border-white/20 rounded-2xl p-8 text-center max-w-md w-full shadow-2xl">
@@ -400,9 +498,27 @@ function SpinSessionPage() {
                     </a>
                     .
                   </p>
-                  <Link href="/coach/spin/scorecard" className="btn-primary w-full py-4 px-6 text-center block shadow-glow transition-all hover:scale-[1.02]">
-                    {agentConfig.coachPage.endSessionLabel}
-                  </Link>
+                  {mode === 'voice' && voiceConversationId ? (
+                    <button
+                      type="button"
+                      onClick={handleGoToScorecard}
+                      disabled={isFetchingTranscript}
+                      className="btn-primary w-full py-4 px-6 text-center block shadow-glow transition-all hover:scale-[1.02] disabled:opacity-70 disabled:cursor-not-allowed"
+                    >
+                      {isFetchingTranscript ? (
+                        <>
+                          <Loader2 className="inline-block w-5 h-5 animate-spin mr-2 align-middle" />
+                          Loading transcript…
+                        </>
+                      ) : (
+                        agentConfig.coachPage.endSessionLabel
+                      )}
+                    </button>
+                  ) : (
+                    <Link href="/coach/spin/scorecard" className="btn-primary w-full py-4 px-6 text-center block shadow-glow transition-all hover:scale-[1.02]">
+                      {agentConfig.coachPage.endSessionLabel}
+                    </Link>
+                  )}
                 </div>
               </div>
             )}
@@ -427,7 +543,11 @@ function SpinSessionPage() {
               </AnimatePresence>
 
               <div className={`flex-grow flex items-center justify-center py-12 h-full ${mode === 'voice' ? 'block' : 'hidden'} ${demoEnded ? 'invisible' : ''}`}>
-                <VoiceCoach onboardingData={onboardingData} demoEnded={demoEnded} />
+                <VoiceCoach
+                  onboardingData={onboardingData}
+                  demoEnded={demoEnded}
+                  onConversationId={setVoiceConversationId}
+                />
               </div>
 
               <div className={`flex flex-col flex-grow ${mode === 'text' ? 'block' : 'hidden'}`}>
@@ -611,12 +731,30 @@ function SpinSessionPage() {
 
             <motion.div initial={false} animate={{ opacity: 1, y: 0 }}>
               {isStarted ? (
-                <Link
-                  href="/coach/spin/scorecard"
-                  className={`btn-primary w-full py-4 px-6 text-center block shadow-glow transition-all hover:scale-[1.02] ${demoEnded ? 'ring-2 ring-white/40 ring-offset-2 ring-offset-transparent' : ''}`}
-                >
-                  {agentConfig.coachPage.endSessionLabel}
-                </Link>
+                mode === 'voice' && voiceConversationId ? (
+                  <button
+                    type="button"
+                    onClick={handleGoToScorecard}
+                    disabled={isFetchingTranscript}
+                    className={`btn-primary w-full py-4 px-6 text-center block shadow-glow transition-all hover:scale-[1.02] disabled:opacity-70 disabled:cursor-not-allowed ${demoEnded ? 'ring-2 ring-white/40 ring-offset-2 ring-offset-transparent' : ''}`}
+                  >
+                    {isFetchingTranscript ? (
+                      <>
+                        <Loader2 className="inline-block w-5 h-5 animate-spin mr-2 align-middle" />
+                        Loading transcript…
+                      </>
+                    ) : (
+                      agentConfig.coachPage.endSessionLabel
+                    )}
+                  </button>
+                ) : (
+                  <Link
+                    href="/coach/spin/scorecard"
+                    className={`btn-primary w-full py-4 px-6 text-center block shadow-glow transition-all hover:scale-[1.02] ${demoEnded ? 'ring-2 ring-white/40 ring-offset-2 ring-offset-transparent' : ''}`}
+                  >
+                    {agentConfig.coachPage.endSessionLabel}
+                  </Link>
+                )
               ) : (
                 <div className="w-full py-4 px-6 text-center block bg-white/5 border border-white/10 rounded-xl text-white/20 cursor-not-allowed font-semibold">
                   {agentConfig.coachPage.endSessionLabel}

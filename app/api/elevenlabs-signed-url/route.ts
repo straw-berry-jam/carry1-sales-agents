@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
     console.log('Fetching signed URL for agent:', agentId);
 
     const response = await fetch(
-      `https://api.elevenlabs.io/v1/convai/conversation/get_signed_url?agent_id=${agentId}`,
+      `https://api.elevenlabs.io/v1/convai/conversation/get_signed_url?agent_id=${encodeURIComponent(agentId)}&include_conversation_id=true`,
       {
         method: 'GET',
         headers: {
@@ -48,9 +48,10 @@ export async function POST(req: NextRequest) {
     }
 
     const data = await response.json();
-    return NextResponse.json({ 
+    return NextResponse.json({
       signedUrl: data.signed_url,
       sessionId: sessionId,
+      ...(data.conversation_id && { conversationId: data.conversation_id }),
     });
 
   } catch (error: any) {
