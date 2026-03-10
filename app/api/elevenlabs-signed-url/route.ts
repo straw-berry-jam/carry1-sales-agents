@@ -49,12 +49,11 @@ export async function POST(req: NextRequest) {
 
     const data = await response.json();
     console.log('[elevenlabs-signed-url] ElevenLabs response body:', JSON.stringify(data));
-    console.log('[elevenlabs-signed-url] conversation_id present:', !!data.conversation_id, data.conversation_id ?? '(missing)');
-    const responseBody = {
-      signedUrl: data.signed_url,
-      sessionId: sessionId,
-      ...(data.conversation_id && { conversationId: data.conversation_id }),
-    };
+    const signedUrl = data.signed_url;
+    const url = new URL(signedUrl);
+    const conversationId = url.searchParams.get('conversation_id') ?? data.conversation_id ?? undefined;
+    console.log('[elevenlabs-signed-url] conversation_id (from URL or API):', conversationId ?? '(missing)');
+    const responseBody = { signedUrl, sessionId, conversationId };
     console.log('[signed-url] full response being returned to client:', JSON.stringify(responseBody));
     return NextResponse.json(responseBody);
 
