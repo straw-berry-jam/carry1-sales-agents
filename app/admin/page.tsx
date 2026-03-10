@@ -80,7 +80,9 @@ function AdminPageContent() {
               Test Console
               <ChevronRight className="w-4 h-4" />
             </button>
-            {/* System Health — inline tab, same pattern as Test Console */}
+            {/* Separator: config tabs (KB, Prompt, Test Console) vs monitoring (System Health) */}
+            <div className="h-6 w-px bg-plum/20 flex-shrink-0" aria-hidden />
+            {/* System Health — monitoring tab */}
             <button
               onClick={() => setTab('system-health')}
               className={`flex items-center gap-2 px-6 py-3 rounded-xl border text-sm font-bold transition-all ${
