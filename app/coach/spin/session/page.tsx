@@ -230,6 +230,7 @@ function SpinSessionPage() {
 
   /** Navigate to scorecard. In voice mode with conversation ID, fetch transcript from ElevenLabs first and store in localStorage. Retries once after 2s on 404 or empty transcript. */
   const handleGoToScorecard = async () => {
+    console.log('[SPIN] voiceConversationId at end session:', voiceConversationId);
     console.log('[SPIN End Session] voiceConversationId:', voiceConversationId ?? 'null/undefined', mode === 'voice' && (voiceConversationId == null) ? '— ElevenLabs transcript fetch will be skipped.' : '');
     if (mode === 'voice' && voiceConversationId) {
       setIsFetchingTranscript(true);

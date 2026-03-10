@@ -35,6 +35,7 @@ export async function POST(req: NextRequest) {
   if (!conversationId) {
     return NextResponse.json({ error: 'conversationId is required' }, { status: 400 });
   }
+  console.log('[transcript] conversationId received:', conversationId);
 
   try {
     const response = await fetch(
@@ -48,18 +49,19 @@ export async function POST(req: NextRequest) {
       }
     );
 
-    const bodyText = await response.text();
-    console.log('[elevenlabs-conversation-transcript] ElevenLabs raw response — status:', response.status, '| body (first 500 chars):', bodyText.slice(0, 500));
+    const text = await response.text();
+    console.log('[transcript] ElevenLabs response status:', response.status);
+    console.log('[transcript] ElevenLabs raw body (first 500):', text.slice(0, 500));
 
     if (!response.ok) {
-      console.error('[elevenlabs-conversation-transcript] ElevenLabs API error:', response.status, bodyText);
+      console.error('[elevenlabs-conversation-transcript] ElevenLabs API error:', response.status, text);
       return NextResponse.json(
         { error: response.status === 404 ? 'Conversation not found or transcript not ready yet.' : 'Failed to fetch transcript.' },
         { status: response.status === 404 ? 404 : 502 }
       );
     }
 
-    const data = JSON.parse(bodyText);
+    const data = JSON.parse(text);
     const rawTranscript: TranscriptEntry[] = Array.isArray(data.transcript) ? data.transcript : [];
 
     // Format to match text-mode transcript: "Coach: ... \n\n Rep: ..."
