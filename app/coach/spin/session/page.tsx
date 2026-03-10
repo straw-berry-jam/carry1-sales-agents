@@ -11,11 +11,11 @@ import DemoBanner from '@/components/DemoBanner';
 
 const VALID_SESSION_TYPES = ['outreach_15', 'outreach_30', 'discovery_15', 'discovery_30'] as const;
 
-/** SPIN demo session limit: 5 minutes. (Main coach at /coach uses 30s.) Env override for build-time: NEXT_PUBLIC_SPIN_DEMO_LIMIT_MS */
+/** SPIN demo session limit: 3 minutes. (Main coach at /coach uses 30s.) Env override for build-time: NEXT_PUBLIC_SPIN_DEMO_LIMIT_MS */
 const SPIN_DEMO_LIMIT_MS =
   typeof process !== 'undefined' && process.env.NEXT_PUBLIC_SPIN_DEMO_LIMIT_MS
     ? Number(process.env.NEXT_PUBLIC_SPIN_DEMO_LIMIT_MS)
-    : 300_000; // 5 minutes
+    : 180_000; // 3 minutes
 
 /** Wrapper so useSearchParams is inside Suspense (Next.js 14+ requirement for static export). */
 export default function SpinSessionPageWrapper() {
