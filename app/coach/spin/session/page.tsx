@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useState, useEffect, useRef, useMemo, Suspense } from 'react';
-import { ChevronLeft, Send, Mic, Info, CheckCircle2, Trophy, MicOff, Loader2, Star, Target, Zap, Users, MessageSquare, Headphones, Keyboard } from 'lucide-react';
+import { ChevronLeft, Send, Mic, MicOff, Loader2, Target, Zap, MessageSquare, Headphones, Keyboard } from 'lucide-react';
 import { VoiceCoach } from '@/components/VoiceCoach';
 import { agentConfig } from '@/lib/agentConfig';
 import DemoBanner from '@/components/DemoBanner';
@@ -698,34 +698,9 @@ function SpinSessionPage() {
           </div>
 
           <div className="flex flex-col gap-6 h-full min-h-[650px]">
-            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="glass-card p-6">
-              <div className="flex items-center gap-2 mb-4">
-                <Info className="w-5 h-5 text-blue-400" />
-                <h3 className="font-bold">Live Feedback</h3>
-              </div>
-              <div className="space-y-4">
-                {!isStarted ? (
-                  <div className="p-4 rounded-lg bg-white/5 border border-white/10 italic text-white/50 text-sm">
-                    {agentConfig.coachPage.waitingMessage}
-                  </div>
-                ) : (
-                  <div className="space-y-3">
-                    <div className="p-3 rounded-lg bg-green-500/10 border border-green-500/20 text-sm text-green-400 flex gap-3">
-                      <CheckCircle2 className="w-4 h-4 mt-0.5 flex-shrink-0" />
-                      <span>Good opening, keep it concise.</span>
-                    </div>
-                    <div className="p-3 rounded-lg bg-blue-500/10 border border-blue-500/20 text-sm text-blue-400 flex gap-3">
-                      <Info className="w-4 h-4 mt-0.5 flex-shrink-0" />
-                      <span>Focus on understanding the prospect's pain points and articulating clear value.</span>
-                    </div>
-                  </div>
-                )}
-              </div>
-            </motion.div>
-
             <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="glass-card p-6 flex-grow">
               <div className="flex items-center gap-2 mb-4">
-                <Target className="w-5 h-5 text-yellow-500" />
+                <Target className="w-5 h-5 text-red-500" />
                 <h3 className="font-bold">Key Objectives</h3>
               </div>
               <ul className="space-y-4">
@@ -736,7 +711,7 @@ function SpinSessionPage() {
                   { letter: 'N', name: 'Need-Payoff', tip: 'Let them say the value. Ask what solving this would mean — don\'t tell them.' },
                 ].map(({ letter, name, tip }) => (
                   <li key={letter} className="flex items-start gap-3 text-sm">
-                    <span className="font-semibold text-gradient flex-shrink-0" aria-hidden>{letter}</span>
+                    <span className="font-semibold text-plum flex-shrink-0" aria-hidden>{letter}</span>
                     <div>
                       <span className="font-bold text-white/90">{name}</span>
                       <p className="text-xs text-white/60 mt-0.5 leading-snug">{tip}</p>

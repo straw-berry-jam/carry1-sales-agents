@@ -257,4 +257,132 @@ specs/
 - Update templates that depend on this constitution.
 - Version and date significant changes.
 
-**Version**: 1.0.0 | **Updated**: 2026-02-08 | **Source**: /bootstrap
+---
+
+## Build History & Architectural Decisions
+
+*Sessions: March 8–10, 2026. Full detail in `docs/build-log.md`.*
+
+---
+
+### Knowledge Base Schema
+
+The KB was rebuilt from a Q&A schema (interview coach era) to a 7-category document schema. Do not revert to the old schema.
+
+**7 categories**: `methodology`, `buyer_persona`, `account_intelligence`, `sei_products`, `sei_capabilities`, `case_studies`, `evaluation_criteria`
+
+**Agent scoping**: All documents live in one table. A document's `agents` array (text[]) scopes it to specific agents. Documents with `agents = ['all']` are returned for every agent. The retrieval filter is:
+```sql
+WHERE d.status = 'published'
+  AND (c.agents @> ARRAY['all']::text[]
+       OR c.agents @> ARRAY[$2]::text[])
+```
+
+**Known issue**: `lib/coaching.ts` uses `prisma.agent.findFirst({ where: { status: 'active' } })` to resolve agentId for RAG. This picks the first active agent alphabetically and will break when multiple agents are active. Fix: pass agentId from session context rather than resolving from DB. Do not build additional agents without addressing this first.
+
+---
+
+### Scoring Architecture
+
+Scoring is a separate Claude API call in `/api/score-session` — not done by the voice agent. The scoring rubric is stored as a KB document (`category = 'evaluation_criteria'`, assigned to the relevant agent) rather than hardcoded in `lib/scoringPrompts.ts`. This allows rubric updates via the admin panel without a code deploy.
+
+**Fallback**: When no eval criteria docs are found (count: 0), fall back to `FALLBACK_RUBRIC` in `lib/scoringPrompts.ts` and log a `warn` event to `system_events`. This fallback is not yet implemented — pending ticket.
+
+**Overall score**: Computed client-side from the four dimension scores. Do not use the `overall` field from the Claude API response — it is unreliable.
+```ts
+const avg = (situation + problem + implication + need_payoff) / 4;
+return Math.round((avg / 5) * 100);
+```
+
+**Scoring JSON schema**:
+```json
+{
+  "scores": {
+    "situation":   { "score": 1–5, "commentary": "" },
+    "problem":     { "score": 1–5, "commentary": "" },
+    "implication": { "score": 1–5, "commentary": "" },
+    "need_payoff": { "score": 1–5, "commentary": "" },
+    "overall": 1–5
+  },
+  "strengths": ["", ""],
+  "growth_areas": ["", ""],
+  "next_step_quality": "Yes | Partial | No",
+  "next_step_note": "",
+  "headline": ""
+}
+```
+
+---
+
+### Voice Transcript Pipeline
+
+After a session ends, the transcript is fetched from ElevenLabs and written to `localStorage.spinTranscript` before navigating to the scorecard.
+
+**Getting the conversation_id**: ElevenLabs embeds it as a query param in the signed WebSocket URL — not as a top-level field. Always extract it like this:
+```ts
+const url = new URL(signedUrl);
+const conversationId = url.searchParams.get('conversation_id') ?? undefined;
+```
+
+**Polling strategy**: ElevenLabs transcript status transitions: `in-progress → processing → done`. Both `in-progress` and `processing` must return HTTP 202 so the client keeps polling. Only `status: done` with a non-empty transcript array is a success.
+
+- 3s initial delay before first poll
+- Up to 8 polls at 2s intervals (~19s max wait)
+- Return 202 for `in-progress` OR `processing`; return 200 only when `done` with transcript
+
+---
+
+### System Health Logging
+
+`system_events` table in Supabase. Utility: `lib/logSystemEvent.ts`. Never throws — fails silently with `console.warn`.
+
+Currently wired into `/api/score-session` only. Pending: add to `/api/elevenlabs-signed-url`, `/api/onboarding/session`, `/api/voice-llm/chat/completions`.
+
+**Event types**:
+- `eval_docs_fallback` (warn) — no eval criteria docs found
+- `eval_docs_retrieval_error` (error) — Prisma query failed
+- `elevenlabs_signed_url_failure` (error)
+- `onboarding_session_failure` (error)
+- `voice_llm_failure` (error)
+- `rag_injection_empty` (warn) — RAG returned zero docs for voice session
+
+---
+
+### Agent Type
+
+`agent_type` is a Postgres enum on the `agents` table: `Guide`, `Analyst`, `Builder`, `Orchestrator`. Required field, default `Guide`. See migration `20260309150000_agent_type_nullable_for_new_agents.sql` and the Gotchas section above.
+
+---
+
+### Known ElevenLabs / Voice Gotchas
+
+These cause silent WebSocket disconnects with no useful error message:
+
+- **`dynamicVariables` parameter** — if malformed or contains unrecognized keys, session connects then immediately disconnects
+- **Unresolved `{{variable}}` placeholders** in the ElevenLabs First Message — must be fully resolved before session start
+- **Vercel Password Protection** — intercepts API calls on preview deployments; disable or bypass for all voice and transcript routes
+
+---
+
+### Active Agent Reference
+
+| Agent | UUID | ElevenLabs ID |
+|---|---|---|
+| SPIN Sales Coach (Marcus Webb) | `f73fc51c-6544-4278-94e6-0fdf00d766cf` | `agent_3901kgz4a3s5f15vy08c02s2v13c` |
+
+**SPIN Eval Criteria KB doc**: `8a89e77d-45bb-493d-afcb-ee503767ba71`  
+**Supabase pooler host**: `aws-0-us-west-2.pooler.supabase.com` — always use pooler, direct host is unreachable
+
+---
+
+### Pending Items (as of March 10, 2026)
+
+- [ ] Jordan Ellis (AI Assessment Coach) — Cursor prompt written, not built
+- [ ] `/coach → /guide` route rename — Cursor prompt written, not confirmed deployed
+- [ ] Fallback rubric when eval criteria count: 0
+- [ ] System health logging on 3 remaining routes
+- [ ] RAG agentId fix for multi-agent support (`findFirst` → session-scoped)
+
+---
+
+**Version**: 1.1.0 | **Updated**: 2026-03-10 | **Source**: /bootstrap
