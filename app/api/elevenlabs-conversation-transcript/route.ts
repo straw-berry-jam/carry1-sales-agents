@@ -62,7 +62,7 @@ export async function POST(req: NextRequest) {
     }
 
     const data = JSON.parse(text);
-    if (data.status === 'processing') {
+    if (data.status === 'processing' || data.status === 'in-progress') {
       return NextResponse.json({ transcript: '' }, { status: 202 });
     }
     const rawTranscript: TranscriptEntry[] = Array.isArray(data.transcript) ? data.transcript : [];
