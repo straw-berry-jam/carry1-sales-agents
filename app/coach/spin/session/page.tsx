@@ -250,6 +250,7 @@ function SpinSessionPage() {
       const maxAttempts = 8;
       const delayMs = 2000;
       try {
+        await new Promise((r) => setTimeout(r, 3000));
         let result: { transcript: string; status: number } | null = null;
         for (let attempt = 1; attempt <= maxAttempts; attempt++) {
           result = await fetchOnce();

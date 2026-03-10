@@ -73,6 +73,7 @@ export default function SpinScorecardPage() {
   useEffect(() => {
     const sessionType = typeof window !== 'undefined' ? window.localStorage.getItem('spinSessionType') : null;
     const transcript = typeof window !== 'undefined' ? window.localStorage.getItem('spinTranscript') : null;
+    console.log('[scorecard] transcript from localStorage — length:', transcript?.length, '| preview:', transcript?.slice(0, 200));
 
     const trimmedTranscript = transcript?.trim() ?? '';
     const hasValidTranscript = trimmedTranscript.length >= 50;
@@ -116,6 +117,7 @@ export default function SpinScorecardPage() {
     setErrorMessage('');
     const sessionType = typeof window !== 'undefined' ? window.localStorage.getItem('spinSessionType') : null;
     const transcript = typeof window !== 'undefined' ? window.localStorage.getItem('spinTranscript') : null;
+    console.log('[scorecard] transcript from localStorage — length:', transcript?.length, '| preview:', transcript?.slice(0, 200));
     const trimmedTranscript = transcript?.trim() ?? '';
     const validSessionTypes = VALID_SESSION_TYPES as unknown as string[];
     const normalizedSessionType =
