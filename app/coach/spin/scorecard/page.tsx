@@ -286,7 +286,7 @@ export default function SpinScorecardPage() {
                 </motion.div>
                 <h1 className="text-5xl font-bold mb-4">{agentConfig.scorecard.title}</h1>
                 <p className="text-xl text-white/60">{scorecard.headline}</p>
-                <div className="absolute top-0 right-0 hidden md:block">
+                <div className="absolute top-0 right-0 hidden">
                   <button type="button" className="btn-secondary py-2 px-6 flex items-center gap-2 text-sm">
                     <Download className="w-4 h-4" />
                     Download PDF
@@ -388,7 +388,7 @@ export default function SpinScorecardPage() {
                 <Link href="/coach/spin" className="btn-primary px-12 py-4 text-center">
                   Practice Again
                 </Link>
-                <button type="button" className="btn-secondary px-12 py-4 flex items-center justify-center gap-2 md:hidden">
+                <button type="button" className="btn-secondary px-12 py-4 flex items-center justify-center gap-2 hidden">
                   <Download className="w-5 h-5" />
                   Download PDF
                 </button>

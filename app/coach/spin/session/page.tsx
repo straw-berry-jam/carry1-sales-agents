@@ -711,7 +711,7 @@ function SpinSessionPage() {
                   { letter: 'N', name: 'Need-Payoff', tip: 'Let them say the value. Ask what solving this would mean — don\'t tell them.' },
                 ].map(({ letter, name, tip }) => (
                   <li key={letter} className="flex items-start gap-3 text-sm">
-                    <span className="font-semibold text-plum flex-shrink-0" aria-hidden>{letter}</span>
+                    <span className="font-semibold text-white flex-shrink-0" aria-hidden>{letter}</span>
                     <div>
                       <span className="font-bold text-white/90">{name}</span>
                       <p className="text-xs text-white/60 mt-0.5 leading-snug">{tip}</p>

@@ -149,7 +149,7 @@ export default function ScorecardPage() {
                 <h1 className="text-5xl font-bold mb-4">{agentConfig.scorecard.title}</h1>
                 <p className="text-xl text-white/60">Excellent work! You demonstrated strong product knowledge and rapport building.</p>
                 
-                <div className="absolute top-0 right-0 hidden md:block">
+                <div className="absolute top-0 right-0 hidden">
                   <button className="btn-secondary py-2 px-6 flex items-center gap-2 text-sm">
                     <Download className="w-4 h-4" />
                     Download PDF
@@ -229,7 +229,7 @@ export default function ScorecardPage() {
                 <Link href="/coach" className="btn-primary px-12 py-4 text-center">
                   Practice Again
                 </Link>
-                <button className="btn-secondary px-12 py-4 flex items-center justify-center gap-2 md:hidden">
+                <button className="btn-secondary px-12 py-4 flex items-center justify-center gap-2 hidden">
                   <Download className="w-5 h-5" />
                   Download PDF
                 </button>
