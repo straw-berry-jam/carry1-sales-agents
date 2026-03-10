@@ -285,7 +285,7 @@ function SpinSessionPage() {
   }, [isFetchingTranscript]);
 
   useEffect(() => {
-    console.log('[SPIN session] voiceConversationId (state) changed:', voiceConversationId ?? 'null/undefined');
+    console.log('[SPIN] voiceConversationId state changed to:', voiceConversationId);
   }, [voiceConversationId]);
 
   useEffect(() => {
@@ -555,7 +555,10 @@ function SpinSessionPage() {
                 <VoiceCoach
                   onboardingData={onboardingData}
                   demoEnded={demoEnded}
-                  onConversationId={setVoiceConversationId}
+                  onConversationId={(id) => {
+                    console.log('[SPIN] onConversationId callback fired with:', id);
+                    setVoiceConversationId(id);
+                  }}
                 />
               </div>
 

@@ -50,11 +50,13 @@ export async function POST(req: NextRequest) {
     const data = await response.json();
     console.log('[elevenlabs-signed-url] ElevenLabs response body:', JSON.stringify(data));
     console.log('[elevenlabs-signed-url] conversation_id present:', !!data.conversation_id, data.conversation_id ?? '(missing)');
-    return NextResponse.json({
+    const responseBody = {
       signedUrl: data.signed_url,
       sessionId: sessionId,
       ...(data.conversation_id && { conversationId: data.conversation_id }),
-    });
+    };
+    console.log('[signed-url] full response being returned to client:', JSON.stringify(responseBody));
+    return NextResponse.json(responseBody);
 
   } catch (error: any) {
     console.error('Error in /api/elevenlabs-signed-url:', error);
