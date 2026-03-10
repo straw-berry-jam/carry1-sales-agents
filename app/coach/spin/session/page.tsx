@@ -230,16 +230,19 @@ function SpinSessionPage() {
 
   /** Navigate to scorecard. In voice mode with conversation ID, fetch transcript from ElevenLabs first and store in localStorage. Retries once after 2s on 404 or empty transcript. */
   const handleGoToScorecard = async () => {
+    console.log('[SPIN End Session] voiceConversationId:', voiceConversationId ?? 'null/undefined', mode === 'voice' && (voiceConversationId == null) ? '— ElevenLabs transcript fetch will be skipped.' : '');
     if (mode === 'voice' && voiceConversationId) {
       setIsFetchingTranscript(true);
       setTranscriptLoadingMessageIndex(0);
       const fetchOnce = async (): Promise<{ transcript: string; status: number }> => {
+        console.log('[SPIN transcript fetch] voiceConversationId before fetch:', voiceConversationId);
         const res = await fetch('/api/elevenlabs-conversation-transcript', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ conversationId: voiceConversationId }),
         });
         const data = await res.json();
+        console.log('[SPIN transcript fetch] raw response from /api/elevenlabs-conversation-transcript:', { status: res.status, body: data });
         const transcript = (data.transcript ?? '').trim();
         return { transcript, status: res.status };
       };
@@ -255,6 +258,7 @@ function SpinSessionPage() {
         if (!result.transcript) {
           throw new Error('Conversation transcript is not ready yet. Please try again in a moment.');
         }
+        console.log('[SPIN transcript] final transcript written to localStorage.spinTranscript — length:', result.transcript.length, '| preview (first 500 chars):', result.transcript.slice(0, 500));
         if (typeof window !== 'undefined') {
           window.localStorage.setItem('spinTranscript', result.transcript);
         }
@@ -278,6 +282,10 @@ function SpinSessionPage() {
     }, 2000);
     return () => clearInterval(interval);
   }, [isFetchingTranscript]);
+
+  useEffect(() => {
+    console.log('[SPIN session] voiceConversationId (state) changed:', voiceConversationId ?? 'null/undefined');
+  }, [voiceConversationId]);
 
   useEffect(() => {
     if (mode === 'voice' && recognition) {

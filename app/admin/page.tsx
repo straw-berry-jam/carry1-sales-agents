@@ -98,7 +98,7 @@ function AdminPageContent() {
 
       {/* Tab content */}
       <div className="max-w-7xl mx-auto">
-        {activeTab === 'kb' && <KnowledgeBaseTab />}
+        {activeTab === 'kb' && <KnowledgeBaseTab onNavigateToSystemHealth={() => setTab('system-health')} />}
         {activeTab === 'test' && <TestConsoleTab />}
         {activeTab === 'prompt' && <PromptControlTab />}
         {activeTab === 'system-health' && <SystemHealthTab />}

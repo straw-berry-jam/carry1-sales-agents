@@ -48,16 +48,18 @@ export async function POST(req: NextRequest) {
       }
     );
 
+    const bodyText = await response.text();
+    console.log('[elevenlabs-conversation-transcript] ElevenLabs raw response — status:', response.status, '| body (first 500 chars):', bodyText.slice(0, 500));
+
     if (!response.ok) {
-      const errText = await response.text();
-      console.error('[elevenlabs-conversation-transcript] ElevenLabs API error:', response.status, errText);
+      console.error('[elevenlabs-conversation-transcript] ElevenLabs API error:', response.status, bodyText);
       return NextResponse.json(
         { error: response.status === 404 ? 'Conversation not found or transcript not ready yet.' : 'Failed to fetch transcript.' },
         { status: response.status === 404 ? 404 : 502 }
       );
     }
 
-    const data = await response.json();
+    const data = JSON.parse(bodyText);
     const rawTranscript: TranscriptEntry[] = Array.isArray(data.transcript) ? data.transcript : [];
 
     // Format to match text-mode transcript: "Coach: ... \n\n Rep: ..."

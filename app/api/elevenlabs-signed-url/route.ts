@@ -48,6 +48,8 @@ export async function POST(req: NextRequest) {
     }
 
     const data = await response.json();
+    console.log('[elevenlabs-signed-url] ElevenLabs response body:', JSON.stringify(data));
+    console.log('[elevenlabs-signed-url] conversation_id present:', !!data.conversation_id, data.conversation_id ?? '(missing)');
     return NextResponse.json({
       signedUrl: data.signed_url,
       sessionId: sessionId,

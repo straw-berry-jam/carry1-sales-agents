@@ -82,7 +82,12 @@ function getCategoryStyle(category: string) {
   return CATEGORY_COLORS[category] ?? defaultCategoryColors;
 }
 
-export default function KnowledgeBaseTab() {
+export interface KnowledgeBaseTabProps {
+  /** When provided, "View System Health" in the banner calls this instead of using Link (fixes tab switch when used in admin). */
+  onNavigateToSystemHealth?: () => void;
+}
+
+export default function KnowledgeBaseTab({ onNavigateToSystemHealth }: KnowledgeBaseTabProps = {}) {
   const [documents, setDocuments] = useState<KBDocumentRecord[]>([]);
   const [agents, setAgents] = useState<AgentOption[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -342,9 +347,19 @@ export default function KnowledgeBaseTab() {
           <div className="mb-6 flex items-center justify-between gap-4 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-amber-800">
             <p className="font-medium">
               System warning: retrieval issues detected in the last 24 hours.{' '}
-              <Link href="/admin?tab=system-health" className="underline font-semibold hover:text-amber-900">
-                View System Health →
-              </Link>
+              {onNavigateToSystemHealth ? (
+                <button
+                  type="button"
+                  onClick={onNavigateToSystemHealth}
+                  className="underline font-semibold hover:text-amber-900 text-left"
+                >
+                  View System Health →
+                </button>
+              ) : (
+                <Link href="/admin?tab=system-health" className="underline font-semibold hover:text-amber-900">
+                  View System Health →
+                </Link>
+              )}
             </p>
             <button
               type="button"
