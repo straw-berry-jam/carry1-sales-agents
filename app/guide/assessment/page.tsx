@@ -27,7 +27,7 @@ export default function AssessmentOnboardingPage() {
     firstName: '',
     email: '',
     knowledgeLevel: '' as '' | 'new' | 'familiar' | 'expert',
-    interactionMode: 'voice' as 'voice' | 'text',
+    interactionMode: '' as '' | 'voice' | 'text',
   });
 
   const [micTestState, setMicTestState] = useState<'idle' | 'testing' | 'success' | 'error'>('idle');
@@ -43,17 +43,7 @@ export default function AssessmentOnboardingPage() {
       setMicTestState('success');
     } catch (err) {
       setMicTestState('error');
-      if (err instanceof Error) {
-        if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
-          setMicErrorMessage('Microphone access denied. Please allow microphone access in your browser settings.');
-        } else if (err.name === 'NotFoundError' || err.name === 'DevicesNotFoundError') {
-          setMicErrorMessage('No microphone found. Please connect a microphone and try again.');
-        } else {
-          setMicErrorMessage('Could not access microphone. Please check your device settings.');
-        }
-      } else {
-        setMicErrorMessage('Could not access microphone. Please check your device settings.');
-      }
+      setMicErrorMessage('Microphone not detected. Check your browser permissions.');
     }
   };
 
@@ -68,7 +58,7 @@ export default function AssessmentOnboardingPage() {
     }
   }, [isSyncing, loadingPhrases.length]);
 
-  const isFormValid = formData.firstName.trim() && formData.email.trim() && formData.knowledgeLevel;
+  const isFormValid = formData.firstName.trim() && formData.email.trim() && formData.knowledgeLevel && formData.interactionMode;
 
   const handleStart = async () => {
     if (!isFormValid) return;
