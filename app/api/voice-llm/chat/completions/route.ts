@@ -68,14 +68,15 @@ export async function POST(req: NextRequest) {
     const storedContext = await getLatestSessionContext();
     
     if (storedContext) {
-      console.log('Found latest voice session context');
+      console.log('[Voice LLM] Found stored context:', JSON.stringify(storedContext, null, 2));
     } else {
-      console.log('No stored context found, using dynamic variables');
+      console.log('[Voice LLM] No stored context found, using dynamic variables');
     }
 
     // Resolve agentId — prefer stored context, fall back to hardcoded SPIN coach
     const agentId = storedContext?.agentId || 'f73fc51c-6544-4278-94e6-0fdf00d766cf';
-    console.log('[Voice LLM] Using agentId:', agentId);
+    console.log('[Voice LLM] agentId received:', agentId);
+    console.log('[Voice LLM] agentId source:', storedContext?.agentId ? 'stored context' : 'fallback (SPIN)');
 
     // Extract context — prefer stored context, fall back to dynamic variables
     const sessionContext = {

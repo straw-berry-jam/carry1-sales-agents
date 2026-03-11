@@ -33,14 +33,16 @@ export async function POST(req: NextRequest) {
 
     // Store the context in memory, keyed by sessionId
     // Include databaseAgentId so voice LLM route can resolve correct agent prompt
-    await storeSessionContext(sessionId, {
+    const contextToStore = {
       resumeText: body.resumeText || '',
       role: body.target_role || 'Software Engineer',
       company: body.target_company || '',
       interviewType: body.interviewType || 'General',
       preferredName: body.user_name || 'Candidate',
       agentId: databaseAgentId,
-    });
+    };
+    console.log('[Signed URL] Storing context with agentId:', databaseAgentId);
+    await storeSessionContext(sessionId, contextToStore);
 
     console.log('Stored voice session context for sessionId:', sessionId);
     console.log('Fetching signed URL for agent:', elevenLabsAgentId);
