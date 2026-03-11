@@ -202,7 +202,7 @@ export async function POST(request: NextRequest) {
     console.log('Assessment summary: raw API response length:', responseText.length);
 
     const stripped = prepareForJsonParse(responseText);
-    let summary: unknown;
+    let summary: any;
 
     try {
       summary = JSON.parse(stripped);
@@ -212,6 +212,13 @@ export async function POST(request: NextRequest) {
         { error: 'Summary response could not be parsed' },
         { status: 500 }
       );
+    }
+
+    // Enforce confidence label constraint — must be exactly one of these values
+    const VALID_CONFIDENCE_VALUES = ['Building', 'Developing', 'Strong'] as const;
+    if (summary?.confidence && !VALID_CONFIDENCE_VALUES.includes(summary.confidence)) {
+      console.warn('[assessment-summary] invalid confidence value from model:', summary.confidence);
+      summary.confidence = 'Building'; // Default to Building if invalid
     }
 
     return NextResponse.json(summary);
