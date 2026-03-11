@@ -163,7 +163,9 @@ export async function* streamCoachResponse(params: CoachResponseParams) {
   const { role, company, interviewType, stage, conversationHistory } = sessionContext;
 
   try {
-    const agent = await prisma.agent.findFirst({ where: { status: 'active' } });
+    const agent = sessionContext.coachId
+      ? await prisma.agent.findFirst({ where: { id: sessionContext.coachId } })
+      : await prisma.agent.findFirst({ where: { status: 'active' } });
     const agentId = agent?.id ?? '';
 
     // 1. Retrieve relevant context from the knowledge base (RAG)
