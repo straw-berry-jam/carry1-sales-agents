@@ -6,7 +6,6 @@ import { useRouter } from 'next/navigation';
 import { useState, useEffect, useRef, Suspense } from 'react';
 import { ChevronLeft, Send, Mic, MicOff, Loader2, BookOpen, Lightbulb, Headphones, Keyboard } from 'lucide-react';
 import { AssessmentVoiceCoach } from '@/components/AssessmentVoiceCoach';
-import DemoBanner from '@/components/DemoBanner';
 
 const DEMO_LIMIT_MS = 300_000; // 5 minutes
 
@@ -180,7 +179,6 @@ function AssessmentSessionPage() {
 
   return (
     <main className="min-h-screen bg-textured-gradient px-6 py-20">
-      <DemoBanner />
       <div className="max-w-7xl mx-auto">
         <header className="flex items-center justify-between mb-16">
           <Link href="/guide" className="text-2xl font-bold tracking-tighter">

@@ -4,8 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { ChevronLeft, Loader2, Mic, MessageSquare, Briefcase } from 'lucide-react';
-import DemoBanner from '@/components/DemoBanner';
+import { ChevronLeft, Loader2, Mic, MessageSquare, Briefcase, CheckCircle2, XCircle } from 'lucide-react';
 
 const KNOWLEDGE_LEVELS = [
   { value: 'new', label: 'New to it', description: 'Just getting started with AI Assessment' },
@@ -30,6 +29,33 @@ export default function AssessmentOnboardingPage() {
     knowledgeLevel: '' as '' | 'new' | 'familiar' | 'expert',
     interactionMode: 'voice' as 'voice' | 'text',
   });
+
+  const [micTestState, setMicTestState] = useState<'idle' | 'testing' | 'success' | 'error'>('idle');
+  const [micErrorMessage, setMicErrorMessage] = useState('');
+
+  const handleTestMicrophone = async () => {
+    setMicTestState('testing');
+    setMicErrorMessage('');
+    
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      stream.getTracks().forEach(track => track.stop());
+      setMicTestState('success');
+    } catch (err) {
+      setMicTestState('error');
+      if (err instanceof Error) {
+        if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
+          setMicErrorMessage('Microphone access denied. Please allow microphone access in your browser settings.');
+        } else if (err.name === 'NotFoundError' || err.name === 'DevicesNotFoundError') {
+          setMicErrorMessage('No microphone found. Please connect a microphone and try again.');
+        } else {
+          setMicErrorMessage('Could not access microphone. Please check your device settings.');
+        }
+      } else {
+        setMicErrorMessage('Could not access microphone. Please check your device settings.');
+      }
+    }
+  };
 
   useEffect(() => {
     if (isSyncing) {
@@ -65,7 +91,6 @@ export default function AssessmentOnboardingPage() {
 
   return (
     <main className="min-h-screen bg-textured-gradient flex flex-col items-center justify-center px-6 py-20">
-      <DemoBanner />
       <div className="w-full max-w-2xl">
         <div className="flex justify-between items-center mb-12">
           <Link href="/guide" className="inline-flex items-center text-white/60 hover:text-white transition-colors group">
@@ -136,7 +161,7 @@ export default function AssessmentOnboardingPage() {
                     <span className="text-xs font-semibold uppercase tracking-wider text-white/60">AI Assessment & Strategy</span>
                   </div>
                   <h1 className="text-3xl font-bold mb-2">Learn the AI Assessment Product</h1>
-                  <p className="text-white/60">Practice articulating value, handling objections, and positioning against competitors.</p>
+                  <p className="text-white/60">Gain a deeper understanding of the product, practice articulating value and positioning.</p>
                 </div>
 
                 <div className="space-y-6 flex-grow">
@@ -223,6 +248,48 @@ export default function AssessmentOnboardingPage() {
                       </button>
                     </div>
                   </div>
+
+                  {formData.interactionMode === 'voice' && (
+                    <div className="p-4 rounded-xl bg-white/5 border border-white/10">
+                      {micTestState === 'idle' && (
+                        <button
+                          type="button"
+                          onClick={handleTestMicrophone}
+                          className="flex items-center gap-2 text-sm text-white/60 hover:text-white transition-colors"
+                        >
+                          <Mic className="w-4 h-4" />
+                          Test Microphone
+                        </button>
+                      )}
+                      {micTestState === 'testing' && (
+                        <div className="flex items-center gap-2 text-sm text-white/60">
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                          Checking microphone access...
+                        </div>
+                      )}
+                      {micTestState === 'success' && (
+                        <div className="flex items-center gap-2 text-sm text-green-400">
+                          <CheckCircle2 className="w-4 h-4" />
+                          Microphone ready
+                        </div>
+                      )}
+                      {micTestState === 'error' && (
+                        <div className="space-y-2">
+                          <div className="flex items-center gap-2 text-sm text-red-400">
+                            <XCircle className="w-4 h-4" />
+                            {micErrorMessage}
+                          </div>
+                          <button
+                            type="button"
+                            onClick={handleTestMicrophone}
+                            className="text-xs text-white/40 hover:text-white/60 underline transition-colors"
+                          >
+                            Try again
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </div>
 
                 <div className="pt-6">
