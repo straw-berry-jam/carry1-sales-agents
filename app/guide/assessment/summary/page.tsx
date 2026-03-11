@@ -330,7 +330,7 @@ export default function AssessmentSummaryPage() {
               {/* Action Buttons */}
               <div className="flex flex-col sm:flex-row gap-4 justify-center pt-8 border-t border-white/10">
                 <Link href="/guide/assessment" className="btn-primary px-12 py-4 text-center">
-                  Continue Learning
+                  Restart Session
                 </Link>
                 <Link href="/guide" className="btn-secondary px-12 py-4 text-center">
                   Return to Internal Tools
