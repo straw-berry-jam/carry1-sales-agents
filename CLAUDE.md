@@ -388,6 +388,26 @@ Check an existing working agent (e.g. Marcus Webb / SPIN Sales Coach) in ElevenL
 
 ---
 
+### Voice LLM — Wrong Agent Prompt Served (Multiple Active Agents)
+
+When multiple agents are active, the voice LLM pipeline can serve the wrong agent's system prompt. This is easy to miss because the agent connects and responds — just with the wrong persona.
+
+**Root causes found and fixed:**
+
+1. `streamCoachResponse()` in `lib/coaching.ts` was doing `prisma.agent.findFirst({ where: { status: 'active' } })` — picks the first active agent alphabetically, ignoring which agent the session is for. **Fixed**: now uses `sessionContext.coachId` to look up the correct agent.
+
+2. `agent.prompt` from the database was never used — `streamCoachResponse()` was building the system prompt from a hardcoded `agentConfig` template even after looking up the correct agent. **Fixed**: now uses `agent.prompt` directly, falling back to the template only when `agent.prompt` is null.
+
+3. `getLatestSessionContext()` fetches the most recent session from `voice_sessions` by `created_at` — if a different agent's session ran more recently, the wrong context is returned. **Mitigation**: session context now includes `agentId` stored at signed URL creation time.
+
+**When adding a new agent, always verify:**
+- The signed URL route stores the correct `agentId` in session context
+- `streamCoachResponse()` is receiving `coachId` in `sessionContext`
+- The agent has a system prompt saved in Prompt Control with status Active
+- Run a test session and check Vercel logs for `[coaching] agent resolved:` to confirm the correct agent name appears
+
+---
+
 ### Active Agent Reference
 
 | Agent | UUID | ElevenLabs ID |
@@ -444,11 +464,13 @@ The Assessment Agent follows the same architecture as SPIN but produces a **lear
 
 - [x] ~~Jordan Ellis (AI Assessment Coach)~~ — Built as SEI-38 (pending manual setup)
 - [x] ~~`/guide` route structure~~ — Created in SEI-37, coexists with `/coach`
+- [x] ~~RAG agentId fix for multi-agent support~~ — Fixed: `streamCoachResponse()` now uses `sessionContext.coachId`
+- [x] ~~Voice LLM agent.prompt fix~~ — Fixed: now uses database prompt instead of hardcoded template
 - [ ] Fallback rubric when eval criteria count: 0 — Implemented for Assessment, pending for SPIN
 - [ ] System health logging on 3 remaining routes
-- [ ] RAG agentId fix for multi-agent support (`findFirst` → session-scoped)
 - [ ] Assessment Agent manual setup (Supabase + ElevenLabs + env vars)
 - [ ] Assessment eval criteria KB document
+- [ ] Remove debug logging from voice LLM pipeline after confirming fix
 
 ---
 
