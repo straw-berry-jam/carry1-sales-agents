@@ -356,11 +356,21 @@ Currently wired into `/api/score-session` only. Pending: add to `/api/elevenlabs
 
 ### Known ElevenLabs / Voice Gotchas
 
-These cause silent WebSocket disconnects with no useful error message:
+**Silent Disconnect on Session Start** — Any of the following will cause ElevenLabs to connect and immediately disconnect with no useful error message. This affects every voice agent on the platform.
 
-- **`dynamicVariables` parameter** — if malformed or contains unrecognized keys, session connects then immediately disconnects
-- **Unresolved `{{variable}}` placeholders** in the ElevenLabs First Message — must be fully resolved before session start
-- **Vercel Password Protection** — intercepts API calls on preview deployments; disable or bypass for all voice and transcript routes
+| Cause | Prevention |
+|-------|------------|
+| `dynamicVariables` passed to `startSession()` | Never pass `dynamicVariables` unless every variable is fully resolved at call time. Malformed or unrecognized keys cause silent WebSocket disconnect. |
+| Unresolved `{{variable}}` placeholders in First Message | All template variables must be resolved before session starts. If no dynamic first message is needed, leave First Message blank in ElevenLabs and handle opening line via system prompt instead. |
+| Missing or incorrect `agent_type` in signed URL request | The `/api/elevenlabs-signed-url` route uses `agent_type` to select the correct ElevenLabs agent ID. If missing or mismatched, the wrong agent connects or the request fails silently. |
+| Vercel Password Protection on preview deployments | Intercepts API calls; disable or bypass for all voice and transcript routes, or test on production only. |
+
+**New Voice Agent Setup Checklist**:
+1. Leave `dynamicVariables` out of `startSession()` entirely unless confirmed needed
+2. Leave First Message blank in ElevenLabs — set opening behavior in system prompt
+3. Confirm `agent_type` is passed in the signed URL request body
+4. Confirm the corresponding env var is set in both `.env.local` and Vercel
+5. Check Vercel function logs after first connection attempt to confirm correct agent ID is resolving
 
 ---
 
