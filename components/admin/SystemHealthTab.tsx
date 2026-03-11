@@ -46,6 +46,19 @@ function SeverityBadge({ severity }: { severity: string }) {
   return <span className={`${base} bg-gray-200 text-gray-700`}>info</span>;
 }
 
+const EVENT_TYPE_DESCRIPTIONS: Record<string, string> = {
+  rag_injection_empty: 'No Knowledge Base results during session',
+  eval_docs_fallback: 'Scoring rubric missing, used fallback',
+  eval_docs_retrieval_error: 'Scoring rubric failed to load',
+  elevenlabs_signed_url_failure: 'Voice service connection failed',
+  onboarding_session_failure: 'Session failed to start',
+  voice_llm_failure: 'AI coach stopped responding',
+};
+
+function getEventDescription(eventType: string): string {
+  return EVENT_TYPE_DESCRIPTIONS[eventType] ?? eventType;
+}
+
 export default function SystemHealthTab() {
   const [data, setData] = useState<SystemEventsResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -113,10 +126,10 @@ export default function SystemHealthTab() {
                     <tr className="border-b border-plum/10 bg-plum/5">
                       <th className="text-left py-3 px-4 font-semibold text-gray-700">Time</th>
                       <th className="text-left py-3 px-4 font-semibold text-gray-700">Severity</th>
-                      <th className="text-left py-3 px-4 font-semibold text-gray-700">Route</th>
-                      <th className="text-left py-3 px-4 font-semibold text-gray-700">Event Type</th>
+                      <th className="text-left py-3 px-4 font-semibold text-gray-700">Description</th>
                       <th className="text-left py-3 px-4 font-semibold text-gray-700">Agent</th>
                       <th className="text-left py-3 px-4 font-semibold text-gray-700">Message</th>
+                      <th className="text-left py-3 px-4 font-medium text-gray-400 text-xs">Route</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -133,12 +146,12 @@ export default function SystemHealthTab() {
                           <td className="py-2 px-4">
                             <SeverityBadge severity={row.severity} />
                           </td>
-                          <td className="py-2 px-4 text-gray-700 font-mono text-xs">{row.route}</td>
-                          <td className="py-2 px-4 text-gray-700">{row.event_type}</td>
+                          <td className="py-2 px-4 text-gray-700">{getEventDescription(row.event_type)}</td>
                           <td className="py-2 px-4 text-gray-600 font-mono text-xs truncate max-w-[8rem]" title={row.agent_id ?? ''}>
                             {row.agent_id ?? '—'}
                           </td>
                           <td className="py-2 px-4 text-gray-700">{row.message}</td>
+                          <td className="py-2 px-4 text-gray-400 font-mono text-xs">{row.route}</td>
                         </tr>
                       ))
                     )}
