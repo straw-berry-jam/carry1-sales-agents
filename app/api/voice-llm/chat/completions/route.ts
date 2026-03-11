@@ -1,6 +1,7 @@
 import { NextRequest } from 'next/server';
 import { streamCoachResponse, Message } from '@/lib/coaching';
 import { logSystemEvent } from '@/lib/logSystemEvent';
+import prisma from '@/lib/prisma';
 
 export async function GET() {
   return new Response('OK', { status: 200 });
@@ -77,6 +78,12 @@ export async function POST(req: NextRequest) {
     const agentId = storedContext?.agentId || 'f73fc51c-6544-4278-94e6-0fdf00d766cf';
     console.log('[Voice LLM] agentId received:', agentId);
     console.log('[Voice LLM] agentId source:', storedContext?.agentId ? 'stored context' : 'fallback (SPIN)');
+
+    // Debug: look up agent to confirm it exists
+    const agent = await prisma.agent.findFirst({ where: { id: agentId } });
+    console.log('[Voice LLM] agentId from request:', agentId);
+    console.log('[Voice LLM] agent found:', agent?.name, agent?.id);
+    console.log('[Voice LLM] prompt length:', agent?.prompt?.length);
 
     // Extract context — prefer stored context, fall back to dynamic variables
     const sessionContext = {
