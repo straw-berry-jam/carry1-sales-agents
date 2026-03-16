@@ -163,6 +163,7 @@ export async function* streamCoachResponse(params: CoachResponseParams) {
   const { role, company, interviewType, stage, conversationHistory } = sessionContext;
 
   try {
+    console.log('[coaching] preferredName:', sessionContext.preferredName);
     console.log('[coaching] sessionContext.coachId:', sessionContext.coachId);
     const agent = sessionContext.coachId
       ? await prisma.agent.findFirst({ where: { id: sessionContext.coachId } })
