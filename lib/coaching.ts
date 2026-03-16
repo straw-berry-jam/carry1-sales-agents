@@ -219,10 +219,8 @@ export async function* streamCoachResponse(params: CoachResponseParams) {
       })
       .join('\n\n');
 
-    // 2. Prepare the prompt — use database prompt if available, fall back to hardcoded template
-    const systemPrompt = agent?.prompt
-      ? agent.prompt
-      : `The user's preferred name is ${sessionContext.preferredName || agentConfig.userNoun}. 
+    // 2. Prepare the prompt
+    const systemPrompt = `The user's preferred name is ${sessionContext.preferredName || agentConfig.userNoun}. 
     Use this name throughout the conversation to create a warm, personal experience.
 
     ${agentConfig.persona}
