@@ -1,6 +1,6 @@
 /**
  * PATCH /api/admin/agents/[id]
- * Updates an existing agent. Body: { name?, status?, prompt?, document_tags?, agent_type? }
+ * Updates an existing agent. Body: { name?, status?, prompt?, document_tags?, agent_type?, live_research_enabled? }
  * Name is required when saving (cannot be blank). agent_type must be one of: Guide, Analyst, Builder, Orchestrator.
  */
 
@@ -21,6 +21,7 @@ export async function PATCH(
     prompt?: string | null;
     document_tags?: string[] | null;
     agent_type?: string;
+    live_research_enabled?: boolean;
   };
   try {
     body = await _request.json();
@@ -56,6 +57,7 @@ export async function PATCH(
       prompt: body.prompt,
       document_tags: body.document_tags,
       agent_type: body.agent_type as 'Guide' | 'Analyst' | 'Builder' | 'Orchestrator' | undefined,
+      live_research_enabled: body.live_research_enabled,
     });
     return NextResponse.json(agent);
   } catch (err) {

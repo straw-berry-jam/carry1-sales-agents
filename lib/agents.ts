@@ -1,7 +1,7 @@
 /**
  * Data access for the agents table (Supabase).
  * Used by admin Prompt Control tab API routes only.
- * Table: agents (agent_id, name, prompt, document_tags, status, agent_type, created_at)
+ * Table: agents (agent_id, name, prompt, document_tags, status, agent_type, live_research_enabled, created_at)
  */
 
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
@@ -18,6 +18,7 @@ export type Agent = {
   document_tags: string[] | null;
   status: string;
   agent_type: string;
+  live_research_enabled: boolean;
   created_at: string;
 };
 
@@ -27,6 +28,7 @@ export type AgentUpdatePayload = {
   prompt?: string | null;
   document_tags?: string[] | null;
   agent_type?: AgentType;
+  live_research_enabled?: boolean;
 };
 
 function getSupabase(): SupabaseClient {
@@ -94,7 +96,7 @@ export async function listAgents(): Promise<Agent[]> {
   const supabase = getSupabase();
   const { data, error } = await supabase
     .from('agents')
-    .select('agent_id, name, prompt, document_tags, status, agent_type, created_at')
+    .select('agent_id, name, prompt, document_tags, status, agent_type, live_research_enabled, created_at')
     .in('status', ['active', 'draft'])
     .order('name');
   if (error) throw error;
@@ -124,6 +126,7 @@ export async function updateAgent(
   if (payload.prompt !== undefined) updates.prompt = payload.prompt;
   if (payload.document_tags !== undefined) updates.document_tags = payload.document_tags;
   if (payload.agent_type !== undefined) updates.agent_type = payload.agent_type;
+  if (payload.live_research_enabled !== undefined) updates.live_research_enabled = payload.live_research_enabled;
   if (Object.keys(updates).length === 0) {
     const { data } = await supabase.from('agents').select('*').eq('agent_id', agentId).single();
     if (!data) throw new Error('Agent not found');

@@ -13,6 +13,7 @@ type Agent = {
   document_tags: string[] | null;
   status: string;
   agent_type?: string | null;
+  live_research_enabled?: boolean;
   created_at: string;
 };
 
@@ -46,6 +47,7 @@ export default function PromptControlTab() {
   const [nameError, setNameError] = useState<string | null>(null);
   const [agentType, setAgentType] = useState<AgentType | typeof AGENT_TYPE_UNSET>(AGENT_TYPE_UNSET);
   const [agentTypeError, setAgentTypeError] = useState<string | null>(null);
+  const [liveResearchEnabled, setLiveResearchEnabled] = useState(false);
 
   const selectedAgent = agents.find((a) => a.agent_id === selectedId);
   const prevSelectedIdRef = useRef<string | null>(null);
@@ -96,6 +98,7 @@ export default function PromptControlTab() {
     setAgentType(
       rawType && AGENT_TYPES.includes(rawType as AgentType) ? (rawType as AgentType) : AGENT_TYPE_UNSET
     );
+    setLiveResearchEnabled(selectedAgent.live_research_enabled ?? false);
     setNameError(null);
     setAgentTypeError(null);
     if (prevSelectedIdRef.current !== selectedId) {
@@ -131,6 +134,7 @@ export default function PromptControlTab() {
         agent_type: agentType,
         prompt: prompt || null,
         document_tags: documentTags,
+        live_research_enabled: liveResearchEnabled,
       }),
     })
       .then((res) => {
@@ -145,7 +149,11 @@ export default function PromptControlTab() {
       .then((updated: Agent) => {
         setSaveSuccess(`Saved at ${new Date().toLocaleTimeString()}`);
         setAgents((prev) =>
-          prev.map((a) => (a.agent_id === updated.agent_id ? { ...updated, agent_type: updated.agent_type ?? null } : a))
+          prev.map((a) =>
+            a.agent_id === updated.agent_id
+              ? { ...updated, agent_type: updated.agent_type ?? null, live_research_enabled: updated.live_research_enabled ?? false }
+              : a
+          )
         );
         setSelectedId(updated.agent_id);
       })
@@ -362,6 +370,43 @@ export default function PromptControlTab() {
                 className="w-full px-4 py-2.5 rounded-xl border border-plum/20 text-gray-900 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-plum/30 resize-y"
                 placeholder="Full system prompt for this agent..."
               />
+            </div>
+
+            <div>
+              <label className="text-[10px] font-bold text-plum/40 uppercase tracking-widest mb-2 block">
+                Live Research
+              </label>
+              <div className="flex items-center gap-3">
+                <span
+                  className={`text-sm font-medium ${!liveResearchEnabled ? 'text-plum-dark' : 'text-gray-400'}`}
+                >
+                  Off
+                </span>
+                <button
+                  type="button"
+                  role="switch"
+                  aria-checked={liveResearchEnabled}
+                  aria-label="Live Research: pull live company intel at session start"
+                  onClick={() => setLiveResearchEnabled((v) => !v)}
+                  className={`relative inline-flex h-7 w-12 flex-shrink-0 rounded-full border-2 border-transparent transition-colors focus:outline-none focus:ring-2 focus:ring-plum/40 focus:ring-offset-2 ${
+                    liveResearchEnabled ? 'bg-plum-dark' : 'bg-gray-200'
+                  }`}
+                >
+                  <span
+                    className={`pointer-events-none inline-block h-6 w-6 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-out ${
+                      liveResearchEnabled ? 'translate-x-5' : 'translate-x-0.5'
+                    }`}
+                  />
+                </button>
+                <span
+                  className={`text-sm font-medium ${liveResearchEnabled ? 'text-plum-dark' : 'text-gray-400'}`}
+                >
+                  On
+                </span>
+              </div>
+              <p className="text-gray-500 text-xs font-medium mt-1">
+                Pull live company intel at session start.
+              </p>
             </div>
 
             {saveError && (
