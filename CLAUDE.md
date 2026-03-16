@@ -48,7 +48,7 @@ All features and significant architecture decisions must be specified **before**
 
 Features are traced to Linear tickets for planning and commit linking.
 
-- **Spec naming**: `specs/features/{TICKET-ID}-{feature-slug}.md` (e.g., `ENG-123-dark-mode.md`)
+- **Spec naming**: `specs/features/{TICKET-ID}-{feature-slug}.md`
 - **Spec frontmatter**: Include `linear` (ticket URL) and `ticket` (ticket ID)
 - **Commit format**: `{TICKET-ID} Short description`
 - **Branch naming**: `{ticket-id}-{short-description}` or `{ticket-id}/{description}`
@@ -65,18 +65,18 @@ All new features must follow TDD Red-Green-Refactor cycle:
 2. **🟢 Minimal implementation** — Only write the minimum code to make the test pass
 3. **🟡 Refactor** — Refactor after test passes; keep code clean
 
-**Test Framework**: Jest (or Next.js/Vitest as adopted)  
-**Test Location**: `__tests__/` or colocated with modules  
-**Coverage Requirement**: New code ≥ 80%; core business logic 100%  
+**Test Framework**: Jest (or Next.js/Vitest as adopted)
+**Test Location**: `__tests__/` or colocated with modules
+**Coverage Requirement**: New code ≥ 80%; core business logic 100%
 **TDD Verification**: Git history shows tests precede implementation
 
 ### V. RAG & Knowledge Base Integrity
 
-The coach’s behavior is driven by a knowledge base and RAG retrieval. Changes must preserve retrieval quality and agent consistency.
+The coach's behavior is driven by a knowledge base and RAG retrieval. Changes must preserve retrieval quality and agent consistency.
 
-- **Knowledge base** — Documents and chunks in Supabase (pgvector); types: question, company, best_practice, framework. Admin UI at `/admin` (Knowledge Base tab) for upload, edit, delete.
-- **Retrieval** — OpenAI embeddings, similarity search via `/api/admin/retrieve`; filters (roles, stages, document types) must align with `agentConfig` and Prisma schema.
-- **Agent config** — All copy, scenario types, onboarding, and persona live in `lib/agentConfig.ts`. Do not hardcode coach behavior elsewhere; change config, not scattered strings.
+- **Knowledge base** — Documents and chunks in Supabase (pgvector); 7 categories: `methodology`, `buyer_persona`, `account_intelligence`, `sei_products`, `sei_capabilities`, `case_studies`, `evaluation_criteria`. Admin UI at `/admin` (Knowledge Base tab).
+- **Retrieval** — OpenAI embeddings, similarity search via `/api/admin/retrieve`; filters must align with `agentConfig` and Prisma schema.
+- **Agent config** — All copy, scenario types, onboarding, and persona live in `lib/agentConfig.ts`. Do not hardcode coach behavior elsewhere.
 
 **Verification**: Admin Test Console tab can run retrievals; coach responses reflect KB content; config changes are in one place.
 
@@ -84,28 +84,21 @@ The coach’s behavior is driven by a knowledge base and RAG retrieval. Changes 
 
 The app supports real-time voice (ElevenLabs) and text chat. Both must feel responsive and stay in sync with session state.
 
-- **Voice** — ElevenLabs agent for spoken coaching; session lifecycle (connect, disconnect on demo end) must be explicit and avoid stuck or orphaned connections.
+- **Voice** — ElevenLabs agent for spoken coaching; session lifecycle must be explicit and avoid stuck or orphaned connections.
 - **Text** — Same onboarding and demo flow as voice; shared objectives and scorecard generation.
-- **Session state** — Onboarding data (role, company, scenario type, duration, deal context) is stored and passed to the coach and scorecard; no divergence between voice and text paths.
+- **Session state** — Onboarding data is stored and passed to the coach and scorecard; no divergence between voice and text paths.
 
 **Verification**: Demo completes cleanly in both modes; scorecard reflects the same session; no duplicate or missing steps.
 
 ### VII. Learning from Bugs
 
-When a bug recurs, add **automated prevention**, not just documentation. Aim for continuous improvement toward seamless agentic development.
-
-**Principles**:
-- **Automate over document** — When a bug is fixed, add a check or script that prevents it from recurring. Documentation (Gotchas, BUG-REGISTRY) is necessary but not sufficient.
-- **Systematic over one-off** — Prefer scripts, CI steps, and command integrations that run automatically. Avoid manual steps that humans must remember.
-- **Learn and improve** — Each bug fix should make the system more robust. Track patterns in `specs/bugs/` and BUG-REGISTRY; add automated guards for recurring issues.
+When a bug recurs, add **automated prevention**, not just documentation.
 
 **Process**:
 1. **Fix the bug** — Resolve the immediate issue.
 2. **Document** — Add to Gotchas and BUG-REGISTRY.
-3. **Automate** — Add a verification script, CI step, or command integration so the same failure cannot reach users again.
-4. **Integrate** — Wire the automation into implement, deploy, and CI so it runs without manual invocation.
-
-**Verification**: Recurring bugs have corresponding automated checks; implement and deploy commands run them before declaring complete.
+3. **Automate** — Add a verification script, CI step, or command integration.
+4. **Integrate** — Wire the automation into implement, deploy, and CI.
 
 ---
 
@@ -113,36 +106,25 @@ When a bug recurs, add **automated prevention**, not just documentation. Aim for
 
 **Core entities**
 
-- **Consultant** — Internal SEI user (senior-level); uses the app to practice sales conversations. No separate “account” entity in MVP; session is the unit of use.
-- **Session** — A single practice run: onboarding choices (scenario type, duration, role, company, deal context), chat/voice transcript, and optional scorecard. Stored for transcripts and scorecard generation.
-- **Scorecard** — Post-session summary and performance feedback tied to methodology; generated from session transcript and objectives.
-- **Knowledge base** — Documents and chunks (questions, company insights, best practices, frameworks) used for RAG; managed in admin. Chunks have embeddings; retrieval returns top-k by similarity with optional filters.
-- **Agent / Coach** — AI persona (Anthropic Claude) driven by `agentConfig`, system instructions, and RAG context. Single coach identity (SEI Sales Coach).
+- **Consultant** — Internal SEI user; uses the app to practice sales conversations.
+- **Session** — A single practice run: onboarding choices, chat/voice transcript, and optional scorecard.
+- **Scorecard** — Post-session summary and performance feedback tied to methodology.
+- **Knowledge base** — Documents and chunks used for RAG; managed in admin.
+- **Agent / Coach** — AI persona (Anthropic Claude) driven by `agentConfig`, system instructions, and RAG context.
 
 **Key flows**
 
-- **Onboarding** → **Practice (text or voice)** → **Demo end** → **Scorecard (optional)**. Onboarding data flows to coach and scorecard; voice and text share the same flow.
+- **Onboarding** → **Practice (text or voice)** → **Session end** → **Scorecard or Summary**
 - **Admin**: Upload/edit/delete documents → chunks and embeddings updated; Test Console runs retrieval against current KB.
-
-**Important terms**
-
-- **Scenario type**: Discovery Call, Product Demo, Objection Handling, Negotiation & Close (from `agentConfig.onboarding.contextTypes`).
-- **Session duration**: Quick (15 min), Standard (30 min), Deep (60 min) — used for demo timer and expectations.
-- **RAG**: Retrieval-Augmented Generation — fetch relevant KB chunks by embedding similarity, inject into coach prompt.
-
-**Scoping**
-
-- Single-tenant: all data is SEI internal. No multi-company or multi-tenant isolation in MVP.
 
 ---
 
 ## Code Style
 
-Follow TypeScript and Next.js conventions and repository lint rules.
-
-**Naming**: camelCase (variables, functions); PascalCase (components, types); kebab-case for URL slugs and spec filenames.  
-**Formatting**: ESLint + Prettier (if configured); otherwise `next lint`.  
+**Naming**: camelCase (variables, functions); PascalCase (components, types); kebab-case for URL slugs.
+**Formatting**: ESLint + Prettier; `next lint`.
 **Toolchain**: `npm run lint`, `npm run build` before commit or deploy.
+**Style note**: No em dashes in copy or comments. Use hyphens sparingly.
 
 ---
 
@@ -151,330 +133,257 @@ Follow TypeScript and Next.js conventions and repository lint rules.
 **Style**: Next.js App Router monolith — pages in `app/`, API routes in `app/api/`, shared logic in `lib/`, UI in `components/`.
 
 **Module boundaries**:
-- **Pages** — Compose components and call APIs or server logic; minimal business logic in page files.
-- **API routes** — Handle HTTP, validate input, call `lib` services (coaching, retrieval, embeddings); no direct Prisma in components.
-- **lib/** — Agent config, coaching (RAG + Claude), retrieval, embeddings, Prisma client, strictness. Core business and integration logic lives here.
-- **Dependency rule**: Pages/Components → lib or API; API → lib; lib may use Prisma, external APIs (OpenAI, Anthropic, ElevenLabs). Avoid circular dependencies.
+- **Pages** — Compose components and call APIs; minimal business logic.
+- **API routes** — Handle HTTP, validate input, call `lib` services.
+- **lib/** — Agent config, coaching, retrieval, embeddings, Prisma client. Core business logic lives here.
 
 ---
 
-## Tech Stack Anchoring
+## Tech Stack
 
-**SDD specs and plans for this project must follow this tech stack**:
-
-| Category   | Technology        | Version Constraint | Non-replaceable |
-|-----------|--------------------|--------------------|-----------------|
-| Language  | TypeScript         | ^5                 | ✓               |
-| Framework | Next.js (App Router) | ^14.2            | ✓               |
-| Testing   | Jest / Vitest      | As adopted         | —               |
-| Build     | next build         | —                  | ✓               |
-| Data      | Supabase (PostgreSQL + pgvector), Prisma | Prisma ^6, pgvector extension | ✓ |
-| AI        | Anthropic (Claude), OpenAI (embeddings), ElevenLabs (voice) | As in package.json | ✓ |
-| Hosting   | Vercel             | —                  | ✓               |
-| Styling   | Tailwind CSS       | ^3.4               | ✓               |
+| Category | Technology | Non-replaceable |
+|----------|------------|-----------------|
+| Language | TypeScript ^5 | ✓ |
+| Framework | Next.js App Router ^14.2 | ✓ |
+| Data | Supabase (PostgreSQL + pgvector), Prisma ^6 | ✓ |
+| AI | Anthropic (Claude), OpenAI (embeddings), ElevenLabs (voice) | ✓ |
+| Hosting | Vercel | ✓ |
+| Styling | Tailwind CSS ^3.4 | ✓ |
 
 ---
 
 ## Directory Contract
 
-**New code must be placed in locations conforming to these conventions**:
-
-| Code Type        | Standard Location     | Naming Convention        |
-|------------------|------------------------|---------------------------|
-| Pages            | `app/**/page.tsx`      | page.tsx, layout.tsx      |
-| API routes       | `app/api/**/route.ts`  | route.ts                  |
-| UI components    | `components/`          | PascalCase.tsx            |
-| Business/config  | `lib/`                 | camelCase.ts or PascalCase where appropriate |
-| Prisma schema    | `prisma/schema.prisma` | —                         |
-| Specs            | `specs/features/`, `specs/architecture/` | {TICKET-ID}-{slug}.md |
-| Tests            | `__tests__/` or colocated | *.test.ts, *.spec.ts   |
-| Config           | Root, `app/`, `lib/`   | next.config.mjs, tailwind.config.ts, etc. |
+| Code Type | Location | Naming |
+|-----------|----------|--------|
+| Pages | `app/**/page.tsx` | page.tsx, layout.tsx |
+| API routes | `app/api/**/route.ts` | route.ts |
+| UI components | `components/` | PascalCase.tsx |
+| Business/config | `lib/` | camelCase.ts |
+| Prisma schema | `prisma/schema.prisma` | — |
+| Specs | `specs/features/`, `specs/architecture/` | {TICKET-ID}-{slug}.md |
+| Tests | `__tests__/` or colocated | *.test.ts |
 
 ---
 
 ## Brand & Design Guidelines
 
-- **Visual**: Dark plum backgrounds; red-to-purple gradients; **Lang Gothic** for typography.
-- **Positioning**: “Fresh perspectives with absolute accountability.”
+- **Visual**: Dark plum backgrounds; red-to-purple gradients; Lang Gothic typography.
+- **Positioning**: "Fresh perspectives with absolute accountability."
 - **Personality**: Masterful, All-in, Good-Humored, Vigilant.
-- **Implementation**: Use existing Tailwind/theme tokens (e.g. plum, plum-dark) and `lib/agentConfig` for copy; keep new UI and copy consistent with this voice and palette. See `app/globals.css` and component styles for current tokens.
 
 ---
 
-## Specs Directory Structure
+## Route Structure
 
-**Standard layout** (do not change unless project requires it):
+| Route | Purpose |
+|-------|---------|
+| `/coach/*` | Outward-facing client tools (SPIN Sales Coach) |
+| `/guide/*` | Internal SEI tools (Assessment Agent, future agents) |
 
+Do not rename or redirect `/coach` routes — they serve different audiences.
+
+---
+
+## Active Agent Reference
+
+| Agent | UUID | ElevenLabs ID |
+|-------|------|---------------|
+| SPIN Sales Coach (Marcus Webb) | `f73fc51c-6544-4278-94e6-0fdf00d766cf` | `agent_3901kgz4a3s5f15vy08c02s2v13c` |
+| AI Assessment & Strategy Agent | `ASSESSMENT_COACH_ID` (env var) | `ELEVENLABS_ASSESSMENT_AGENT_ID` (env var) |
+
+**SPIN Eval Criteria KB doc**: `8a89e77d-45bb-493d-afcb-ee503767ba71`
+**Supabase pooler**: `aws-0-us-west-2.pooler.supabase.com` — always use pooler, direct host is unreachable
+
+---
+
+## Gotchas
+
+### Adding New Agents
+
+Creating agents is a **developer task** — no UI for this. New agents appear in Prompt Control only after being added via migration or SQL.
+
+**New agent setup checklist:**
+1. Insert agent row in Supabase with `agent_type` set
+2. Create ElevenLabs agent with blank system prompt
+3. Set Custom LLM URL to `https://sei-sales-coach.vercel.app/api/voice-llm/chat/completions`
+4. Set Custom LLM API Key to Bearer Token (match `INTERVIEW_COACH_CUSTOM_LLM_API_KEY`)
+5. Add agent UUID and ElevenLabs ID to `.env.local` and Vercel env vars
+6. Add system prompt in Prompt Control and set status to Active
+7. Add KB documents via `/admin` if needed
+8. Decide: does this agent require **live research** or **deep research**? If yes, set `live_research_enabled = true` in the SQL insert. This is a dev-level flag only — there is no UI toggle for it.
+9. Run a test session and check Vercel logs for `[coaching] agent resolved:` to confirm correct agent
+
+---
+
+### SPIN Sales Coach — System Prompt is Hardcoded, Not from Database
+
+**CRITICAL**: The SPIN Sales Coach (Marcus Webb) system prompt is intentionally hardcoded in the `agentConfig` template inside `lib/coaching.ts`.
+
+`agent.prompt` from the database is NOT used for the SPIN agent. The hardcoded template dynamically injects `preferredName`, `resumeText`, `company`, `interviewType`, and RAG context at runtime. The Prompt Control system prompt for SPIN is NOT what Marcus Webb uses during voice sessions.
+
+**Do not move the SPIN persona to `agent.prompt` or Prompt Control** — it will lose dynamic context injection and break the persona.
+
+This was confirmed by reverting commit `3b8863b` which incorrectly switched `streamCoachResponse()` to use `agent.prompt`.
+
+For non-SPIN agents (e.g. Assessment), `agent.prompt` IS used as the system prompt, with `preferredName`, `resumeText`, and RAG context appended.
+
+---
+
+### Voice LLM — Wrong Agent Prompt Served (Multiple Active Agents)
+
+When multiple agents are active, the voice LLM pipeline can serve the wrong agent's system prompt. The agent connects and responds — just with the wrong persona.
+
+**How the system prompt is selected in `streamCoachResponse()`:**
+- If `sessionContext.coachId` matches the SPIN UUID (`f73fc51c-...`) → use hardcoded `agentConfig` template
+- Any other `coachId` → use `agent.prompt` from the database, append session context and RAG
+
+**When adding a new agent, verify:**
+- Signed URL route stores correct `agentId` in session context
+- `streamCoachResponse()` receives `coachId` in `sessionContext`
+- Agent has system prompt in Prompt Control with status Active
+- Check Vercel logs for `[coaching] agent resolved:` after first test session
+
+---
+
+### ElevenLabs — Silent Disconnect on Session Start
+
+Any of the following causes ElevenLabs to connect and immediately disconnect with no error:
+
+| Cause | Prevention |
+|-------|------------|
+| `dynamicVariables` passed to `startSession()` | Never pass unless every variable is fully resolved |
+| Unresolved `{{variable}}` in First Message | Leave First Message blank; handle opening in system prompt |
+| Missing/incorrect `agent_type` in signed URL request | Always pass `agent_type` in request body |
+| Vercel Password Protection on preview deployments | Disable for preview or test on production only |
+
+---
+
+### ElevenLabs — Custom LLM 401 Unauthorized
+
+When a new ElevenLabs agent is created, the Custom LLM API Key must be set manually or every request returns 401 and the connection drops after the first user turn.
+
+1. Go to Agent tab → LLM section → API Key
+2. Switch from "None" to "Bearer Token"
+3. Paste the secret from `INTERVIEW_COACH_CUSTOM_LLM_API_KEY`
+4. Must match what `/api/voice-llm/chat/completions` validates against
+
+---
+
+### Transcript Not Ready Error
+
+If the user clicks "End Session" / "Generate Scorecard" without first stopping the voice conversation, ElevenLabs has not finalized the transcript and returns an error.
+
+**Fix**: The button handler must call `conversation.endSession()` before fetching the transcript, then wait 1500ms before polling.
+
+The session timer auto-end should also call `endSession()` explicitly before triggering transcript fetch.
+
+---
+
+### Voice Transcript Pipeline
+
+After session ends, transcript is fetched from ElevenLabs and written to `localStorage.spinTranscript`.
+
+**Getting conversation_id**: Extract from signed URL query params:
+```ts
+const url = new URL(signedUrl);
+const conversationId = url.searchParams.get('conversation_id') ?? undefined;
 ```
-specs/
-├── templates/
-│   ├── FEATURE_TEMPLATE.md
-│   └── ARCHITECTURE_TEMPLATE.md
-├── features/
-├── bugs/
-├── BUG-REGISTRY.md
-└── architecture/
+
+**Polling**: `in-progress` and `processing` → return 202. Only `done` with non-empty transcript → return 200.
+- 3s initial delay, up to 8 polls at 2s intervals (~19s max)
+
+---
+
+### Scoring Architecture
+
+Scoring is a separate Claude API call in `/api/score-session`. The rubric lives as a KB document (`evaluation_criteria` category) not in code.
+
+**Overall score** — computed client-side only:
+```ts
+const avg = (situation + problem + implication + need_payoff) / 4;
+return Math.round((avg / 5) * 100);
 ```
 
----
-
-## Gotchas (Project-Specific)
-
-- **Adding new agents** — Creating agents is a **developer task** (no "create agent" in the admin UI). New agents appear in Prompt Control only after they are added via migration or SQL. When adding an agent, **decide**: set `agent_type` in the insert (e.g. `'Guide'`) so the admin sees the type pre-set, or leave `agent_type` null so the admin must choose "Select type…" in Prompt Control and assign a type before toggling the agent to Active. Document the choice in the migration comment or implementation log. See `specs/agent-type-picklist/implementation-log.md` ("For developers adding new agents") and migration `20260309150000_agent_type_nullable_for_new_agents.sql`.
-
-  **New agent setup checklist:**
-  - Does this agent require live research or deep research? If yes, set `live_research_enabled = true` in the insert (or via SQL); this flag is dev-level only (no UI in Prompt Control).
-
----
-
-## Next.js / Dev & Build Prevention
-
-**Page not loading / "localhost unable to handle this request"** — Port conflicts, multiple dev servers (EMFILE), stale processes.
-- Use a single `npm run dev`; if needed, kill existing Node/Next processes and restart.
-- Run a quick manual check (open app in browser) before declaring dev “working.”
-
-**Webpack cache / build corruption** — Corrupted `.next` cache.
-- Delete `.next` and run `npm run build` again.
-- On Vercel: redeploy with “Clear build cache” if builds fail inconsistently.
-
-**Styling not applied** — Build cache or missing Tailwind/theme tokens.
-- Ensure `globals.css` and Tailwind config include brand tokens (plum, etc.).
-- Rebuild and hard-refresh; clear Vercel build cache if needed.
-
-**Reference**: [DEPLOYMENT.md](DEPLOYMENT.md) for environment variables and deploy steps.
-
----
-
-## Governance
-
-### Constitution Priority
-
-1. This constitution is the highest guidance for SDD workflow.
-2. All specs must conform to constitution principles.
-3. All plans must use constitution-anchored tech stack.
-4. All tasks must comply with directory contract.
-
-### Amendment Procedure
-
-- Document change reasons when modifying the constitution.
-- Update templates that depend on this constitution.
-- Version and date significant changes.
-
----
-
-## Build History & Architectural Decisions
-
-*Sessions: March 8–10, 2026. Full detail in `docs/build-log.md`.*
+Never use the `overall` field from the Claude response — it is unreliable.
 
 ---
 
 ### Knowledge Base Schema
 
-The KB was rebuilt from a Q&A schema (interview coach era) to a 7-category document schema. Do not revert to the old schema.
+7 categories: `methodology`, `buyer_persona`, `account_intelligence`, `sei_products`, `sei_capabilities`, `case_studies`, `evaluation_criteria`
 
-**7 categories**: `methodology`, `buyer_persona`, `account_intelligence`, `sei_products`, `sei_capabilities`, `case_studies`, `evaluation_criteria`
-
-**Agent scoping**: All documents live in one table. A document's `agents` array (text[]) scopes it to specific agents. Documents with `agents = ['all']` are returned for every agent. The retrieval filter is:
+Agent scoping: `agents[]` array on documents. `agents = ['all']` means universal. Retrieval filter:
 ```sql
 WHERE d.status = 'published'
   AND (c.agents @> ARRAY['all']::text[]
        OR c.agents @> ARRAY[$2]::text[])
 ```
 
-**Known issue**: `lib/coaching.ts` uses `prisma.agent.findFirst({ where: { status: 'active' } })` to resolve agentId for RAG. This picks the first active agent alphabetically and will break when multiple agents are active. Fix: pass agentId from session context rather than resolving from DB. Do not build additional agents without addressing this first.
-
----
-
-### Scoring Architecture
-
-Scoring is a separate Claude API call in `/api/score-session` — not done by the voice agent. The scoring rubric is stored as a KB document (`category = 'evaluation_criteria'`, assigned to the relevant agent) rather than hardcoded in `lib/scoringPrompts.ts`. This allows rubric updates via the admin panel without a code deploy.
-
-**Fallback**: When no eval criteria docs are found (count: 0), fall back to `FALLBACK_RUBRIC` in `lib/scoringPrompts.ts` and log a `warn` event to `system_events`. This fallback is not yet implemented — pending ticket.
-
-**Overall score**: Computed client-side from the four dimension scores. Do not use the `overall` field from the Claude API response — it is unreliable.
-```ts
-const avg = (situation + problem + implication + need_payoff) / 4;
-return Math.round((avg / 5) * 100);
-```
-
-**Scoring JSON schema**:
-```json
-{
-  "scores": {
-    "situation":   { "score": 1–5, "commentary": "" },
-    "problem":     { "score": 1–5, "commentary": "" },
-    "implication": { "score": 1–5, "commentary": "" },
-    "need_payoff": { "score": 1–5, "commentary": "" },
-    "overall": 1–5
-  },
-  "strengths": ["", ""],
-  "growth_areas": ["", ""],
-  "next_step_quality": "Yes | Partial | No",
-  "next_step_note": "",
-  "headline": ""
-}
-```
-
----
-
-### Voice Transcript Pipeline
-
-After a session ends, the transcript is fetched from ElevenLabs and written to `localStorage.spinTranscript` before navigating to the scorecard.
-
-**Getting the conversation_id**: ElevenLabs embeds it as a query param in the signed WebSocket URL — not as a top-level field. Always extract it like this:
-```ts
-const url = new URL(signedUrl);
-const conversationId = url.searchParams.get('conversation_id') ?? undefined;
-```
-
-**Polling strategy**: ElevenLabs transcript status transitions: `in-progress → processing → done`. Both `in-progress` and `processing` must return HTTP 202 so the client keeps polling. Only `status: done` with a non-empty transcript array is a success.
-
-- 3s initial delay before first poll
-- Up to 8 polls at 2s intervals (~19s max wait)
-- Return 202 for `in-progress` OR `processing`; return 200 only when `done` with transcript
-
 ---
 
 ### System Health Logging
 
-`system_events` table in Supabase. Utility: `lib/logSystemEvent.ts`. Never throws — fails silently with `console.warn`.
+`system_events` table. Utility: `lib/logSystemEvent.ts`. Never throws.
 
-Currently wired into `/api/score-session` only. Pending: add to `/api/elevenlabs-signed-url`, `/api/onboarding/session`, `/api/voice-llm/chat/completions`.
-
-**Event types**:
-- `eval_docs_fallback` (warn) — no eval criteria docs found
-- `eval_docs_retrieval_error` (error) — Prisma query failed
-- `elevenlabs_signed_url_failure` (error)
-- `onboarding_session_failure` (error)
-- `voice_llm_failure` (error)
-- `rag_injection_empty` (warn) — RAG returned zero docs for voice session
+Event types: `eval_docs_fallback`, `eval_docs_retrieval_error`, `elevenlabs_signed_url_failure`, `onboarding_session_failure`, `voice_llm_failure`, `rag_injection_empty`
 
 ---
 
-### Agent Type
+## Live Research Capability (SEI-39)
 
-`agent_type` is a Postgres enum on the `agents` table: `Guide`, `Analyst`, `Builder`, `Orchestrator`. Required field, default `Guide`. See migration `20260309150000_agent_type_nullable_for_new_agents.sql` and the Gotchas section above.
+A per-agent live research feature is partially built.
 
----
+**What's built:**
+- `app/api/research/company/route.ts` — POST `{ companyName }` → returns `{ companyName, brief, retrievedAt }`. Uses Anthropic with `web_search_20250305` tool. Timeout: 40 seconds.
+- `live_research_enabled` boolean column on `agents` table (default false) — dev-level flag only, no UI
 
-### Known ElevenLabs / Voice Gotchas
+**What's NOT built:**
+- Session page wiring (research not triggered at session start)
+- VoiceCoach integration (brief not passed to signed URL)
+- Coaching prompt injection (brief not appended to system prompt)
 
-**Silent Disconnect on Session Start** — Any of the following will cause ElevenLabs to connect and immediately disconnect with no useful error message. This affects every voice agent on the platform.
-
-| Cause | Prevention |
-|-------|------------|
-| `dynamicVariables` passed to `startSession()` | Never pass `dynamicVariables` unless every variable is fully resolved at call time. Malformed or unrecognized keys cause silent WebSocket disconnect. |
-| Unresolved `{{variable}}` placeholders in First Message | All template variables must be resolved before session starts. If no dynamic first message is needed, leave First Message blank in ElevenLabs and handle opening line via system prompt instead. |
-| Missing or incorrect `agent_type` in signed URL request | The `/api/elevenlabs-signed-url` route uses `agent_type` to select the correct ElevenLabs agent ID. If missing or mismatched, the wrong agent connects or the request fails silently. |
-| Vercel Password Protection on preview deployments | Intercepts API calls; disable or bypass for all voice and transcript routes, or test on production only. |
-
-**New Voice Agent Setup Checklist**:
-1. Leave `dynamicVariables` out of `startSession()` entirely unless confirmed needed
-2. Leave First Message blank in ElevenLabs — set opening behavior in system prompt
-3. Confirm `agent_type` is passed in the signed URL request body
-4. Confirm the corresponding env var is set in both `.env.local` and Vercel
-5. Check Vercel function logs after first connection attempt to confirm correct agent ID is resolving
-6. **Set the Custom LLM API Key** in ElevenLabs (see below)
-
-**Custom LLM — 401 Unauthorized on Every Turn**
-
-When a new ElevenLabs agent is created, the Custom LLM API Key must be set manually or every request to `/api/voice-llm/chat/completions` will return 401 and ElevenLabs will drop the connection after the first user turn.
-
-| Step | Action |
-|------|--------|
-| 1 | Go to Agent tab → LLM section → API Key |
-| 2 | Switch from "None" to "Bearer Token" |
-| 3 | Paste the secret stored in `INTERVIEW_COACH_CUSTOM_LLM_API_KEY` |
-| 4 | This secret must match what `/api/voice-llm/chat/completions` validates against |
-
-Check an existing working agent (e.g. Marcus Webb / SPIN Sales Coach) in ElevenLabs to confirm the correct value if unsure.
+**Architecture notes:**
+- 40 second timeout — too slow for blocking session-start flow
+- Correct UX pattern: async pre-session research, not blocking
+- The geopolitical analysis agent is the primary intended use case
+- `/api/research/company` is reusable for any agent
+- Do NOT add a UI toggle for this — it is a dev-time decision per agent
 
 ---
 
-### Voice LLM — Wrong Agent Prompt Served (Multiple Active Agents)
+## AI Assessment Agent (SEI-38)
 
-When multiple agents are active, the voice LLM pipeline can serve the wrong agent's system prompt. This is easy to miss because the agent connects and responds — just with the wrong persona.
+- **Onboarding**: `/guide/assessment`
+- **Session**: `/guide/assessment/session` — 5 min voice/text
+- **Summary**: `/guide/assessment/summary` — 4 dimensions + confidence
+- **API**: `/api/assessment-summary`
 
-**Root causes found and fixed:**
+**Confidence levels**: `Building` | `Developing` | `Strong` (exact strings only — enforced server-side)
 
-1. `streamCoachResponse()` in `lib/coaching.ts` was doing `prisma.agent.findFirst({ where: { status: 'active' } })` — picks the first active agent alphabetically, ignoring which agent the session is for. **Fixed**: now uses `sessionContext.coachId` to look up the correct agent.
-
-2. `agent.prompt` from the database was never used — `streamCoachResponse()` was building the system prompt from a hardcoded `agentConfig` template even after looking up the correct agent. **Fixed**: now uses `agent.prompt` directly, falling back to the template only when `agent.prompt` is null.
-
-3. `getLatestSessionContext()` fetches the most recent session from `voice_sessions` by `created_at` — if a different agent's session ran more recently, the wrong context is returned. **Mitigation**: session context now includes `agentId` stored at signed URL creation time.
-
-**When adding a new agent, always verify:**
-- The signed URL route stores the correct `agentId` in session context
-- `streamCoachResponse()` is receiving `coachId` in `sessionContext`
-- The agent has a system prompt saved in Prompt Control with status Active
-- Run a test session and check Vercel logs for `[coaching] agent resolved:` to confirm the correct agent name appears
+**Env vars**: `ASSESSMENT_COACH_ID`, `ELEVENLABS_ASSESSMENT_AGENT_ID`
 
 ---
 
-### Active Agent Reference
+## Pending Items (as of March 16, 2026)
 
-| Agent | UUID | ElevenLabs ID |
-|---|---|---|
-| SPIN Sales Coach (Marcus Webb) | `f73fc51c-6544-4278-94e6-0fdf00d766cf` | `agent_3901kgz4a3s5f15vy08c02s2v13c` |
-| AI Assessment & Strategy Agent | `ASSESSMENT_COACH_ID` (env var) | `ELEVENLABS_ASSESSMENT_AGENT_ID` (env var) |
-
-**SPIN Eval Criteria KB doc**: `8a89e77d-45bb-493d-afcb-ee503767ba71`  
-**Supabase pooler host**: `aws-0-us-west-2.pooler.supabase.com` — always use pooler, direct host is unreachable
-
----
-
-### Route Structure
-
-| Route | Purpose |
-|---|---|
-| `/coach/*` | Outward-facing client tools (SPIN Sales Coach) |
-| `/guide/*` | Internal SEI tools (Assessment Agent, future agents) |
-
-The `/guide` route structure was created in SEI-37. Do not rename or redirect `/coach` — they serve different audiences.
+- [ ] Wire live research into session flow for geopolitical agent
+- [ ] Fallback rubric for SPIN when eval criteria count: 0
+- [ ] System health logging on 3 remaining routes (`/api/elevenlabs-signed-url`, `/api/onboarding/session`, `/api/voice-llm/chat/completions`)
+- [ ] Remove debug logging from voice LLM pipeline
+- [ ] Fix `live_research_enabled` not returned by agents GET endpoint on reload
+- [ ] Build geopolitical analysis agent (next major feature)
 
 ---
 
-### AI Assessment Agent Architecture (SEI-38)
+## Next.js / Build Prevention
 
-The Assessment Agent follows the same architecture as SPIN but produces a **learning summary** instead of a scorecard:
+**Page not loading** — Port conflicts, stale processes. Use single `npm run dev`; kill existing Node processes if needed.
 
-- **Onboarding**: `/guide/assessment` — collects name, email, knowledge level
-- **Session**: `/guide/assessment/session` — 5-minute voice/text conversation
-- **Summary**: `/guide/assessment/summary` — 4 learning dimensions + confidence indicator
-- **API**: `/api/assessment-summary` — Claude generates summary from transcript
+**Webpack cache corruption** — Delete `.next` and rebuild. On Vercel: redeploy with "Clear build cache."
 
-**Four Learning Dimensions**:
-- Product Knowledge
-- Value Articulation
-- Objection Handling
-- Competitive Positioning
-
-**Confidence Levels**: Building | Developing | Strong
-
-**Environment variables required**:
-- `ASSESSMENT_COACH_ID` — UUID from Supabase agents table
-- `ELEVENLABS_ASSESSMENT_AGENT_ID` — ID from ElevenLabs dashboard
-
-**Manual setup required before feature works**:
-1. Insert agent row in Supabase: `INSERT INTO agents (name, agent_type, business_process, status) VALUES ('AI Assessment & Strategy Agent', 'Guide', 'Sales & BD', 'active');`
-2. Create ElevenLabs agent (blank system prompt)
-3. Add both IDs to `.env.local` and Vercel
-4. Add eval criteria KB doc via `/admin` (category: `evaluation_criteria`, assigned to agent UUID)
+**Reference**: [DEPLOYMENT.md](DEPLOYMENT.md) for environment variables and deploy steps.
 
 ---
 
-### Pending Items (as of March 11, 2026)
-
-- [x] ~~Jordan Ellis (AI Assessment Coach)~~ — Built as SEI-38 (pending manual setup)
-- [x] ~~`/guide` route structure~~ — Created in SEI-37, coexists with `/coach`
-- [x] ~~RAG agentId fix for multi-agent support~~ — Fixed: `streamCoachResponse()` now uses `sessionContext.coachId`
-- [x] ~~Voice LLM agent.prompt fix~~ — Fixed: now uses database prompt instead of hardcoded template
-- [ ] Fallback rubric when eval criteria count: 0 — Implemented for Assessment, pending for SPIN
-- [ ] System health logging on 3 remaining routes
-- [ ] Assessment Agent manual setup (Supabase + ElevenLabs + env vars)
-- [ ] Assessment eval criteria KB document
-- [ ] Remove debug logging from voice LLM pipeline after confirming fix
-
----
-
-**Version**: 1.2.0 | **Updated**: 2026-03-11 | **Source**: /bootstrap
+**Version**: 1.3.0 | **Updated**: 2026-03-16 | **Source**: /bootstrap
