@@ -15,6 +15,7 @@ export async function GET() {
         documentTags: true,
         status: true,
         agentType: true,
+        liveResearchEnabled: true,
         createdAt: true,
       },
     });
@@ -26,6 +27,7 @@ export async function GET() {
       document_tags: a.documentTags ?? [],
       status: a.status,
       agent_type: a.agentType != null ? String(a.agentType) : null,
+      live_research_enabled: a.liveResearchEnabled,
       created_at: a.createdAt ? a.createdAt.toISOString() : new Date().toISOString(),
     }));
     return NextResponse.json(payload);
