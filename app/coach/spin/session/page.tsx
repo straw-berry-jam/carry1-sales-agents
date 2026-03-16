@@ -730,21 +730,31 @@ function SpinSessionPage() {
             <motion.div initial={false} animate={{ opacity: 1, y: 0 }}>
               {isStarted ? (
                 mode === 'voice' && voiceConversationId ? (
-                  <button
-                    type="button"
-                    onClick={handleGoToScorecard}
-                    disabled={!demoEnded || isFetchingTranscript}
-                    className={`btn-primary w-full py-4 px-6 text-center block transition-all disabled:opacity-50 disabled:cursor-not-allowed ${demoEnded ? 'shadow-glow hover:scale-[1.02] ring-2 ring-white/40 ring-offset-2 ring-offset-transparent' : ''}`}
-                  >
-                    {isFetchingTranscript ? (
-                      <>
-                        <Loader2 className="inline-block w-5 h-5 animate-spin mr-2 align-middle" />
-                        Loading transcript…
-                      </>
-                    ) : (
-                      'Generate Scorecard'
-                    )}
-                  </button>
+                  demoEnded ? (
+                    <button
+                      type="button"
+                      onClick={handleGoToScorecard}
+                      disabled={isFetchingTranscript}
+                      className="btn-primary w-full py-4 px-6 text-center block shadow-glow transition-all hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed ring-2 ring-white/40 ring-offset-2 ring-offset-transparent"
+                    >
+                      {isFetchingTranscript ? (
+                        <>
+                          <Loader2 className="inline-block w-5 h-5 animate-spin mr-2 align-middle" />
+                          Loading transcript…
+                        </>
+                      ) : (
+                        'Generate Scorecard'
+                      )}
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => setDemoEnded(true)}
+                      className="btn-primary w-full py-4 px-6 text-center block transition-all hover:scale-[1.02]"
+                    >
+                      End Session
+                    </button>
+                  )
                 ) : (
                   demoEnded ? (
                     <Link
@@ -754,9 +764,13 @@ function SpinSessionPage() {
                       Generate Scorecard
                     </Link>
                   ) : (
-                    <div className="w-full py-4 px-6 text-center block bg-white/5 border border-white/10 rounded-xl text-white/20 cursor-not-allowed font-semibold">
-                      Generate Scorecard
-                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setDemoEnded(true)}
+                      className="btn-primary w-full py-4 px-6 text-center block transition-all hover:scale-[1.02]"
+                    >
+                      End Session
+                    </button>
                   )
                 )
               ) : (
