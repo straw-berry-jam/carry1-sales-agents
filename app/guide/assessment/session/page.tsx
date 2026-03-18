@@ -29,6 +29,7 @@ function AssessmentSessionPage() {
   const [voiceConversationId, setVoiceConversationId] = useState<string | null>(null);
   const [isFetchingTranscript, setIsFetchingTranscript] = useState(false);
   const [transcriptLoadingMessageIndex, setTranscriptLoadingMessageIndex] = useState(0);
+  const [sessionError, setSessionError] = useState<string | null>(null);
 
   const TRANSCRIPT_LOADING_MESSAGES = ['Reviewing your session...', 'Generating your summary...', 'Finishing up...'];
   const [messages, setMessages] = useState<{ role: 'ai' | 'user'; text: string }[]>([]);
@@ -53,6 +54,7 @@ function AssessmentSessionPage() {
   }, [isStarted, loadingPhrases.length]);
 
   const [demoEnded, setDemoEnded] = useState(false);
+  const endSessionFnRef = useRef<null | (() => Promise<void>)>(null);
 
   useEffect(() => {
     if (!isStarted) return;
@@ -87,6 +89,17 @@ function AssessmentSessionPage() {
 
   const handleGoToSummary = async () => {
     if (mode === 'voice' && voiceConversationId) {
+      setSessionError(null);
+
+      if (endSessionFnRef.current) {
+        try {
+          await endSessionFnRef.current();
+        } catch (err) {
+          console.error('[assessment] endSession failed before transcript fetch:', err);
+        }
+      }
+      await new Promise((r) => setTimeout(r, 1500));
+
       setIsFetchingTranscript(true);
       setTranscriptLoadingMessageIndex(0);
       
@@ -128,7 +141,11 @@ function AssessmentSessionPage() {
         router.push('/guide/assessment/summary');
       } catch (err) {
         console.error('Failed to fetch voice transcript:', err);
-        alert(err instanceof Error ? err.message : 'Could not load conversation transcript. Try again or use text mode.');
+        setSessionError(
+          err instanceof Error
+            ? err.message
+            : 'Could not load conversation transcript. Try again or use text mode.'
+        );
       } finally {
         setIsFetchingTranscript(false);
       }
@@ -254,6 +271,11 @@ function AssessmentSessionPage() {
                   <p className="text-white/80 text-sm mb-6">
                     Great learning session! Let&apos;s see how you did and what areas you can continue to develop.
                   </p>
+                  {sessionError && (
+                    <div className="text-left text-sm mb-4 bg-red-500/10 border border-red-500/20 text-red-200 rounded-xl p-3">
+                      {sessionError}
+                    </div>
+                  )}
                   <button
                     type="button"
                     onClick={handleGoToSummary}
@@ -298,6 +320,9 @@ function AssessmentSessionPage() {
                   demoEnded={demoEnded}
                   onConversationId={(id) => setVoiceConversationId(id)}
                   onEndSession={() => setDemoEnded(true)}
+                  registerEndSession={(fn) => {
+                    endSessionFnRef.current = fn;
+                  }}
                 />
               </div>
 

@@ -9,6 +9,7 @@ interface AssessmentVoiceCoachProps {
   demoEnded?: boolean;
   onConversationId?: (conversationId: string) => void;
   onEndSession?: () => void;
+  registerEndSession?: (fn: () => Promise<void>) => void;
 }
 
 export const AssessmentVoiceCoach = memo(function AssessmentVoiceCoach({ 
@@ -16,6 +17,7 @@ export const AssessmentVoiceCoach = memo(function AssessmentVoiceCoach({
   demoEnded, 
   onConversationId,
   onEndSession,
+  registerEndSession,
 }: AssessmentVoiceCoachProps) {
   const [isConnecting, setIsConnecting] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
@@ -54,6 +56,13 @@ export const AssessmentVoiceCoach = memo(function AssessmentVoiceCoach({
 
   const conversation = useConversation(conversationConfig);
   const { isSpeaking, status } = conversation;
+
+  useEffect(() => {
+    if (!registerEndSession) return;
+    registerEndSession(async () => {
+      await conversation.endSession();
+    });
+  }, [registerEndSession, conversation]);
 
   useEffect(() => {
     console.log('📊 Assessment Agent status:', status);
