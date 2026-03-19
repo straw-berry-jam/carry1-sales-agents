@@ -24,16 +24,20 @@ const VALID_SESSION_TYPES = ['outreach_15', 'outreach_30', 'discovery_15', 'disc
 
 /** API scorecard shape per lib/scoringPrompts.ts */
 type ApiScorecard = {
-  headline: string;
   scores: {
-    situation: { score: number; commentary: string };
-    problem: { score: number; commentary: string };
-    implication: { score: number; commentary: string };
-    need_payoff: { score: number; commentary: string };
+    preparation: { score: number; commentary: string };
+    connection: { score: number; commentary: string };
+    storytelling: { score: number; commentary: string };
+    discovery: { score: number; commentary: string };
+    eq: { score: number; commentary: string };
+    closing: { score: number; commentary: string };
     overall: number;
   };
-  strengths?: string[];
-  growth_areas?: string[];
+  strengths: string[];
+  growth_areas: string[];
+  next_step_quality: string;
+  next_step_note: string;
+  headline: string;
 };
 
 type ScorecardState = 'no_data' | 'loading' | 'success' | 'error';
