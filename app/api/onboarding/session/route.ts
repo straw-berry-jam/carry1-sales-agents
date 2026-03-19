@@ -9,7 +9,7 @@ export async function POST(req: NextRequest) {
     const { sessionId, role, company, resumeText, interviewType, jobDescription, preferredName } = body;
 
     // Use a default coach ID for now
-    const coachId = '237f7015-e905-4cd7-ab52-5020e0909e9c';
+    const coachId = '18c4beb8-536e-48ac-a402-dc8074fef7c6';
 
     let session;
 

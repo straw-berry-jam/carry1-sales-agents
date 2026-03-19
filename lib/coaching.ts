@@ -97,7 +97,7 @@ export async function generateCoachResponse(params: CoachResponseParams) {
       .join('\n\n');
 
     // 2. Prepare the prompt
-    const SPIN_COACH_ID = 'f73fc51c-6544-4278-94e6-0fdf00d766cf';
+    const SPIN_COACH_ID = '18c4beb8-536e-48ac-a402-dc8074fef7c6';
     const isSpinCoach = sessionContext.coachId === SPIN_COACH_ID;
 
     const systemPrompt = isSpinCoach
@@ -244,7 +244,7 @@ export async function* streamCoachResponse(params: CoachResponseParams) {
       .join('\n\n');
 
     // 2. Prepare the prompt
-    const SPIN_COACH_ID = 'f73fc51c-6544-4278-94e6-0fdf00d766cf';
+    const SPIN_COACH_ID = '18c4beb8-536e-48ac-a402-dc8074fef7c6';
     const isSpinCoach = sessionContext.coachId === SPIN_COACH_ID;
 
     const systemPrompt = isSpinCoach

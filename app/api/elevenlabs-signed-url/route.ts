@@ -18,7 +18,7 @@ export async function POST(req: NextRequest) {
     // Database agent UUID for prompt lookup in voice LLM route
     const databaseAgentId = isAssessmentAgent
       ? process.env.ASSESSMENT_COACH_ID
-      : 'f73fc51c-6544-4278-94e6-0fdf00d766cf'; // SPIN Sales Coach UUID
+      : '18c4beb8-536e-48ac-a402-dc8074fef7c6'; // SPIN Sales Coach UUID
 
     console.log('[Voice] Agent type requested:', body.agent_type ?? 'spin (default)');
     console.log('[Voice] ElevenLabs agent ID:', elevenLabsAgentId ?? '(NOT SET)');

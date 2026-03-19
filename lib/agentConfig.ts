@@ -2,7 +2,7 @@ export const agentConfig = {
   agentName: "Sales Coach",
   orgName: "CARRY1",
   fullTitle: "CARRY1 Sales Coach",
-  coachId: "b5705fb7-9378-4e84-9bb2-1dc7b6466cd2",
+  coachId: "18c4beb8-536e-48ac-a402-dc8074fef7c6",
 
   elevenLabsAgentId: process.env.ELEVENLABS_AGENT_ID || "",
 

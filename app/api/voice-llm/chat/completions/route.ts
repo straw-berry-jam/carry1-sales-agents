@@ -76,7 +76,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Resolve agentId — prefer stored context, fall back to hardcoded SPIN coach
-    const agentId = storedContext?.agentId || 'f73fc51c-6544-4278-94e6-0fdf00d766cf';
+    const agentId = storedContext?.agentId || '18c4beb8-536e-48ac-a402-dc8074fef7c6';
     console.log('[Voice LLM] agentId received:', agentId);
     console.log('[Voice LLM] agentId source:', storedContext?.agentId ? 'stored context' : 'fallback (SPIN)');
 
