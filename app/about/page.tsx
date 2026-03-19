@@ -22,19 +22,19 @@ export default function AboutPage() {
           
           <div className="space-y-8 text-white/80 leading-relaxed text-lg">
             <p className="text-white font-medium text-xl">
-              CARRY1 designs and delivers innovative AI solutions that help clients build better businesses.
+              CARRY1 partners with enterprise sales leaders to build high-performing teams, combining strategic coaching with technology designed to turn methodology into results.
             </p>
             
             <p>
-              CARRY1 combines deep industry expertise with cutting-edge technology to create tools and platforms that drive real outcomes. We focus on understanding what makes organizations succeed and embedding that knowledge into intelligent solutions our clients can use every day.
+              Built on deep industry expertise, our tools are designed to drive real outcomes. The focus is always on understanding what makes an organization succeed and embedding that knowledge into solutions teams can use every day.
             </p>
 
             <p>
-              Our approach is simple: we start with your data, your methodology, and your goals, then build AI that works the way your team already does, only faster and at scale.
+              Our approach is simple: we start with your methodology, your goals, and your data, then build and deploy solutions that work the way your team already does, faster and at scale.
             </p>
 
             <p>
-              If you'd like to learn more about how we work and what we do, visit{' '}
+              To learn more, visit{' '}
               <a 
                 href="https://www.carry1.com" 
                 target="_blank" 
