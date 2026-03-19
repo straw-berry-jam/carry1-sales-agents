@@ -76,7 +76,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Resolve agentId — prefer stored context, fall back to CARRY1 Sales Coach
-    const agentId = storedContext?.agentId || '18c4beb8-536e-48ac-a402-dc8074fef7c6';
+    const agentId = storedContext?.agentId || '416b01f1-cea0-4dce-abcc-3dcc58078c82';
     console.log('[Voice LLM] agentId received:', agentId);
     console.log('[Voice LLM] agentId source:', storedContext?.agentId ? 'stored context' : 'fallback (CARRY1 Sales Coach)');
 
