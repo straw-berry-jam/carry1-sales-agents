@@ -109,15 +109,12 @@ export async function generateCoachResponse(params: CoachResponseParams) {
 
     const systemPrompt = `${basePrompt}
 
-USER CONTEXT:
-Preferred name: ${sessionContext.preferredName || agentConfig.userNoun}
-Role: ${role}
-Company: ${company}
-Scenario: ${interviewType}
-Stage: ${stage}
+SESSION CONTEXT:
+The rep's name is: ${sessionContext.preferredName || 'the rep'}
+They are preparing for a meeting with: ${role} at ${company}
+Session type: ${interviewType}
 
-BACKGROUND:
-${sessionContext.resumeText ? sessionContext.resumeText : 'No background provided'}
+${sessionContext.resumeText ? `DEAL CONTEXT:\n${sessionContext.resumeText}` : ''}
 
 KNOWLEDGE BASE CONTEXT:
 ${contextText || 'No specific knowledge base context found for this query.'}`;
@@ -233,15 +230,12 @@ export async function* streamCoachResponse(params: CoachResponseParams) {
 
     const systemPrompt = `${basePrompt}
 
-USER CONTEXT:
-Preferred name: ${sessionContext.preferredName || agentConfig.userNoun}
-Role: ${role}
-Company: ${company}
-Scenario: ${interviewType}
-Stage: ${stage}
+SESSION CONTEXT:
+The rep's name is: ${sessionContext.preferredName || 'the rep'}
+They are preparing for a meeting with: ${role} at ${company}
+Session type: ${interviewType}
 
-BACKGROUND:
-${sessionContext.resumeText ? sessionContext.resumeText : 'No background provided'}
+${sessionContext.resumeText ? `DEAL CONTEXT:\n${sessionContext.resumeText}` : ''}
 
 KNOWLEDGE BASE CONTEXT:
 ${contextText || 'No specific knowledge base context found for this query.'}`;
