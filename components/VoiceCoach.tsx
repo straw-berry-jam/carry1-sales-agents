@@ -85,7 +85,7 @@ export const VoiceCoach = memo(function VoiceCoach({ onboardingData, demoEnded, 
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           preferredName: onboardingData?.preferredName || 'Sales Rep',
-          role: onboardingData?.role || 'Sales Rep',
+          role: onboardingData?.role ?? '',
           target_company: onboardingData?.company || '',
           interviewType: onboardingData?.interviewType || 'General',
           resumeText: onboardingData?.resumeText || '',

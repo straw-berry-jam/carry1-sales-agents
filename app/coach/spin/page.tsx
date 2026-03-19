@@ -156,7 +156,7 @@ export default function SpinSetupPage() {
 
   const mapFormDataToOnboarding = (data: typeof formData, existingSessionId?: string | null) => ({
     preferredName: data.role,
-    role: 'Sales Rep',
+    role: '', // No prospect role field in form; leave empty
     company: data.company,
     resumeText: data.jobDescription || '',
     interviewType: 'CARRY1 Sales Practice',

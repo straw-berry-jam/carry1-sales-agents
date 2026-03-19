@@ -44,8 +44,8 @@ export async function POST(req: NextRequest) {
         }
       : {
           resumeText: body.resumeText || '',
-          role: body.target_role || 'Software Engineer',
-          company: body.target_company || '',
+          role: body.role ?? body.target_role ?? '',
+          company: body.target_company ?? body.company ?? '',
           interviewType: body.interviewType || 'General',
           preferredName: body.preferredName || body.user_name || 'Sales Rep',
           agentId: databaseAgentId,

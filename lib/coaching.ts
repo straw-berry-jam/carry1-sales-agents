@@ -111,13 +111,14 @@ export async function generateCoachResponse(params: CoachResponseParams) {
 
 SESSION CONTEXT:
 The rep's name is: ${sessionContext.preferredName || 'the rep'}
-They are preparing for a meeting with: ${role} at ${company}
+They are preparing for a meeting at: ${company}${role && role !== 'Software Engineer' && role !== 'Sales Rep' ? ` with the ${role}` : ''}
 Session type: ${interviewType}
-
-${sessionContext.resumeText ? `DEAL CONTEXT:\n${sessionContext.resumeText}` : ''}
+${sessionContext.resumeText ? `\nDEAL NOTES FROM THE REP:\n${sessionContext.resumeText}` : ''}
 
 KNOWLEDGE BASE CONTEXT:
-${contextText || 'No specific knowledge base context found for this query.'}`;
+${contextText || 'No specific knowledge base context found for this query.'}
+
+IMPORTANT: You already have the rep's context above. Do not ask them to repeat information they have already provided. Open the session by referencing what you know and asking a focused coaching question.`;
 
     // 3. Format history for Claude
     const messages: Anthropic.MessageParam[] = conversationHistory.map(msg => ({
@@ -232,13 +233,14 @@ export async function* streamCoachResponse(params: CoachResponseParams) {
 
 SESSION CONTEXT:
 The rep's name is: ${sessionContext.preferredName || 'the rep'}
-They are preparing for a meeting with: ${role} at ${company}
+They are preparing for a meeting at: ${company}${role && role !== 'Software Engineer' && role !== 'Sales Rep' ? ` with the ${role}` : ''}
 Session type: ${interviewType}
-
-${sessionContext.resumeText ? `DEAL CONTEXT:\n${sessionContext.resumeText}` : ''}
+${sessionContext.resumeText ? `\nDEAL NOTES FROM THE REP:\n${sessionContext.resumeText}` : ''}
 
 KNOWLEDGE BASE CONTEXT:
-${contextText || 'No specific knowledge base context found for this query.'}`;
+${contextText || 'No specific knowledge base context found for this query.'}
+
+IMPORTANT: You already have the rep's context above. Do not ask them to repeat information they have already provided. Open the session by referencing what you know and asking a focused coaching question.`;
 
     // 3. Format history for Claude
     const messages: Anthropic.MessageParam[] = conversationHistory.map(msg => ({

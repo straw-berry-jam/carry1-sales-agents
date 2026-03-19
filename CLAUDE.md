@@ -274,6 +274,8 @@ Any of the following causes ElevenLabs to connect and immediately disconnect wit
 |-------|------------|
 | `dynamicVariables` passed to `startSession()` | Never pass unless every variable is fully resolved |
 | Unresolved `{{variable}}` in First Message | Leave First Message blank; handle opening in system prompt |
+
+**CARRY1 Sales Coach First Message** (ElevenLabs dashboard): Set to: `Hi, I'm Sarah, your CARRY1 Sales Coach. I have your session context — let's get started.` This avoids asking for info the rep already provided in onboarding.
 | Missing/incorrect `agent_type` in signed URL request | Always pass `agent_type` in request body |
 | Vercel Password Protection on preview deployments | Disable for preview or test on production only |
 
