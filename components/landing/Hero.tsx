@@ -92,17 +92,17 @@ export default function Hero() {
                 </div>
               </div>
               <div className="flex items-center justify-center gap-2 py-2">
-                <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse" />
+                <div className="w-3 h-3 bg-gold-light rounded-full animate-pulse" />
                 <div className="flex gap-1 items-center">
                   {[3, 5, 8, 6, 4, 7, 3].map((h, index) => (
                     <div
                       key={index}
-                      className="w-1 rounded-full bg-white/30"
+                      className="w-1 rounded-full bg-gold-light/60"
                       style={{ height: `${h * 0.25}rem`, animation: 'waveform 1.2s ease-in-out infinite', animationDelay: `${index * 0.15}s` }}
                     />
                   ))}
                 </div>
-                <span className="text-xs text-white/40 italic">Listening...</span>
+                <span className="text-xs text-gold-light/80 italic">Listening...</span>
               </div>
             </div>
           </div>

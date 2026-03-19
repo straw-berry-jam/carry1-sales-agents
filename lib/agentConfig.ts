@@ -87,8 +87,8 @@ export const agentConfig = {
   },
 
   coachPage: {
-    headerTitle: "CARRY1",
-    headerSubtitle: "Sales Coach",
+    headerTitle: "CARRY1 AI PRODUCT",
+    headerSubtitle: "",
     thinkingMessage: "Coach is thinking...",
     waitingMessage: "Waiting for you to start the session...",
     endSessionLabel: "End Session & Generate Scorecard",
@@ -100,12 +100,12 @@ export const agentConfig = {
 
   landing: {
     hero: {
-      badge: "CARRY1 ENTERPRISE AI SOLUTION",
+      badge: "CARRY1 AI PRODUCT",
       headline: "Master Every Sales Pitch",
       subheadline: "An intelligent voice agent trained on your playbooks, CRM data, and product catalog, helping your team practice, prepare, and perform.",
       primaryCta: "Try the Demo",
       secondaryCta: "Contact Us",
-      secondaryCtaHref: "mailto:cminer@carry1.com?subject=CARRY1%20Sales%20Coach%20Inquiry",
+      secondaryCtaHref: "mailto:sarah@carry-1.com?subject=CARRY1%20Sales%20Coach%20Inquiry",
       stats: [
         { value: "Your Data", label: "Import via CSV or admin dashboard" },
         { value: "Voice & Text", label: "Realistic coaching in both modes" },
@@ -150,7 +150,7 @@ export const agentConfig = {
       subtitle: "Try the demo above, or reach out to discuss a custom deployment for your organization.",
       primaryCta: "Try the Demo",
       secondaryCta: "Get in Touch",
-      secondaryCtaHref: "mailto:cminer@carry1.com?subject=CARRY1%20Sales%20Coach%20Inquiry",
+      secondaryCtaHref: "mailto:sarah@carry-1.com?subject=CARRY1%20Sales%20Coach%20Inquiry",
     },
     footer: {
       brandName: "CARRY1",

@@ -6,14 +6,9 @@ export default function Footer() {
     <footer className="border-t border-gold-dark bg-navy backdrop-blur-sm">
       <div className="max-w-7xl mx-auto px-6 py-12">
         <div className="flex flex-col md:flex-row gap-12 md:gap-32 mb-12">
-          {/* SEI Logo / Brand */}
+          {/* Brand */}
           <div>
             <h3 className="text-2xl font-bold mb-4">{agentConfig.landing.footer.brandName}</h3>
-            <p className="text-gold-light/80 text-sm">
-              215 Park Avenue South, 11th Floor<br />
-              New York, NY 10003
-            </p>
-            <p className="text-white/60 text-sm mt-2">(646) 493-9756</p>
           </div>
 
           {/* Quick Links */}

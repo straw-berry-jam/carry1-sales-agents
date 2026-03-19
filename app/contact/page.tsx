@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { ChevronLeft, MapPin, Globe } from 'lucide-react';
+import { ChevronLeft, Mail, Globe } from 'lucide-react';
 
 export default function ContactPage() {
   return (
@@ -29,11 +29,13 @@ export default function ContactPage() {
               <div className="space-y-6">
                 <div className="flex items-start gap-4">
                   <div className="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center flex-shrink-0">
-                    <MapPin className="w-6 h-6 text-white" />
+                    <Mail className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-white mb-1">Headquarters</h3>
-                    <p className="text-gold-light/80">CARRY1<br />215 Park Avenue South, 11th Floor<br />New York, NY 10003<br />(646) 493-9756</p>
+                    <h3 className="font-bold text-white mb-1">Email</h3>
+                    <a href="mailto:sarah@carry-1.com" className="text-gold-light hover:text-white transition-colors">
+                      sarah@carry-1.com
+                    </a>
                   </div>
                 </div>
 

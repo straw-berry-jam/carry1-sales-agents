@@ -67,8 +67,8 @@ const TITLE_PLACEHOLDERS: Record<KBCategory, string> = {
 };
 
 const CATEGORY_COLORS: Record<string, { bg: string; text: string; border: string }> = {
-  methodology: { bg: 'bg-indigo-100', text: 'text-indigo-700', border: 'border-indigo-200' },
-  buyer_persona: { bg: 'bg-purple-100', text: 'text-purple-700', border: 'border-purple-200' },
+  methodology: { bg: 'bg-gold/10', text: 'text-gold-dark', border: 'border-gold/30' },
+  buyer_persona: { bg: 'bg-gold/10', text: 'text-gold-dark', border: 'border-gold/30' },
   account_intelligence: { bg: 'bg-amber-100', text: 'text-amber-700', border: 'border-amber-200' },
   sei_products: { bg: 'bg-blue-100', text: 'text-blue-700', border: 'border-blue-200' },
   sei_capabilities: { bg: 'bg-cyan-100', text: 'text-cyan-700', border: 'border-cyan-200' },

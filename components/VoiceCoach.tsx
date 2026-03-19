@@ -131,7 +131,7 @@ export const VoiceCoach = memo(function VoiceCoach({ onboardingData, demoEnded, 
         }
         .waveform-bar {
           width: 4px;
-          background-color: #9B59B6;
+          background-color: #FFCE99;
           border-radius: 9999px;
           animation: waveform 0.8s ease-in-out infinite;
         }
@@ -143,7 +143,7 @@ export const VoiceCoach = memo(function VoiceCoach({ onboardingData, demoEnded, 
           position: absolute;
           inset: 0;
           border-radius: 9999px;
-          background-color: #9B59B6;
+          background-color: #FFCE99;
           animation: ripple 2s cubic-bezier(0, 0, 0.2, 1) infinite;
         }
       `}</style>
@@ -236,8 +236,8 @@ export const VoiceCoach = memo(function VoiceCoach({ onboardingData, demoEnded, 
         </div>
 
         {status === 'connected' && (
-          <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-green-500 bg-green-500/5 px-4 py-2 rounded-full border border-green-500/10">
-            <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+          <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-gold-light bg-gold/10 px-4 py-2 rounded-full border border-gold-dark/20">
+            <div className="w-1.5 h-1.5 rounded-full bg-gold-light animate-pulse" />
             Connection is live
           </div>
         )}

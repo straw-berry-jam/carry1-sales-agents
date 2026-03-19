@@ -352,8 +352,8 @@ export default function CoachPage() {
                   <p className="text-white/80 text-sm mb-6">
                     Thanks for trying the demo! To experience a full coaching session built on your team's data,{' '}
                     <a
-                      href="mailto:cminer@carry1.com?subject=CARRY1%20Sales%20Agent%20Platform%20Inquiry"
-                      className="text-white font-medium underline hover:text-white/90 transition-colors"
+                      href="mailto:sarah@carry-1.com?subject=CARRY1%20Sales%20Agent%20Platform%20Inquiry"
+                      className="text-gold-light font-medium underline hover:text-white transition-colors"
                     >
                       get in touch with us
                     </a>
@@ -568,7 +568,7 @@ export default function CoachPage() {
                           {i === 0 && <Zap className="w-3.5 h-3.5 text-yellow-400" />}
                           {i === 1 && <Target className="w-3.5 h-3.5 text-blue-400" />}
                           {i === 2 && <Users className="w-3.5 h-3.5 text-green-400" />}
-                          {i === 3 && <Trophy className="w-3.5 h-3.5 text-purple-400" />}
+                          {i === 3 && <Trophy className="w-3.5 h-3.5 text-gold" />}
                           {i >= 4 && <div className="w-1.5 h-1.5 rounded-full bg-white/20" />}
                         </div>
                         <span className="leading-tight">{obj}</span>

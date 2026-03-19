@@ -28,7 +28,7 @@ export default function ScorecardPage() {
 
   const scores = [
     { category: 'Product Knowledge', score: 85, icon: Zap, color: 'text-blue-400' },
-    { category: 'Rapport Building', score: 92, icon: Target, color: 'text-purple-400' },
+    { category: 'Rapport Building', score: 92, icon: Target, color: 'text-gold' },
     { category: 'Communication', score: 78, icon: MessageSquare, color: 'text-green-400' },
     { category: 'Problem Solving', score: 88, icon: Trophy, color: 'text-yellow-400' },
   ];

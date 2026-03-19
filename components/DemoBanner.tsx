@@ -10,7 +10,7 @@ export default function DemoBanner() {
     <div className="fixed top-0 left-0 right-0 z-50 w-full bg-navy backdrop-blur-sm border-b border-gold-dark px-4 py-2 flex items-center justify-between gap-4 text-sm text-white">
       <p>
         You are viewing a demo configured with sample sales data.{' '}
-        <a href="mailto:cminer@carry1.com?subject=CARRY1%20Sales%20Agent%20Platform%20Inquiry" className="underline hover:text-gold-light transition-colors font-medium text-gold-light">
+        <a href="mailto:sarah@carry-1.com?subject=CARRY1%20Sales%20Agent%20Platform%20Inquiry" className="underline hover:text-gold-light transition-colors font-medium text-gold-light">
           Contact us
         </a>
         {' '}to build a custom AI agent for your organization.

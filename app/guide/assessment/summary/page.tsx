@@ -33,7 +33,7 @@ const DIMENSION_CONFIG = [
   { key: 'product_knowledge' as const, label: 'Product Knowledge', icon: BookOpen, color: 'text-blue-400' },
   { key: 'value_articulation' as const, label: 'Value Articulation', icon: Lightbulb, color: 'text-yellow-400' },
   { key: 'objection_handling' as const, label: 'Objection Handling', icon: Shield, color: 'text-green-400' },
-  { key: 'competitive_positioning' as const, label: 'Competitive Positioning', icon: Target, color: 'text-purple-400' },
+  { key: 'competitive_positioning' as const, label: 'Competitive Positioning', icon: Target, color: 'text-gold' },
 ];
 
 const CONFIDENCE_STYLES = {
