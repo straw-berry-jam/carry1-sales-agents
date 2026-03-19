@@ -53,7 +53,7 @@ const CARRY1_LABELS: { key: string; label: string; icon: typeof Zap }[] = [
 
 /** Overall score as percentage: average of the four dimension scores (each 1–5), then (avg/5)*100. */
 function getOverallScorePercent(scores: ApiScorecard['scores']): number {
-  const dimKeys = ['situation', 'problem', 'implication', 'need_payoff'] as const;
+  const dimKeys = ['preparation', 'connection', 'storytelling', 'discovery', 'eq', 'closing'] as const;
   let sum = 0;
   let count = 0;
   for (const key of dimKeys) {
