@@ -47,7 +47,7 @@ export async function POST(req: NextRequest) {
           role: body.target_role || 'Software Engineer',
           company: body.target_company || '',
           interviewType: body.interviewType || 'General',
-          preferredName: body.user_name || 'Candidate',
+          preferredName: body.preferredName || body.user_name || 'Sales Rep',
           agentId: databaseAgentId,
         };
     console.log('[Signed URL] Storing context with agentId:', databaseAgentId);
