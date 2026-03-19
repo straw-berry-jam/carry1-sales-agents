@@ -42,7 +42,9 @@ type ApiScorecard = {
 
 type ScorecardState = 'no_data' | 'loading' | 'success' | 'error';
 
-const CARRY1_LABELS: { key: string; label: string; icon: typeof Zap }[] = [
+type ScoreKey = keyof Omit<ApiScorecard['scores'], 'overall'>;
+
+const CARRY1_LABELS: { key: ScoreKey; label: string; icon: typeof Zap }[] = [
   { key: 'preparation', label: 'Preparation & Research', icon: Target },
   { key: 'connection', label: 'Personal Connection', icon: Zap },
   { key: 'storytelling', label: 'Storytelling', icon: MessageSquare },
