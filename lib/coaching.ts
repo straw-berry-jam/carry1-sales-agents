@@ -71,7 +71,15 @@ export async function generateCoachResponse(params: CoachResponseParams) {
     const groupedContext: Record<string, { instruction: string; level: number; docs: any[] }> = {};
 
     contextResults.forEach(r => {
-      const level = getDocumentStrictness({ type: r.documentType, strictnessOverride: r.strictnessOverride });
+      // Force high strictness for core methodology and evaluation docs
+      const categoryOverride =
+        r.documentType === 'methodology' || r.documentType === 'evaluation_criteria' ? 95 :
+        r.documentType === 'buyer_persona' ? 70 : undefined;
+
+      const level = getDocumentStrictness({
+        type: r.documentType,
+        strictnessOverride: r.strictnessOverride ?? categoryOverride,
+      });
       const label = getStrictnessLabel(level);
       const key = `${label} (${level}%)`;
 
@@ -79,7 +87,7 @@ export async function generateCoachResponse(params: CoachResponseParams) {
         groupedContext[key] = {
           instruction: getStrictnessInstruction(level),
           level,
-          docs: []
+          docs: [],
         };
       }
       groupedContext[key].docs.push(r);
@@ -187,7 +195,15 @@ export async function* streamCoachResponse(params: CoachResponseParams) {
     const groupedContext: Record<string, { instruction: string; level: number; docs: any[] }> = {};
 
     contextResults.forEach(r => {
-      const level = getDocumentStrictness({ type: r.documentType, strictnessOverride: r.strictnessOverride });
+      // Force high strictness for core methodology and evaluation docs
+      const categoryOverride =
+        r.documentType === 'methodology' || r.documentType === 'evaluation_criteria' ? 95 :
+        r.documentType === 'buyer_persona' ? 70 : undefined;
+
+      const level = getDocumentStrictness({
+        type: r.documentType,
+        strictnessOverride: r.strictnessOverride ?? categoryOverride,
+      });
       const label = getStrictnessLabel(level);
       const key = `${label} (${level}%)`;
 
@@ -195,7 +211,7 @@ export async function* streamCoachResponse(params: CoachResponseParams) {
         groupedContext[key] = {
           instruction: getStrictnessInstruction(level),
           level,
-          docs: []
+          docs: [],
         };
       }
       groupedContext[key].docs.push(r);
