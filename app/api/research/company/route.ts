@@ -1,6 +1,6 @@
 /**
  * POST /api/research/company
- * SEI-39: Company research for live research feature.
+ * Company research for live research feature.
  * Accepts { companyName: string }, uses Anthropic with web_search to produce a 150-200 word brief.
  * Returns { companyName, brief, retrievedAt }. Times out after 40s; returns 500 on failure or timeout.
  */

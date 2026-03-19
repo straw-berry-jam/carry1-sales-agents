@@ -39,7 +39,7 @@ Evaluate differentiation from generic consulting, point solutions, and DIY appro
 - **Strong**: Confident across dimensions, ready for client conversations
 `;
 
-const SUMMARY_PROMPT = `You are generating a learning summary from a conversation between an SEI consultant and the AI Assessment & Strategy Agent. Use the evaluation criteria provided to structure your output.
+const SUMMARY_PROMPT = `You are generating a learning summary from a conversation between a CARRY1 consultant and the AI Assessment & Strategy Agent. Use the evaluation criteria provided to structure your output.
 
 Return valid JSON only, no preamble:
 

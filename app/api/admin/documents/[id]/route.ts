@@ -6,8 +6,8 @@ const VALID_CATEGORIES = [
   'methodology',
   'buyer_persona',
   'account_intelligence',
-  'sei_products',
-  'sei_capabilities',
+  'carry1_products',
+  'carry1_capabilities',
   'case_studies',
   'evaluation_criteria',
 ] as const;

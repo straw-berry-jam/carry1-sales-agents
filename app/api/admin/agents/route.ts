@@ -36,7 +36,7 @@ export async function GET() {
     const message = error instanceof Error ? error.message : String(error);
     const hint =
       /agent_type|column.*does not exist/i.test(message)
-        ? ' The database may be missing the agent_type column. Run the SEI-36 migrations in Supabase (20260309140000 and 20260309140001).'
+        ? ' The database may be missing the agent_type column. Run the agent_type migrations in Supabase (20260309140000 and 20260309140001).'
         : '';
     return NextResponse.json(
       { error: `Failed to fetch agents.${hint}`, detail: message },

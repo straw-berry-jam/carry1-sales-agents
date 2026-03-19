@@ -90,16 +90,16 @@ function AnimatedPercentage({ target, duration = 0.6 }: { target: number; durati
   return <>{display}%</>;
 }
 
-/** SPIN scorecard — reads session data from localStorage, calls scoring API, renders real results. */
+/** CARRY1 scorecard — reads session data from localStorage, calls scoring API, renders real results. */
 export default function SpinScorecardPage() {
   const [state, setState] = useState<ScorecardState>('loading');
   const [scorecard, setScorecard] = useState<ApiScorecard | null>(null);
   const [errorMessage, setErrorMessage] = useState<string>('');
 
-  // Client-only: transcript comes from session page (localStorage.spinTranscript, set from messages state)
+  // Client-only: transcript comes from session page (localStorage.carry1Transcript, set from messages state)
   useEffect(() => {
     const sessionType = typeof window !== 'undefined' ? window.localStorage.getItem('spinSessionType') : null;
-    const transcript = typeof window !== 'undefined' ? window.localStorage.getItem('spinTranscript') : null;
+    const transcript = typeof window !== 'undefined' ? window.localStorage.getItem('carry1Transcript') : null;
     console.log('[scorecard] transcript from localStorage — length:', transcript?.length, '| preview:', transcript?.slice(0, 200));
 
     const trimmedTranscript = transcript?.trim() ?? '';
@@ -143,7 +143,7 @@ export default function SpinScorecardPage() {
     setState('loading');
     setErrorMessage('');
     const sessionType = typeof window !== 'undefined' ? window.localStorage.getItem('spinSessionType') : null;
-    const transcript = typeof window !== 'undefined' ? window.localStorage.getItem('spinTranscript') : null;
+    const transcript = typeof window !== 'undefined' ? window.localStorage.getItem('carry1Transcript') : null;
     console.log('[scorecard] transcript from localStorage — length:', transcript?.length, '| preview:', transcript?.slice(0, 200));
     const trimmedTranscript = transcript?.trim() ?? '';
     const validSessionTypes = VALID_SESSION_TYPES as unknown as string[];
@@ -224,7 +224,7 @@ export default function SpinScorecardPage() {
                 <h1 className="text-5xl font-bold mb-4">{agentConfig.scorecard.title}</h1>
                 <p className="text-xl text-white/60">Analysing your session...</p>
               </header>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12 opacity-50">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12 opacity-50">
                 {CARRY1_LABELS.map(({ label }, i) => (
                   <div
                     key={label}
@@ -304,7 +304,7 @@ export default function SpinScorecardPage() {
                 </div>
               </header>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
                 {CARRY1_LABELS.map(({ key, label, icon: Icon }, i) => {
                   const dim = scorecard.scores[key];
                   if (dim && typeof dim === 'object' && 'score' in dim && 'commentary' in dim) {

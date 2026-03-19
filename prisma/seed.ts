@@ -5,12 +5,12 @@ const prisma = new PrismaClient();
 async function main() {
   console.log('Seeding database...');
 
-  // 1. Create the "SEI Interview Coach" coach
+  // 1. Create the "CARRY1 Sales Coach" coach
   const coach = await prisma.coach.upsert({
     where: { slug: 'sei-interview-coach' },
     update: {},
     create: {
-      name: 'SEI Interview Coach',
+      name: 'CARRY1 Sales Coach',
       slug: 'sei-interview-coach',
       description: 'AI-powered interview practice tool backed by 30+ years of hiring expertise.',
     },

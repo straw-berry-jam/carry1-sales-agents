@@ -19,8 +19,8 @@ export type KBCategory =
   | 'methodology'
   | 'buyer_persona'
   | 'account_intelligence'
-  | 'sei_products'
-  | 'sei_capabilities'
+  | 'carry1_products'
+  | 'carry1_capabilities'
   | 'case_studies'
   | 'evaluation_criteria';
 
@@ -50,8 +50,8 @@ const CATEGORIES: { id: KBCategory; label: string; desc: string }[] = [
   { id: 'methodology', label: 'Methodology', desc: 'How to sell, evaluate, or deliver — frameworks and structured approaches' },
   { id: 'buyer_persona', label: 'Buyer Persona', desc: 'Archetypal or real buyer profiles used in coaching sessions' },
   { id: 'account_intelligence', label: 'Account Intelligence', desc: 'Research and intel on specific real companies and active pursuits' },
-  { id: 'sei_products', label: 'SEI Products', desc: "Named SEI offerings — scope, pricing, delivery model, ideal client" },
-  { id: 'sei_capabilities', label: 'SEI Capabilities', desc: "Broader service line descriptions and SEI's positioning in the market" },
+  { id: 'carry1_products', label: 'CARRY1 Products', desc: "Named CARRY1 offerings — scope, pricing, delivery model, ideal client" },
+  { id: 'carry1_capabilities', label: 'CARRY1 Capabilities', desc: "Broader service line descriptions and CARRY1's positioning in the market" },
   { id: 'case_studies', label: 'Case Studies', desc: 'Client engagement narratives with context, approach, and outcomes' },
   { id: 'evaluation_criteria', label: 'Evaluation Criteria', desc: 'Scoring signals and quality heuristics used to judge session performance' },
 ];
@@ -60,8 +60,8 @@ const TITLE_PLACEHOLDERS: Record<KBCategory, string> = {
   methodology: 'e.g. How to Position the AI Readiness Assessment',
   buyer_persona: 'e.g. Jane Smith — VP Supply Chain, Hartfield Manufacturing',
   account_intelligence: 'e.g. Holeman — Supply Chain Risk Profile',
-  sei_products: 'e.g. AI Readiness Assessment — Product Overview',
-  sei_capabilities: 'e.g. AI & Technology Service Line — Positioning Guide',
+  carry1_products: 'e.g. AI Readiness Assessment — Product Overview',
+  carry1_capabilities: 'e.g. AI & Technology Service Line — Positioning Guide',
   case_studies: 'e.g. How CARRY1 reduced carrying costs 22% for a contract manufacturer',
   evaluation_criteria: 'e.g. AI Assessment — Strong Product Knowledge Signals',
 };
@@ -70,8 +70,8 @@ const CATEGORY_COLORS: Record<string, { bg: string; text: string; border: string
   methodology: { bg: 'bg-gold/10', text: 'text-gold-dark', border: 'border-gold/30' },
   buyer_persona: { bg: 'bg-gold/10', text: 'text-gold-dark', border: 'border-gold/30' },
   account_intelligence: { bg: 'bg-amber-100', text: 'text-amber-700', border: 'border-amber-200' },
-  sei_products: { bg: 'bg-blue-100', text: 'text-blue-700', border: 'border-blue-200' },
-  sei_capabilities: { bg: 'bg-cyan-100', text: 'text-cyan-700', border: 'border-cyan-200' },
+  carry1_products: { bg: 'bg-blue-100', text: 'text-blue-700', border: 'border-blue-200' },
+  carry1_capabilities: { bg: 'bg-cyan-100', text: 'text-cyan-700', border: 'border-cyan-200' },
   case_studies: { bg: 'bg-green-100', text: 'text-green-700', border: 'border-green-200' },
   evaluation_criteria: { bg: 'bg-gold/10', text: 'text-gold-dark', border: 'border-gold/20' },
 };

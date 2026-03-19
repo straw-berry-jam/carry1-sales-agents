@@ -32,11 +32,11 @@ export const mockDocuments: KBDocument[] = [
   {
     id: '3',
     type: 'company',
-    title: 'Systems Evolution, Inc. (SEI)',
+    title: 'CARRY1',
     content: 'Values alignment, consulting mindset, and long-term ownership.',
     status: 'active',
     updatedAt: '2026-01-28',
-    companyName: 'SEI',
+    companyName: 'CARRY1',
     industry: 'Consulting',
     roles: ['All Roles'],
   },

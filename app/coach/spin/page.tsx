@@ -8,7 +8,7 @@ import { ChevronLeft, Upload, FileText, X, Loader2, Mic, MessageSquare, AlertCir
 import { agentConfig } from '@/lib/agentConfig';
 import DemoBanner from '@/components/DemoBanner';
 
-/** SPIN session setup — copied from app/setup/page.tsx. Navigation points to SPIN flow only. */
+/** CARRY1 Sales Coach session setup — copied from app/setup/page.tsx. Navigation points to CARRY1 flow only. */
 export default function SpinSetupPage() {
   const router = useRouter();
   const [step, setStep] = useState(1);
@@ -159,7 +159,7 @@ export default function SpinSetupPage() {
     role: 'Sales Rep',
     company: data.company,
     resumeText: data.jobDescription || '',
-    interviewType: 'SPIN Practice',
+    interviewType: 'CARRY1 Sales Practice',
     duration: data.sessionDuration === '15' ? 'quick' : 'intro',
     interactionMode: data.interactionMode,
     ...(existingSessionId != null && { sessionId: existingSessionId }),

@@ -4,8 +4,8 @@
  * and returns a structured JSON scorecard. When present, KB evaluation_criteria
  * documents (assigned to the active agent) are injected above the transcript as rubric.
  *
- * Transcript source (when called after demo): Client reads localStorage.spinTranscript
- * and sends it in the POST body. That value is set on the SPIN session page
+ * Transcript source (when called after demo): Client reads localStorage.carry1Transcript
+ * and sends it in the POST body. That value is set on the CARRY1 session page
  * (app/coach/spin/session/page.tsx) in a useEffect that builds it from the `messages`
  * state (turn-by-turn "Coach: ... / Rep: ..."). So only text-mode turns are included;
  * voice-only conversation does not update `messages`, so transcript can be empty/short.
@@ -72,7 +72,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Debug: verify transcript being evaluated (client sends from localStorage.spinTranscript)
+    // Debug: verify transcript being evaluated (client sends from localStorage.carry1Transcript)
     const transcriptLength = typeof transcript === 'string' ? transcript.length : 0;
     const transcriptPreview = typeof transcript === 'string' ? transcript.slice(0, 500) : String(transcript);
     console.log('[score-session] transcript length:', transcriptLength, '| first 500 chars:', transcriptPreview);
@@ -84,7 +84,7 @@ export async function POST(request: NextRequest) {
       systemPrompt = active.prompt;
       agentUuid = active.agentId;
     } catch (err) {
-      console.error('Score session: failed to fetch active SPIN agent (prompt + id)', err);
+      console.error('Score session: failed to fetch active CARRY1 agent (prompt + id)', err);
       return NextResponse.json(
         { error: NO_ACTIVE_AGENT_MESSAGE },
         { status: 404 }

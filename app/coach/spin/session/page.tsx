@@ -11,10 +11,10 @@ import DemoBanner from '@/components/DemoBanner';
 
 const VALID_SESSION_TYPES = ['outreach_15', 'outreach_30', 'discovery_15', 'discovery_30'] as const;
 
-/** SPIN demo session limit: 3 minutes. (Main coach at /coach uses 30s.) Env override for build-time: NEXT_PUBLIC_SPIN_DEMO_LIMIT_MS */
-const SPIN_DEMO_LIMIT_MS =
-  typeof process !== 'undefined' && process.env.NEXT_PUBLIC_SPIN_DEMO_LIMIT_MS
-    ? Number(process.env.NEXT_PUBLIC_SPIN_DEMO_LIMIT_MS)
+/** Demo session limit: 3 minutes. (Main coach at /coach uses 30s.) Env override for build-time: NEXT_PUBLIC_DEMO_LIMIT_MS */
+const DEMO_LIMIT_MS =
+  typeof process !== 'undefined' && process.env.NEXT_PUBLIC_DEMO_LIMIT_MS
+    ? Number(process.env.NEXT_PUBLIC_DEMO_LIMIT_MS)
     : 180_000; // 3 minutes
 
 /** Wrapper so useSearchParams is inside Suspense (Next.js 14+ requirement for static export). */
@@ -26,7 +26,7 @@ export default function SpinSessionPageWrapper() {
   );
 }
 
-/** SPIN coaching session — copied from app/coach/page.tsx. Links point to SPIN flow only. */
+/** CARRY1 Sales Coach session — copied from app/coach/page.tsx. Links point to CARRY1 flow only. */
 function SpinSessionPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -70,7 +70,7 @@ function SpinSessionPage() {
 
   useEffect(() => {
     if (!isStarted) return;
-    const timer = setTimeout(() => setDemoEnded(true), SPIN_DEMO_LIMIT_MS);
+    const timer = setTimeout(() => setDemoEnded(true), DEMO_LIMIT_MS);
     return () => clearTimeout(timer);
   }, [isStarted]);
 
@@ -94,7 +94,7 @@ function SpinSessionPage() {
     const transcript = messages
       .map((m) => (m.role === 'ai' ? `Coach: ${m.text}` : `Rep: ${m.text}`))
       .join('\n\n');
-    window.localStorage.setItem('spinTranscript', transcript);
+    window.localStorage.setItem('carry1Transcript', transcript);
   }, [messages]);
 
   useEffect(() => {
@@ -230,8 +230,8 @@ function SpinSessionPage() {
 
   /** Navigate to scorecard. In voice mode with conversation ID, poll for transcript from ElevenLabs (up to 8 attempts, 2s apart), then store in localStorage. */
   const handleGoToScorecard = async () => {
-    console.log('[SPIN] voiceConversationId at end session:', voiceConversationId);
-    console.log('[SPIN End Session] voiceConversationId:', voiceConversationId ?? 'null/undefined', mode === 'voice' && (voiceConversationId == null) ? '— ElevenLabs transcript fetch will be skipped.' : '');
+    console.log('[CARRY1] voiceConversationId at end session:', voiceConversationId);
+    console.log('[CARRY1 End Session] voiceConversationId:', voiceConversationId ?? 'null/undefined', mode === 'voice' && (voiceConversationId == null) ? '— ElevenLabs transcript fetch will be skipped.' : '');
     if (mode === 'voice' && voiceConversationId) {
       // Ensure the voice session is ended before fetching transcript.
       // We don't have direct access to the ElevenLabs conversation object here, but `VoiceCoach`
@@ -242,14 +242,14 @@ function SpinSessionPage() {
       setIsFetchingTranscript(true);
       setTranscriptLoadingMessageIndex(0);
       const fetchOnce = async (): Promise<{ transcript: string; status: number }> => {
-        console.log('[SPIN transcript fetch] voiceConversationId before fetch:', voiceConversationId);
+        console.log('[CARRY1 transcript fetch] voiceConversationId before fetch:', voiceConversationId);
         const res = await fetch('/api/elevenlabs-conversation-transcript', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ conversationId: voiceConversationId }),
         });
         const data = await res.json();
-        console.log('[SPIN transcript fetch] raw response from /api/elevenlabs-conversation-transcript:', { status: res.status, body: data });
+        console.log('[CARRY1 transcript fetch] raw response from /api/elevenlabs-conversation-transcript:', { status: res.status, body: data });
         const transcript = (data.transcript ?? '').trim();
         return { transcript, status: res.status };
       };
@@ -270,9 +270,9 @@ function SpinSessionPage() {
         if (!result || result.status !== 200 || !result.transcript) {
           throw new Error('Conversation transcript is not ready yet. Please try again in a moment.');
         }
-        console.log('[SPIN transcript] final transcript written to localStorage.spinTranscript — length:', result.transcript.length, '| preview (first 500 chars):', result.transcript.slice(0, 500));
+        console.log('[CARRY1 transcript] final transcript written to localStorage.carry1Transcript — length:', result.transcript.length, '| preview (first 500 chars):', result.transcript.slice(0, 500));
         if (typeof window !== 'undefined') {
-          window.localStorage.setItem('spinTranscript', result.transcript);
+          window.localStorage.setItem('carry1Transcript', result.transcript);
         }
         router.push('/coach/spin/scorecard');
       } catch (err) {
@@ -296,7 +296,7 @@ function SpinSessionPage() {
   }, [isFetchingTranscript]);
 
   useEffect(() => {
-    console.log('[SPIN] voiceConversationId state changed to:', voiceConversationId);
+    console.log('[CARRY1] voiceConversationId state changed to:', voiceConversationId);
   }, [voiceConversationId]);
 
   useEffect(() => {
@@ -567,7 +567,7 @@ function SpinSessionPage() {
                   onboardingData={onboardingData}
                   demoEnded={demoEnded}
                   onConversationId={(id) => {
-                    console.log('[SPIN] onConversationId callback fired with:', id);
+                    console.log('[CARRY1] onConversationId callback fired with:', id);
                     setVoiceConversationId(id);
                   }}
                 />

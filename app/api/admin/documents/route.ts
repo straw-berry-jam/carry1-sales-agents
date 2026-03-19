@@ -7,8 +7,8 @@ const VALID_CATEGORIES = [
   'methodology',
   'buyer_persona',
   'account_intelligence',
-  'sei_products',
-  'sei_capabilities',
+  'carry1_products',
+  'carry1_capabilities',
   'case_studies',
   'evaluation_criteria',
 ] as const;
@@ -37,7 +37,7 @@ export async function GET(req: NextRequest) {
         ],
       });
     }
-    // SEI-36: Filter by agent type — show docs assigned to that type OR assigned to all agents.
+    // Filter by agent type — show docs assigned to that type OR assigned to all agents.
     if (agentType && VALID_AGENT_TYPES.includes(agentType as (typeof VALID_AGENT_TYPES)[number])) {
       const agentsOfType = await prisma.agent.findMany({
         where: { agentType: agentType as agent_type },

@@ -1,7 +1,7 @@
 /**
  * POST /api/elevenlabs-conversation-transcript
  * Fetches the full conversation transcript from ElevenLabs conversation history API.
- * Used after a SPIN voice session ends so the scorecard can score the voice conversation.
+ * Used after a CARRY1 voice session ends so the scorecard can score the voice conversation.
  * Body: { conversationId: string }
  * Returns: { transcript: string } in "Coach: ... \n\n Rep: ..." format for /api/score-session.
  */

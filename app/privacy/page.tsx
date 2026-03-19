@@ -28,7 +28,7 @@ export default function PrivacyPage() {
             <section className="space-y-4">
               <h2 className="text-2xl font-bold text-white">Information We Collect</h2>
               <p>
-                When you use the SEI Interview Coach, we collect information you provide directly to us, such as your professional role, target company, and the text or audio of your practice interview sessions.
+                When you use the CARRY1 Sales Coach, we collect information you provide directly to us, such as your professional role, target company, and the text or audio of your practice interview sessions.
               </p>
             </section>
 

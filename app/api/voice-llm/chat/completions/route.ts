@@ -75,10 +75,10 @@ export async function POST(req: NextRequest) {
       console.log('[Voice LLM] No stored context found, using dynamic variables');
     }
 
-    // Resolve agentId — prefer stored context, fall back to hardcoded SPIN coach
+    // Resolve agentId — prefer stored context, fall back to CARRY1 Sales Coach
     const agentId = storedContext?.agentId || '18c4beb8-536e-48ac-a402-dc8074fef7c6';
     console.log('[Voice LLM] agentId received:', agentId);
-    console.log('[Voice LLM] agentId source:', storedContext?.agentId ? 'stored context' : 'fallback (SPIN)');
+    console.log('[Voice LLM] agentId source:', storedContext?.agentId ? 'stored context' : 'fallback (CARRY1 Sales Coach)');
 
     // Debug: look up agent to confirm it exists
     const agent = await prisma.agent.findFirst({ where: { id: agentId } });
@@ -89,7 +89,7 @@ export async function POST(req: NextRequest) {
     // Extract context — prefer stored context, fall back to dynamic variables
     const sessionContext = {
       role: storedContext?.role || dynamic_variables?.target_role || 'Software Engineer',
-      company: storedContext?.company || dynamic_variables?.target_company || 'SEI',
+      company: storedContext?.company || dynamic_variables?.target_company || '',
       interviewType: storedContext?.interviewType || 'Technical',
       stage: 'Initial',
       conversationHistory,

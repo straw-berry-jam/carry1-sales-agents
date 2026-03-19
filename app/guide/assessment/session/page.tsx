@@ -199,7 +199,7 @@ function AssessmentSessionPage() {
       <div className="max-w-7xl mx-auto">
         <header className="flex items-center justify-between mb-16">
           <Link href="/guide" className="text-2xl font-bold tracking-tighter">
-            SEI <span className="text-white/60">AI Assessment Guide</span>
+            CARRY1 <span className="text-white/60">AI Assessment Guide</span>
           </Link>
           <div className="flex items-center gap-6">
             <div className="flex bg-white/5 p-1 rounded-lg border border-white/10">

@@ -24,8 +24,8 @@ const DOC_TYPES = [
   { id: 'methodology', label: 'Methodology', icon: BookOpen },
   { id: 'buyer_persona', label: 'Buyer Persona', icon: UserCircle },
   { id: 'account_intelligence', label: 'Account Intelligence', icon: Building2 },
-  { id: 'sei_products', label: 'SEI Products', icon: Package },
-  { id: 'sei_capabilities', label: 'SEI Capabilities', icon: Lightbulb },
+  { id: 'carry1_products', label: 'CARRY1 Products', icon: Package },
+  { id: 'carry1_capabilities', label: 'CARRY1 Capabilities', icon: Lightbulb },
   { id: 'case_studies', label: 'Case Studies', icon: FolderOpen },
   { id: 'evaluation_criteria', label: 'Evaluation Criteria', icon: ClipboardCheck },
 ];
