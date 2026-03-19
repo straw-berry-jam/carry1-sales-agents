@@ -1,11 +1,14 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Montserrat } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
+const montserrat = Montserrat({
+  subsets: ["latin"],
+  weight: ["300", "400", "600", "700"],
+});
 
 export const metadata: Metadata = {
-  title: "SEI Sales Coach | Master Every Sales Pitch",
+  title: "CARRY1 Sales Coach | Master Every Sales Pitch",
   description: "Practice sales conversations with AI-powered coaching. Get personalized feedback on discovery, objection handling, and closing—and pitch with confidence.",
   keywords: "interview prep, interview practice, AI interview coach, interview coaching, job interview help",
 };
@@ -17,7 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="scroll-smooth">
-      <body className={`${inter.className} bg-textured-gradient`}>
+      <body className={`${montserrat.className} bg-textured-gradient`}>
         {children}
       </body>
     </html>

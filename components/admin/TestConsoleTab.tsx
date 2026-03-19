@@ -106,26 +106,26 @@ export default function TestConsoleTab() {
     <div className="min-h-screen bg-[#FDFBF7] p-8 text-gray-900">
       <div className="max-w-7xl mx-auto">
         <header className="mb-10">
-          <h1 className="text-3xl font-bold text-plum-dark">Knowledge Base Testing Dashboard</h1>
+          <h1 className="text-3xl font-bold text-navy">Knowledge Base Testing Dashboard</h1>
           <p className="text-gray-500 mt-2 font-medium max-w-2xl">Test retrieval against the current knowledge base. Select document types and run a query; results use the active agent&apos;s assigned documents.</p>
         </header>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left Column: Search Form */}
           <div className="lg:col-span-1 space-y-6">
-            <div className="bg-white rounded-2xl border border-plum/10 p-6 shadow-sm space-y-6">
+            <div className="bg-white rounded-2xl border border-gold-dark/20 p-6 shadow-sm space-y-6">
               <div className="space-y-2">
-                <label className="text-[10px] font-bold text-plum/40 uppercase tracking-widest">Search query</label>
+                <label className="text-[10px] font-bold text-gold-dark/60 uppercase tracking-widest">Search query</label>
                 <textarea
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   placeholder="e.g., How do I handle pricing objections?"
-                  className="w-full h-32 bg-plum/5 border border-plum/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-plum-dark/50 transition-all resize-none font-medium"
+                  className="w-full h-32 bg-gold/5 border border-gold-dark/20 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-navy/50 transition-all resize-none font-medium"
                 />
               </div>
 
               <div className="space-y-3 pt-2">
-                <label className="text-[10px] font-bold text-plum/40 uppercase tracking-widest block">Document Types</label>
+                <label className="text-[10px] font-bold text-gold-dark/60 uppercase tracking-widest block">Document Types</label>
                 <div className="grid grid-cols-1 gap-2">
                   {DOC_TYPES.map((type) => (
                     <button
@@ -134,8 +134,8 @@ export default function TestConsoleTab() {
                       onClick={() => toggleType(type.id)}
                       className={`flex items-center space-x-3 px-4 py-2 rounded-xl border text-xs font-bold transition-all ${
                         selectedTypes.includes(type.id)
-                          ? 'bg-plum-dark text-white border-plum-dark shadow-sm'
-                          : 'bg-white text-plum/40 border-plum/10 hover:border-plum/20'
+                          ? 'bg-navy text-white border-navy shadow-sm'
+                          : 'bg-white text-gold-dark/60 border-gold-dark/20 hover:border-gold-dark/30'
                       }`}
                     >
                       <type.icon size={14} />
@@ -149,7 +149,7 @@ export default function TestConsoleTab() {
                 type="button"
                 onClick={handleSearch}
                 disabled={isLoading || !query.trim()}
-                className="w-full bg-plum-dark text-white py-3.5 rounded-xl font-bold shadow-md hover:bg-plum transition-all flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-navy text-white py-3.5 rounded-xl font-bold shadow-md hover:bg-navy/90 transition-all flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isLoading ? <Loader2 size={18} className="animate-spin" /> : <Search size={18} />}
                 <span>Search</span>
@@ -160,38 +160,38 @@ export default function TestConsoleTab() {
           {/* Right Column: Results */}
           <div className="lg:col-span-2 space-y-6">
             {!isLoading && results.length > 0 && (
-              <div className="flex items-center justify-between bg-plum/5 px-6 py-3 rounded-2xl border border-plum/5">
+              <div className="flex items-center justify-between bg-gold/5 px-6 py-3 rounded-2xl border border-gold/10">
                 <div className="flex items-center space-x-4">
                   <div className="flex flex-col">
-                    <span className="text-[10px] font-bold text-plum/40 uppercase tracking-widest">Results Found</span>
-                    <span className="text-xl font-bold text-plum-dark">{statsSummary?.count}</span>
+                    <span className="text-[10px] font-bold text-gold-dark/60 uppercase tracking-widest">Results Found</span>
+                    <span className="text-xl font-bold text-navy">{statsSummary?.count}</span>
                   </div>
-                  <div className="h-8 w-px bg-plum/10" />
+                  <div className="h-8 w-px bg-gold/10" />
                   <div className="flex flex-col">
-                    <span className="text-[10px] font-bold text-plum/40 uppercase tracking-widest">Avg Similarity</span>
-                    <span className="text-xl font-bold text-plum-dark">{statsSummary?.avgSimilarity}%</span>
+                    <span className="text-[10px] font-bold text-gold-dark/60 uppercase tracking-widest">Avg Similarity</span>
+                    <span className="text-xl font-bold text-navy">{statsSummary?.avgSimilarity}%</span>
                   </div>
                 </div>
-                <Info size={18} className="text-plum/20" />
+                <Info size={18} className="text-gold/30" />
               </div>
             )}
 
             {isLoading ? (
-              <div className="bg-white rounded-2xl border border-plum/10 p-20 flex flex-col items-center justify-center space-y-4 text-plum/40 shadow-sm">
+              <div className="bg-white rounded-2xl border border-gold-dark/20 p-20 flex flex-col items-center justify-center space-y-4 text-gold-dark/60 shadow-sm">
                 <Loader2 size={40} className="animate-spin" />
                 <p className="text-xs font-bold uppercase tracking-widest">Querying Semantic Index...</p>
               </div>
             ) : results.length > 0 ? (
               <div className="space-y-4">
                 {results.map((res, idx) => (
-                  <div key={idx} className="bg-white rounded-2xl border border-plum/10 shadow-sm overflow-hidden group hover:border-plum/30 transition-all">
+                  <div key={idx} className="bg-white rounded-2xl border border-gold-dark/20 shadow-sm overflow-hidden group hover:border-gold/40 transition-all">
                     <div 
                       className="p-6 cursor-pointer" 
                       onClick={() => setExpandedId(expandedId === idx ? null : idx)}
                     >
                       <div className="flex items-start justify-between mb-4">
                         <div className="flex items-center space-x-3">
-                          <span className="px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider bg-plum/5 text-plum-dark border border-plum/10">
+                          <span className="px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider bg-gold/5 text-navy border border-gold-dark/20">
                             {DOC_TYPES.find((t) => t.id === res.documentType)?.label ?? res.documentType?.replace(/_/g, ' ') ?? '—'}
                           </span>
                           <span className={`px-2 py-1 rounded-lg text-[10px] font-bold ${
@@ -202,10 +202,10 @@ export default function TestConsoleTab() {
                             {(res.similarity * 100).toFixed(1)}% Match
                           </span>
                         </div>
-                        {expandedId === idx ? <ChevronUp size={18} className="text-plum/40" /> : <ChevronDown size={18} className="text-plum/40" />}
+                        {expandedId === idx ? <ChevronUp size={18} className="text-gold-dark/60" /> : <ChevronDown size={18} className="text-gold-dark/60" />}
                       </div>
                       
-                      <h3 className="text-lg font-bold text-plum-dark mb-3 leading-tight">{res.documentTitle}</h3>
+                      <h3 className="text-lg font-bold text-navy mb-3 leading-tight">{res.documentTitle}</h3>
                       
                       <p className={`text-sm text-gray-600 leading-relaxed font-medium ${expandedId === idx ? '' : 'line-clamp-2'}`}>
                         {res.chunkText}
@@ -213,12 +213,12 @@ export default function TestConsoleTab() {
                     </div>
                     
                     {expandedId === idx && (
-                      <div className="px-6 py-4 bg-plum/5 flex items-center justify-between border-t border-plum/5">
-                        <span className="text-[10px] font-bold text-plum/40 uppercase tracking-widest flex items-center">
+                      <div className="px-6 py-4 bg-gold/5 flex items-center justify-between border-t border-gold/10">
+                        <span className="text-[10px] font-bold text-gold-dark/60 uppercase tracking-widest flex items-center">
                           <FileText size={12} className="mr-2" /> 
                           Chunk Details
                         </span>
-                        <button className="text-[10px] font-black text-plum-dark uppercase tracking-widest hover:underline flex items-center space-x-1">
+                        <button className="text-[10px] font-black text-navy uppercase tracking-widest hover:underline flex items-center space-x-1">
                           <span>View Full Document</span>
                           <ExternalLink size={12} />
                         </button>
@@ -228,22 +228,22 @@ export default function TestConsoleTab() {
                 ))}
               </div>
             ) : (
-              <div className="bg-white rounded-2xl border border-dashed border-plum/20 p-20 flex flex-col items-center justify-center text-center space-y-6 shadow-sm">
-                <div className="p-6 bg-plum/5 rounded-full text-plum/20">
+              <div className="bg-white rounded-2xl border border-dashed border-gold-dark/30 p-20 flex flex-col items-center justify-center text-center space-y-6 shadow-sm">
+                <div className="p-6 bg-gold/5 rounded-full text-gold/30">
                   <Search size={48} />
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-plum-dark">No search results yet</h3>
+                  <h3 className="text-lg font-bold text-navy">No search results yet</h3>
                   <p className="text-sm text-gray-400 mt-2 max-w-xs mx-auto">
                     Enter a query and click Search to see which knowledge base chunks are retrieved for the active agent.
                   </p>
                 </div>
                 <div className="grid grid-cols-1 gap-2 w-full max-w-xs">
-                  <p className="text-[10px] font-bold text-plum/20 uppercase tracking-widest mb-2">Try an example</p>
+                  <p className="text-[10px] font-bold text-gold/30 uppercase tracking-widest mb-2">Try an example</p>
                   <button
                     type="button"
                     onClick={() => setQuery('How do I handle pricing objections?')}
-                    className="text-xs font-bold text-plum/40 hover:text-plum-dark hover:bg-plum/5 py-2 px-4 rounded-xl border border-plum/5 transition-all flex items-center justify-center"
+                    className="text-xs font-bold text-gold-dark/60 hover:text-navy hover:bg-gold/5 py-2 px-4 rounded-xl border border-gold/10 transition-all flex items-center justify-center"
                   >
                     <span>How do I handle pricing objections?</span>
                     <ArrowRight size={12} className="ml-2" />

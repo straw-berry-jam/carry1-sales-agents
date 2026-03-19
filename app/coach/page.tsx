@@ -347,12 +347,12 @@ export default function CoachPage() {
           <div className="lg:col-span-2 space-y-6">
             {demoEnded && (
               <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-6">
-                <div className="bg-[#2A1C30] border border-white/20 rounded-2xl p-8 text-center max-w-md w-full shadow-2xl">
+                <div className="bg-navy border border-gold-dark rounded-2xl p-8 text-center max-w-md w-full shadow-2xl">
                   <h2 className="text-2xl font-bold text-white mb-4">Demo Complete</h2>
                   <p className="text-white/80 text-sm mb-6">
                     Thanks for trying the demo! To experience a full coaching session built on your team's data,{' '}
                     <a
-                      href="mailto:cminer@sei.com?subject=SEI%20Sales%20Agent%20Platform%20Inquiry"
+                      href="mailto:cminer@carry1.com?subject=CARRY1%20Sales%20Agent%20Platform%20Inquiry"
                       className="text-white font-medium underline hover:text-white/90 transition-colors"
                     >
                       get in touch with us

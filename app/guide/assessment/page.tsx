@@ -118,7 +118,7 @@ export default function AssessmentOnboardingPage() {
                   <motion.div
                     animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.6, 0.3] }}
                     transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                    className="absolute inset-0 bg-plum/20 rounded-full blur-xl"
+                    className="absolute inset-0 bg-gold/20 rounded-full blur-xl"
                   />
                 </div>
                 

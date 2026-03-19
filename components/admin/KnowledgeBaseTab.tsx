@@ -58,11 +58,11 @@ const CATEGORIES: { id: KBCategory; label: string; desc: string }[] = [
 
 const TITLE_PLACEHOLDERS: Record<KBCategory, string> = {
   methodology: 'e.g. How to Position the AI Readiness Assessment',
-  buyer_persona: 'e.g. Marcus Webb — VP Supply Chain, Hartfield Manufacturing',
+  buyer_persona: 'e.g. Jane Smith — VP Supply Chain, Hartfield Manufacturing',
   account_intelligence: 'e.g. Holeman — Supply Chain Risk Profile',
   sei_products: 'e.g. AI Readiness Assessment — Product Overview',
   sei_capabilities: 'e.g. AI & Technology Service Line — Positioning Guide',
-  case_studies: 'e.g. How SEI reduced carrying costs 22% for a contract manufacturer',
+  case_studies: 'e.g. How CARRY1 reduced carrying costs 22% for a contract manufacturer',
   evaluation_criteria: 'e.g. AI Assessment — Strong Product Knowledge Signals',
 };
 
@@ -73,7 +73,7 @@ const CATEGORY_COLORS: Record<string, { bg: string; text: string; border: string
   sei_products: { bg: 'bg-blue-100', text: 'text-blue-700', border: 'border-blue-200' },
   sei_capabilities: { bg: 'bg-cyan-100', text: 'text-cyan-700', border: 'border-cyan-200' },
   case_studies: { bg: 'bg-green-100', text: 'text-green-700', border: 'border-green-200' },
-  evaluation_criteria: { bg: 'bg-plum/10', text: 'text-plum', border: 'border-plum/20' },
+  evaluation_criteria: { bg: 'bg-gold/10', text: 'text-gold-dark', border: 'border-gold/20' },
 };
 
 const defaultCategoryColors = { bg: 'bg-gray-100', text: 'text-gray-700', border: 'border-gray-200' };
@@ -376,12 +376,12 @@ export default function KnowledgeBaseTab({ onNavigateToSystemHealth }: Knowledge
         )}
         <header className="mb-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
           <div className="min-w-0">
-            <h1 className="text-3xl font-bold text-plum-dark">Knowledge Base</h1>
+            <h1 className="text-3xl font-bold text-navy">Knowledge Base</h1>
             <p className="text-gray-500 mt-2 font-medium">Manage documents and assign them to agents for RAG retrieval.</p>
           </div>
           <button
             onClick={openCreate}
-            className="bg-[#3A2449] text-white px-8 py-3 rounded-xl font-semibold shadow-sm hover:bg-[#2D1B3D] transition-all flex items-center gap-2 whitespace-nowrap"
+            className="bg-navy text-white px-8 py-3 rounded font-semibold shadow-sm hover:bg-navy/90 transition-all flex items-center gap-2 whitespace-nowrap"
           >
             <PlusCircle size={20} />
             Add New Document
@@ -398,11 +398,11 @@ export default function KnowledgeBaseTab({ onNavigateToSystemHealth }: Knowledge
         {/* Filters */}
         <div className="flex flex-wrap items-center gap-4 mb-6">
           <div className="flex items-center gap-2">
-            <span className="text-xs font-bold text-plum/40 uppercase tracking-wider">Category</span>
+            <span className="text-xs font-bold text-gold-dark/60 uppercase tracking-wider">Category</span>
             <select
               value={categoryFilter}
               onChange={(e) => setCategoryFilter(e.target.value)}
-              className="bg-white border border-plum/10 rounded-xl px-4 py-2.5 text-sm font-medium text-plum-dark focus:outline-none focus:ring-2 focus:ring-plum/20"
+              className="bg-white border border-gold-dark/20 rounded-xl px-4 py-2.5 text-sm font-medium text-navy focus:outline-none focus:ring-2 focus:ring-gold/30"
             >
               <option value="all">All</option>
               {CATEGORIES.map((c) => (
@@ -411,11 +411,11 @@ export default function KnowledgeBaseTab({ onNavigateToSystemHealth }: Knowledge
             </select>
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-xs font-bold text-plum/40 uppercase tracking-wider">Agent</span>
+            <span className="text-xs font-bold text-gold-dark/60 uppercase tracking-wider">Agent</span>
             <select
               value={agentFilter}
               onChange={(e) => setAgentFilter(e.target.value)}
-              className="bg-white border border-plum/10 rounded-xl px-4 py-2.5 text-sm font-medium text-plum-dark focus:outline-none focus:ring-2 focus:ring-plum/20"
+              className="bg-white border border-gold-dark/20 rounded-xl px-4 py-2.5 text-sm font-medium text-navy focus:outline-none focus:ring-2 focus:ring-gold/30"
             >
               <option value="all">All</option>
               {agents.map((a) => (
@@ -424,11 +424,11 @@ export default function KnowledgeBaseTab({ onNavigateToSystemHealth }: Knowledge
             </select>
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-xs font-bold text-plum/40 uppercase tracking-wider">Agent Type</span>
+            <span className="text-xs font-bold text-gold-dark/60 uppercase tracking-wider">Agent Type</span>
             <select
               value={agentTypeFilter}
               onChange={(e) => setAgentTypeFilter(e.target.value)}
-              className="bg-white border border-plum/10 rounded-xl px-4 py-2.5 text-sm font-medium text-plum-dark focus:outline-none focus:ring-2 focus:ring-plum/20"
+              className="bg-white border border-gold-dark/20 rounded-xl px-4 py-2.5 text-sm font-medium text-navy focus:outline-none focus:ring-2 focus:ring-gold/30"
             >
               <option value="all">All</option>
               <option value="Guide">Guide</option>
@@ -438,11 +438,11 @@ export default function KnowledgeBaseTab({ onNavigateToSystemHealth }: Knowledge
             </select>
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-xs font-bold text-plum/40 uppercase tracking-wider">Status</span>
+            <span className="text-xs font-bold text-gold-dark/60 uppercase tracking-wider">Status</span>
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="bg-white border border-plum/10 rounded-xl px-4 py-2.5 text-sm font-medium text-plum-dark focus:outline-none focus:ring-2 focus:ring-plum/20"
+              className="bg-white border border-gold-dark/20 rounded-xl px-4 py-2.5 text-sm font-medium text-navy focus:outline-none focus:ring-2 focus:ring-gold/30"
             >
               <option value="all">All</option>
               <option value="published">Published</option>
@@ -452,16 +452,16 @@ export default function KnowledgeBaseTab({ onNavigateToSystemHealth }: Knowledge
         </div>
 
         {/* Library table */}
-        <div className="bg-white rounded-2xl shadow-sm border border-plum/10 overflow-hidden min-h-[300px]">
+        <div className="bg-white rounded-2xl shadow-sm border border-gold-dark/20 overflow-hidden min-h-[300px]">
           {isLoading ? (
-            <div className="flex flex-col items-center justify-center py-20 text-plum/40">
+            <div className="flex flex-col items-center justify-center py-20 text-gold-dark/60">
               <Loader2 size={40} className="animate-spin" />
               <p className="text-sm font-bold uppercase tracking-widest mt-4">Loading...</p>
             </div>
           ) : (
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="bg-plum/5 border-b border-plum/5">
+                <tr className="bg-gold/5 border-b border-gold/10">
                   <th className="px-8 py-5 text-xs font-bold text-gray-400 uppercase tracking-widest">Category</th>
                   <th className="px-8 py-5 text-xs font-bold text-gray-400 uppercase tracking-widest">Title</th>
                   <th className="px-8 py-5 text-xs font-bold text-gray-400 uppercase tracking-widest">Assigned agents</th>
@@ -469,21 +469,21 @@ export default function KnowledgeBaseTab({ onNavigateToSystemHealth }: Knowledge
                   <th className="px-8 py-5 text-xs font-bold text-gray-400 uppercase tracking-widest w-28">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-plum/5">
+              <tbody className="divide-y divide-gold/10">
                 {documents.map((doc) => {
                   const style = getCategoryStyle(doc.category);
                   const agentLabel = doc.agents.includes('all')
                     ? 'All agents'
                     : doc.agents.map((id) => agents.find((a) => a.id === id)?.name ?? id).join(', ');
                   return (
-                    <tr key={doc.id} className="hover:bg-plum/5 transition-all group">
+                    <tr key={doc.id} className="hover:bg-gold/5 transition-all group">
                       <td className="px-8 py-5">
                         <span className={`inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider border ${style.bg} ${style.text} ${style.border}`}>
                           {CATEGORIES.find((c) => c.id === doc.category)?.label ?? doc.category}
                         </span>
                       </td>
                       <td className="px-8 py-5">
-                        <p className="text-[15px] font-bold text-plum-dark">{doc.title}</p>
+                        <p className="text-[15px] font-bold text-navy">{doc.title}</p>
                       </td>
                       <td className="px-8 py-5 text-sm text-gray-500">{agentLabel || '—'}</td>
                       <td className="px-8 py-5">
@@ -494,14 +494,14 @@ export default function KnowledgeBaseTab({ onNavigateToSystemHealth }: Knowledge
                       <td className="px-8 py-5 flex items-center gap-2">
                         <button
                           onClick={() => openEdit(doc)}
-                          className="p-2 rounded-lg border border-plum/10 text-plum/60 hover:text-plum-dark hover:bg-plum/5 transition-all"
+                          className="p-2 rounded-lg border border-gold-dark/20 text-gold-dark/80 hover:text-navy hover:bg-gold/5 transition-all"
                           title="Edit"
                         >
                           <Edit3 size={16} />
                         </button>
                         <button
                           onClick={() => handleDelete(doc.id)}
-                          className="p-2 rounded-lg border border-plum/10 text-plum/40 hover:text-red-600 hover:border-red-200 hover:bg-red-50 transition-all"
+                          className="p-2 rounded-lg border border-gold-dark/20 text-gold-dark/60 hover:text-red-600 hover:border-red-200 hover:bg-red-50 transition-all"
                           title="Delete"
                         >
                           <Trash2 size={16} />
@@ -525,15 +525,15 @@ export default function KnowledgeBaseTab({ onNavigateToSystemHealth }: Knowledge
 
       {/* Drawer: Add / Edit */}
       <div className={`fixed inset-0 z-50 transition-opacity duration-500 ${isDrawerOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
-        <div className="absolute inset-0 bg-plum-dark/20 backdrop-blur-sm" onClick={closeDrawer} />
-        <aside className={`absolute top-0 right-0 h-full w-full max-w-2xl bg-white shadow-2xl border-l border-plum/10 transition-transform duration-500 ease-out transform ${isDrawerOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+        <div className="absolute inset-0 bg-navy/20 backdrop-blur-sm" onClick={closeDrawer} />
+        <aside className={`absolute top-0 right-0 h-full w-full max-w-2xl bg-white shadow-2xl border-l border-gold-dark/20 transition-transform duration-500 ease-out transform ${isDrawerOpen ? 'translate-x-0' : 'translate-x-full'}`}>
           <div className="h-full flex flex-col">
-            <div className="p-8 border-b border-plum/5 flex items-center justify-between bg-plum/5">
-              <div className="flex items-center gap-3 text-plum/40">
+            <div className="p-8 border-b border-gold/10 flex items-center justify-between bg-gold/5">
+              <div className="flex items-center gap-3 text-gold-dark/60">
                 {drawerMode === 'create' ? <PlusCircle size={18} /> : <Edit3 size={18} />}
                 <span className="text-[10px] font-bold uppercase tracking-[0.2em]">{drawerMode === 'create' ? 'Add New Document' : 'Edit Document'}</span>
               </div>
-              <button onClick={closeDrawer} className="p-2 hover:bg-plum/10 rounded-full transition-all text-plum/40 hover:text-plum-dark">
+              <button onClick={closeDrawer} className="p-2 hover:bg-gold/10 rounded-full transition-all text-gold-dark/60 hover:text-navy">
                 <X size={20} />
               </button>
             </div>
@@ -541,54 +541,54 @@ export default function KnowledgeBaseTab({ onNavigateToSystemHealth }: Knowledge
             <div ref={drawerScrollRef} className="flex-grow overflow-y-auto p-8 space-y-8">
               {/* 1. Document Category */}
               <div>
-                <label className="text-xs font-bold text-plum-dark/80 uppercase tracking-[0.2em] mb-2 block">Document Category <span className="text-[#E84855]">*</span></label>
+                <label className="text-xs font-bold text-navy/80 uppercase tracking-[0.2em] mb-2 block">Document Category <span className="text-gold-dark">*</span></label>
                 <div className="space-y-0">
                   {CATEGORIES.map((c) => (
                     <button
                       key={c.id}
                       type="button"
                       onClick={() => setFormData((prev) => ({ ...prev, category: c.id, personaType: c.id === 'buyer_persona' ? 'archetype' : null }))}
-                      className={`w-full flex items-center gap-3 h-9 px-3 text-left transition-all ${formData.category === c.id ? 'bg-plum/10 border-l-4 border-plum-dark text-plum-dark' : 'border-l-4 border-transparent text-gray-700 hover:bg-plum/5'}`}
+                      className={`w-full flex items-center gap-3 h-9 px-3 text-left transition-all ${formData.category === c.id ? 'bg-gold/10 border-l-4 border-navy text-navy' : 'border-l-4 border-transparent text-gray-700 hover:bg-gold/5'}`}
                     >
-                      <span className={`flex h-4 w-4 shrink-0 items-center justify-center rounded-full border-2 ${formData.category === c.id ? 'border-plum-dark bg-plum-dark' : 'border-plum/40'}`}>
+                      <span className={`flex h-4 w-4 shrink-0 items-center justify-center rounded-full border-2 ${formData.category === c.id ? 'border-navy bg-navy' : 'border-gold/40'}`}>
                         {formData.category === c.id && <span className="h-1.5 w-1.5 rounded-full bg-white" />}
                       </span>
                       <span className="text-[13px] font-medium shrink-0">{c.label}</span>
-                      <span className={`text-[11px] truncate ${formData.category === c.id ? 'text-plum/70' : 'text-gray-500'}`}>{c.desc}</span>
+                      <span className={`text-[11px] truncate ${formData.category === c.id ? 'text-gold-dark/80' : 'text-gray-500'}`}>{c.desc}</span>
                     </button>
                   ))}
                 </div>
-                {errors.category && <p className="text-[#E84855] text-[10px] font-bold mt-1">{errors.category}</p>}
+                {errors.category && <p className="text-gold-dark text-[10px] font-bold mt-1">{errors.category}</p>}
               </div>
 
               {/* 2. Title */}
               <div>
-                <label className="text-xs font-bold text-plum-dark/80 uppercase tracking-[0.2em] mb-2 block">Title <span className="text-[#E84855]">*</span></label>
+                <label className="text-xs font-bold text-navy/80 uppercase tracking-[0.2em] mb-2 block">Title <span className="text-gold-dark">*</span></label>
                 <input
                   type="text"
                   placeholder={formData.category ? TITLE_PLACEHOLDERS[formData.category] : 'Select a category first'}
                   value={formData.title}
                   onChange={(e) => setFormData((prev) => ({ ...prev, title: e.target.value }))}
-                  className={`w-full bg-white border ${errors.title ? 'border-[#E84855]' : 'border-plum/20'} rounded-lg px-4 py-3 text-plum-dark font-medium focus:outline-none focus:border-[#3A2449]/50 transition-all shadow-sm`}
+                  className={`w-full bg-white border ${errors.title ? 'border-gold-dark' : 'border-gold-dark/30'} rounded-lg px-4 py-3 text-navy font-medium focus:outline-none focus:border-navy/50 transition-all shadow-sm`}
                 />
-                {errors.title && <p className="text-[#E84855] text-[10px] mt-1 font-bold">{errors.title}</p>}
+                {errors.title && <p className="text-gold-dark text-[10px] mt-1 font-bold">{errors.title}</p>}
               </div>
 
               {/* 3. Description */}
               <div>
-                <label className="text-xs font-bold text-plum-dark/80 uppercase tracking-[0.2em] mb-2 block">Description (optional)</label>
+                <label className="text-xs font-bold text-navy/80 uppercase tracking-[0.2em] mb-2 block">Description (optional)</label>
                 <input
                   type="text"
                   placeholder="One-line summary for admin reference."
                   value={formData.description}
                   onChange={(e) => setFormData((prev) => ({ ...prev, description: e.target.value }))}
-                  className="w-full bg-white border border-plum/20 rounded-lg px-4 py-3 text-plum-dark font-medium focus:outline-none focus:border-[#3A2449]/50 transition-all shadow-sm"
+                  className="w-full bg-white border border-gold-dark/30 rounded-lg px-4 py-3 text-navy font-medium focus:outline-none focus:border-navy/50 transition-all shadow-sm"
                 />
               </div>
 
               {/* Adherence (Document Weight) */}
               <div>
-                <label className="text-xs font-bold text-plum-dark/80 uppercase tracking-[0.2em] mb-2 block">Adherence</label>
+                <label className="text-xs font-bold text-navy/80 uppercase tracking-[0.2em] mb-2 block">Adherence</label>
                 <div className="flex items-center gap-3">
                   <span className="text-[11px] font-medium text-gray-500 shrink-0 w-24">Background context</span>
                   <input
@@ -597,16 +597,16 @@ export default function KnowledgeBaseTab({ onNavigateToSystemHealth }: Knowledge
                     max={10}
                     value={formData.weight}
                     onChange={(e) => setFormData((prev) => ({ ...prev, weight: parseInt(e.target.value, 10) }))}
-                    className="flex-1 h-2 bg-plum/10 rounded-full appearance-none cursor-pointer accent-[#3A2449]"
+                    className="flex-1 h-2 bg-gold/10 rounded-full appearance-none cursor-pointer accent-navy"
                   />
                   <span className="text-[11px] font-medium text-gray-500 shrink-0 w-24 text-right">Follow strictly</span>
                 </div>
-                <p className="text-[10px] text-plum/50 mt-1 font-medium">Weight: {formData.weight}</p>
+                <p className="text-[10px] text-gold-dark/60 mt-1 font-medium">Weight: {formData.weight}</p>
               </div>
 
               {/* 4. Content */}
               <div>
-                <label className="text-xs font-bold text-plum-dark/80 uppercase tracking-[0.2em] mb-2 block">Content <span className="text-[#E84855]">*</span></label>
+                <label className="text-xs font-bold text-navy/80 uppercase tracking-[0.2em] mb-2 block">Content <span className="text-gold-dark">*</span></label>
                 <input
                   ref={contentFileInputRef}
                   type="file"
@@ -621,7 +621,7 @@ export default function KnowledgeBaseTab({ onNavigateToSystemHealth }: Knowledge
                   onDragOver={(e) => { e.preventDefault(); setContentDragOver(true); }}
                   onDragLeave={() => setContentDragOver(false)}
                   onDrop={onContentDrop}
-                  className={`mb-2 flex items-center justify-center gap-2 py-2 px-3 rounded-lg border border-dashed text-sm font-medium cursor-pointer transition-all ${contentDragOver ? 'border-plum bg-plum/10 text-plum-dark' : 'border-plum/20 text-plum-dark/80 hover:border-plum/40 hover:bg-plum/5'}`}
+                  className={`mb-2 flex items-center justify-center gap-2 py-2 px-3 rounded-lg border border-dashed text-sm font-medium cursor-pointer transition-all ${contentDragOver ? 'border-gold-dark bg-gold/10 text-navy' : 'border-gold-dark/30 text-navy/80 hover:border-gold/50 hover:bg-gold/5'}`}
                 >
                   <Upload size={14} />
                   <span>Upload .md or .txt file</span>
@@ -630,29 +630,29 @@ export default function KnowledgeBaseTab({ onNavigateToSystemHealth }: Knowledge
                   placeholder="Paste or write document content here. Markdown is supported."
                   value={formData.content}
                   onChange={(e) => setFormData((prev) => ({ ...prev, content: e.target.value }))}
-                  className={`w-full bg-white border ${errors.content ? 'border-[#E84855]' : 'border-plum/20'} rounded-lg px-4 py-3 text-plum-dark font-medium focus:outline-none focus:border-[#3A2449]/50 transition-all min-h-[200px] resize-y shadow-sm`}
+                  className={`w-full bg-white border ${errors.content ? 'border-gold-dark' : 'border-gold-dark/30'} rounded-lg px-4 py-3 text-navy font-medium focus:outline-none focus:border-navy/50 transition-all min-h-[200px] resize-y shadow-sm`}
                 />
-                <p className="text-[10px] text-plum/40 mt-1 font-bold uppercase tracking-wider">{formData.content.length} characters</p>
-                {errors.content && <p className="text-[#E84855] text-[10px] mt-1 font-bold">{errors.content}</p>}
+                <p className="text-[10px] text-gold-dark/60 mt-1 font-bold uppercase tracking-wider">{formData.content.length} characters</p>
+                {errors.content && <p className="text-gold-dark text-[10px] mt-1 font-bold">{errors.content}</p>}
               </div>
 
               {/* 5. Assign to Agents */}
               <div>
-                <label className="text-xs font-bold text-plum-dark/80 uppercase tracking-[0.2em] mb-2 block">Assign to Agents <span className="text-[#E84855]">*</span></label>
+                <label className="text-xs font-bold text-navy/80 uppercase tracking-[0.2em] mb-2 block">Assign to Agents <span className="text-gold-dark">*</span></label>
                 <div className="space-y-1">
-                  <label className={`flex items-center gap-3 py-2.5 px-3 rounded-lg border cursor-pointer transition-all ${formData.allAgents ? 'bg-plum-dark text-white border-plum-dark' : 'bg-white border-plum/20 hover:bg-plum/5 hover:border-plum/30'}`}>
+                  <label className={`flex items-center gap-3 py-2.5 px-3 rounded-lg border cursor-pointer transition-all ${formData.allAgents ? 'bg-navy text-white border-navy' : 'bg-white border-gold-dark/30 hover:bg-gold/5 hover:border-gold/30'}`}>
                     <input
                       type="checkbox"
                       checked={formData.allAgents}
                       onChange={(e) => setFormData((prev) => ({ ...prev, allAgents: e.target.checked, agents: e.target.checked ? [] : prev.agents }))}
-                      className="rounded border-plum/30 text-[#3A2449] focus:ring-[#3A2449] accent-[#3A2449]"
+                      className="rounded border-gold/30 text-navy focus:ring-navy accent-navy"
                     />
-                    <span className={`font-semibold ${formData.allAgents ? 'text-white' : 'text-plum-dark'}`}>All Agents</span>
+                    <span className={`font-semibold ${formData.allAgents ? 'text-white' : 'text-navy'}`}>All Agents</span>
                   </label>
                   {agents.map((a) => (
                     <label
                       key={a.id}
-                      className={`flex items-center gap-3 py-2.5 px-3 rounded-lg border cursor-pointer transition-all ${formData.allAgents ? 'opacity-50 pointer-events-none' : ''} ${formData.agents.includes(a.id) ? 'bg-plum/10 border-plum/30' : 'bg-white border-plum/20 hover:bg-plum/5 hover:border-plum/30'}`}
+                      className={`flex items-center gap-3 py-2.5 px-3 rounded-lg border cursor-pointer transition-all ${formData.allAgents ? 'opacity-50 pointer-events-none' : ''} ${formData.agents.includes(a.id) ? 'bg-gold/10 border-gold/30' : 'bg-white border-gold-dark/30 hover:bg-gold/5 hover:border-gold/30'}`}
                     >
                       <input
                         type="checkbox"
@@ -665,30 +665,30 @@ export default function KnowledgeBaseTab({ onNavigateToSystemHealth }: Knowledge
                             agents: e.target.checked ? [...prev.agents, a.id] : prev.agents.filter((id) => id !== a.id),
                           }));
                         }}
-                        className="rounded border-plum/30 text-[#3A2449] focus:ring-[#3A2449] accent-[#3A2449]"
+                        className="rounded border-gold/30 text-navy focus:ring-navy accent-navy"
                       />
-                      <span className="font-medium text-plum-dark">{a.name}</span>
+                      <span className="font-medium text-navy">{a.name}</span>
                       <span className={`ml-auto text-[10px] font-bold uppercase px-2 py-0.5 rounded ${a.status === 'active' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'}`}>
                         {a.status}
                       </span>
                     </label>
                   ))}
                 </div>
-                {assignedLabel && <p className="text-xs text-plum/60 mt-2 font-medium">{assignedLabel}</p>}
-                {errors.agents && <p className="text-[#E84855] text-[10px] mt-1 font-bold">{errors.agents}</p>}
+                {assignedLabel && <p className="text-xs text-gold-dark/80 mt-2 font-medium">{assignedLabel}</p>}
+                {errors.agents && <p className="text-gold-dark text-[10px] mt-1 font-bold">{errors.agents}</p>}
               </div>
 
-              {errors.submit && <p className="text-[#E84855] text-sm font-bold">{errors.submit}</p>}
+              {errors.submit && <p className="text-gold-dark text-sm font-bold">{errors.submit}</p>}
             </div>
 
-            <div className="p-8 border-t border-plum/5 bg-plum/5 flex items-center gap-4 flex-wrap">
+            <div className="p-8 border-t border-gold/10 bg-gold/5 flex items-center gap-4 flex-wrap">
               {errors.submit && (
-                <p className="text-[#E84855] text-sm font-bold flex-1 min-w-0 basis-full sm:basis-auto sm:flex-initial order-first sm:order-none">
+                <p className="text-gold-dark text-sm font-bold flex-1 min-w-0 basis-full sm:basis-auto sm:flex-initial order-first sm:order-none">
                   {errors.submit}
                 </p>
               )}
               <div className="flex items-center justify-end gap-4 ml-auto">
-                <button type="button" onClick={closeDrawer} className="px-6 py-2 text-xs font-bold uppercase tracking-widest text-plum/40 hover:text-plum-dark transition-all">
+                <button type="button" onClick={closeDrawer} className="px-6 py-2 text-xs font-bold uppercase tracking-widest text-gold-dark/60 hover:text-navy transition-all">
                   Cancel
                 </button>
               <button
@@ -703,7 +703,7 @@ export default function KnowledgeBaseTab({ onNavigateToSystemHealth }: Knowledge
                 type="button"
                 onClick={() => handleSave('published')}
                 disabled={isSaving}
-                className="bg-[#3A2449] text-white py-2 px-8 rounded-xl font-bold hover:bg-[#2D1B3D] transition-all text-sm uppercase tracking-widest disabled:opacity-50 disabled:cursor-not-allowed"
+                className="bg-navy text-white py-2 px-8 rounded font-bold hover:bg-navy/90 transition-all text-sm uppercase tracking-widest disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isSaving ? 'Publishing...' : 'Publish'}
               </button>

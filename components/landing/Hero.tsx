@@ -9,7 +9,7 @@ export default function Hero() {
   return (
     <section className="relative min-h-screen flex flex-col overflow-hidden">
       {/* Background gradient glow */}
-      <div className="absolute inset-0 bg-gradient-radial from-gradient-red/20 via-gradient-purple/20 to-transparent opacity-50 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-radial from-gold-light/20 via-gold-dark/20 to-transparent opacity-50 pointer-events-none" />
 
       {/* Main Content - Takes up remaining space and centers its content */}
       <div className="relative z-10 flex-grow flex flex-col items-center justify-center px-6 pt-24 pb-24">
@@ -21,7 +21,7 @@ export default function Hero() {
             transition={{ duration: 0.6 }}
             className="mb-6"
           >
-            <span className="text-gradient-red text-base font-semibold tracking-wider uppercase">
+            <span className="text-gold-light text-base font-semibold tracking-wider uppercase">
               {agentConfig.landing.hero.badge}
             </span>
           </motion.div>
@@ -62,7 +62,7 @@ export default function Hero() {
             {agentConfig.landing.hero.secondaryCta && (
               <a
                 href={agentConfig.landing.hero.secondaryCtaHref ?? '#'}
-                className="flex-1 max-w-[240px] text-center px-8 py-4 rounded-xl border border-white/40 text-white font-semibold hover:border-white/80 transition-colors bg-transparent"
+                className="flex-1 max-w-[240px] text-center px-8 py-4 rounded border border-gold-dark text-white font-semibold hover:border-gold-light transition-colors bg-transparent"
               >
                 {agentConfig.landing.hero.secondaryCta}
               </a>
@@ -71,7 +71,7 @@ export default function Hero() {
 
           {/* Chat preview mockup – decorative */}
           <div className="max-w-2xl mx-auto mt-8 mb-4">
-            <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 space-y-4">
+            <div className="bg-white/5 backdrop-blur-sm border border-gold-dark/30 rounded-2xl p-6 space-y-4">
               <div className="text-left">
                 <div className="flex items-center gap-1 mb-1">
                   <Mic className="w-3 h-3 text-white/40" />
@@ -114,22 +114,22 @@ export default function Hero() {
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.4 }}
-        className="relative z-10 bg-black/30 backdrop-blur-sm border-t border-white/10"
+        className="relative z-10 bg-navy/80 backdrop-blur-sm border-t border-gold-dark"
       >
         <div className="max-w-7xl mx-auto px-6 py-16 text-center">
           <div className="mb-8">
-            <span className="text-white/60 text-base font-semibold tracking-widest uppercase">
+            <span className="text-gold-light/80 text-base font-semibold tracking-widest uppercase">
               BUILT FOR YOUR ORGNIZATION
             </span>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
             {agentConfig.landing.hero.stats.map((stat, i) => (
-              <div key={stat.label} className={i === 1 ? 'md:border-l md:border-r border-white/10 px-4' : ''}>
+              <div key={stat.label} className={i === 1 ? 'md:border-l md:border-r border-gold-dark/50 px-4' : ''}>
                 <div className="text-4xl md:text-5xl font-bold text-gradient mb-2">
                   {stat.value}
                 </div>
-                <div className="text-white/60 text-sm">{stat.label}</div>
+                <div className="text-gold-light/80 text-sm">{stat.label}</div>
               </div>
             ))}
           </div>

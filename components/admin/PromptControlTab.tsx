@@ -160,7 +160,7 @@ export default function PromptControlTab() {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-[#FDFBF7] p-8 text-gray-900 flex items-center justify-center">
-        <div className="flex flex-col items-center gap-4 text-plum-dark">
+        <div className="flex flex-col items-center gap-4 text-navy">
           <Loader2 className="w-10 h-10 animate-spin" />
           <p className="font-bold">Loading agents...</p>
         </div>
@@ -186,12 +186,12 @@ export default function PromptControlTab() {
       <div className="min-h-screen bg-[#FDFBF7] p-8 text-gray-900">
         <div className="max-w-7xl mx-auto">
           <header className="mb-10">
-            <h1 className="text-3xl font-bold text-plum-dark">Prompt Control</h1>
+            <h1 className="text-3xl font-bold text-navy">Prompt Control</h1>
             <p className="text-gray-500 mt-2 font-medium max-w-2xl">
               View and edit existing coach agents. Agents are added by a developer.
             </p>
           </header>
-          <p className="text-gray-700 font-medium rounded-2xl border border-plum/10 bg-white p-8 shadow-sm">
+          <p className="text-gray-700 font-medium rounded-2xl border border-gold-dark/20 bg-white p-8 shadow-sm">
             {EMPTY_MESSAGE}
           </p>
         </div>
@@ -205,21 +205,21 @@ export default function PromptControlTab() {
     <div className="min-h-screen bg-[#FDFBF7] p-8 text-gray-900">
       <div className="max-w-7xl mx-auto">
         <header className="mb-10">
-          <h1 className="text-3xl font-bold text-plum-dark">Prompt Control</h1>
+          <h1 className="text-3xl font-bold text-navy">Prompt Control</h1>
           <p className="text-gray-500 mt-2 font-medium max-w-2xl">
             View and edit existing coach agents. Agents are added by a developer. New agents appear as Inactive; assign an Agent Type before toggling to Active.
           </p>
         </header>
 
         <div className="space-y-6">
-          <section className="bg-white rounded-2xl border border-plum/10 p-6 shadow-sm">
-            <label className="text-[10px] font-bold text-plum/40 uppercase tracking-widest mb-2 block">
+          <section className="bg-white rounded-2xl border border-gold-dark/20 p-6 shadow-sm">
+            <label className="text-[10px] font-bold text-gold-dark/60 uppercase tracking-widest mb-2 block">
               Agent
             </label>
             <select
               value={selectedId ?? ''}
               onChange={(e) => setSelectedId(e.target.value || null)}
-              className="w-full max-w-md px-4 py-2.5 rounded-xl border border-plum/20 text-plum-dark font-medium bg-white focus:outline-none focus:ring-2 focus:ring-plum/30"
+              className="w-full max-w-md px-4 py-2.5 rounded-xl border border-gold-dark/30 text-navy font-medium bg-white focus:outline-none focus:ring-2 focus:ring-gold/40"
             >
               {agents.map((a) => (
                 <option key={a.agent_id} value={a.agent_id}>
@@ -229,8 +229,8 @@ export default function PromptControlTab() {
             </select>
 
             <div className="mt-6">
-              <label className="text-[10px] font-bold text-plum/40 uppercase tracking-widest mb-2 block">
-                Agent Type <span className="text-[#E84855]">*</span>
+              <label className="text-[10px] font-bold text-gold-dark/60 uppercase tracking-widest mb-2 block">
+                Agent Type <span className="text-gold-dark">*</span>
               </label>
               <select
                 value={agentType}
@@ -238,8 +238,8 @@ export default function PromptControlTab() {
                   setAgentType(e.target.value === '' ? AGENT_TYPE_UNSET : (e.target.value as AgentType));
                   setAgentTypeError(null);
                 }}
-                className={`w-full max-w-md px-4 py-2.5 rounded-xl border text-plum-dark font-medium bg-white focus:outline-none focus:ring-2 focus:ring-plum/30 ${
-                  agentTypeError ? 'border-red-400' : 'border-plum/20'
+                className={`w-full max-w-md px-4 py-2.5 rounded-xl border text-navy font-medium bg-white focus:outline-none focus:ring-2 focus:ring-gold/40 ${
+                  agentTypeError ? 'border-red-400' : 'border-gold-dark/30'
                 }`}
                 aria-required
                 aria-invalid={!!agentTypeError}
@@ -257,23 +257,23 @@ export default function PromptControlTab() {
                 </p>
               )}
               {agentTypeError && (
-                <p className="text-[#E84855] text-xs font-medium mt-1">
+                <p className="text-gold-dark text-xs font-medium mt-1">
                   {agentTypeError}
                 </p>
               )}
             </div>
           </section>
 
-          <section className="bg-white rounded-2xl border border-plum/10 p-6 shadow-sm space-y-6">
+          <section className="bg-white rounded-2xl border border-gold-dark/20 p-6 shadow-sm space-y-6">
             {/* Agent Status toggle — Active disabled until Agent Type is assigned */}
             <div>
-              <label className="text-[10px] font-bold text-plum/40 uppercase tracking-widest mb-2 block">
+              <label className="text-[10px] font-bold text-gold-dark/60 uppercase tracking-widest mb-2 block">
                 Agent Status
               </label>
               <div className="flex items-center gap-3">
                 <span
                   className={`text-sm font-medium ${
-                    status === 'draft' ? 'text-plum-dark' : 'text-gray-400'
+                    status === 'draft' ? 'text-navy' : 'text-gray-400'
                   }`}
                 >
                   Inactive
@@ -288,9 +288,9 @@ export default function PromptControlTab() {
                     if (!hasAgentTypeAssigned) return;
                     setStatus((s) => (s === 'active' ? 'draft' : 'active'));
                   }}
-                  className={`relative inline-flex h-7 w-12 flex-shrink-0 rounded-full border-2 border-transparent transition-colors focus:outline-none focus:ring-2 focus:ring-plum/40 focus:ring-offset-2 ${
+                  className={`relative inline-flex h-7 w-12 flex-shrink-0 rounded-full border-2 border-transparent transition-colors focus:outline-none focus:ring-2 focus:ring-gold/50 focus:ring-offset-2 ${
                     status === 'active'
-                      ? 'bg-plum-dark'
+                      ? 'bg-navy'
                       : !hasAgentTypeAssigned
                         ? 'bg-gray-200 cursor-not-allowed opacity-60'
                         : 'bg-gray-200'
@@ -304,7 +304,7 @@ export default function PromptControlTab() {
                 </button>
                 <span
                   className={`text-sm font-medium ${
-                    status === 'active' ? 'text-plum-dark' : 'text-gray-400'
+                    status === 'active' ? 'text-navy' : 'text-gray-400'
                   }`}
                 >
                   Active
@@ -329,8 +329,8 @@ export default function PromptControlTab() {
             </div>
 
             <div>
-              <label className="text-[10px] font-bold text-plum/40 uppercase tracking-widest mb-2 block">
-                Agent name <span className="text-[#E84855]">*</span>
+              <label className="text-[10px] font-bold text-gold-dark/60 uppercase tracking-widest mb-2 block">
+                Agent name <span className="text-gold-dark">*</span>
               </label>
               <input
                 type="text"
@@ -340,26 +340,26 @@ export default function PromptControlTab() {
                   setNameError(null);
                 }}
                 className={`w-full px-4 py-2.5 rounded-xl border text-gray-900 ${
-                  nameError ? 'border-red-400' : 'border-plum/20'
-                } focus:outline-none focus:ring-2 focus:ring-plum/30`}
+                  nameError ? 'border-red-400' : 'border-gold-dark/30'
+                } focus:outline-none focus:ring-2 focus:ring-gold/40`}
                 placeholder="e.g. SPIN Sales Coach"
               />
               {nameError && (
-                <p className="text-[#E84855] text-xs font-medium mt-1">
+                <p className="text-gold-dark text-xs font-medium mt-1">
                   {nameError}
                 </p>
               )}
             </div>
 
             <div>
-              <label className="text-[10px] font-bold text-plum/40 uppercase tracking-widest mb-2 block">
+              <label className="text-[10px] font-bold text-gold-dark/60 uppercase tracking-widest mb-2 block">
                 System prompt
               </label>
               <textarea
                 value={prompt}
                 onChange={(e) => setPrompt(e.target.value)}
                 rows={12}
-                className="w-full px-4 py-2.5 rounded-xl border border-plum/20 text-gray-900 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-plum/30 resize-y"
+                className="w-full px-4 py-2.5 rounded-xl border border-gold-dark/30 text-gray-900 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-gold/40 resize-y"
                 placeholder="Full system prompt for this agent..."
               />
             </div>
@@ -383,7 +383,7 @@ export default function PromptControlTab() {
                 type="button"
                 onClick={handleSave}
                 disabled={isSaving}
-                className="flex items-center gap-2 px-6 py-3 rounded-xl bg-plum-dark text-white font-bold text-sm shadow-md hover:bg-plum-dark/90 disabled:opacity-60 disabled:cursor-not-allowed transition-all"
+                className="flex items-center gap-2 px-6 py-3 rounded-xl bg-navy text-white font-bold text-sm shadow-md hover:bg-navy/90 disabled:opacity-60 disabled:cursor-not-allowed transition-all"
               >
                 {isSaving ? (
                   <>

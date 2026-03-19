@@ -9,46 +9,46 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        navy: '#142F5A',
+        gold: {
+          light: '#FFCE99',
+          DEFAULT: '#D9A86C',
+          dark: '#BD7D3D',
+        },
         plum: {
-          dark: '#2D1B3D',
-          DEFAULT: '#3A2449',
+          dark: '#142F5A',
+          DEFAULT: '#142F5A',
         },
         gradient: {
-          red: '#E84855',
-          purple: '#9B59B6',
-        },
-        sei: {
-          red1: '#F01840',
-          red2: '#C01830',
-          red3: '#901226',
-          red4: '#600C1C',
-          red5: '#300810',
+          red: '#FFCE99',
+          purple: '#BD7D3D',
         },
         cream: '#FFFFF8',
         glass: {
-          border: 'rgba(255, 255, 255, 0.2)',
+          border: 'rgba(255, 206, 153, 0.3)',
           bg: 'rgba(255, 255, 255, 0.1)',
         }
       },
       fontFamily: {
-        sans: ['Inter', 'ui-sans-serif', 'system-ui'],
-        heading: ['var(--font-heading)', 'ui-sans-serif', 'system-ui'],
+        sans: ['Montserrat', 'ui-sans-serif', 'system-ui'],
+        heading: ['Montserrat', 'ui-sans-serif', 'system-ui'],
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
-        'gradient-primary': 'linear-gradient(135deg, #E84855 0%, #9B59B6 100%)',
-        'gradient-landing': 'linear-gradient(135deg, #F01840 0%, #C01830 100%)',
-        'gradient-landing-muted': 'linear-gradient(135deg, #901226 0%, #C01830 100%)',
+        'gradient-primary': 'linear-gradient(90deg, #FFCE99, #BD7D3D)',
+        'gradient-gold': 'linear-gradient(90deg, #FFCE99, #BD7D3D)',
+        'gradient-landing': 'linear-gradient(90deg, #FFCE99, #BD7D3D)',
+        'gradient-landing-muted': 'linear-gradient(90deg, #D9A86C, #BD7D3D)',
       },
       backdropBlur: {
         'glass': '20px',
       },
       boxShadow: {
         'glass': '0 8px 32px rgba(0, 0, 0, 0.3)',
-        'glow': '0 4px 16px rgba(232, 72, 85, 0.4)',
-        'glow-landing': '0 4px 16px rgba(240, 24, 64, 0.4)',
-        'glow-landing-muted': '0 4px 16px rgba(144, 18, 38, 0.35)',
+        'glow': '0 4px 16px rgba(189, 125, 61, 0.4)',
+        'glow-landing': '0 4px 16px rgba(189, 125, 61, 0.4)',
+        'glow-landing-muted': '0 4px 16px rgba(217, 168, 108, 0.35)',
       },
       animation: {
         'fade-in': 'fadeIn 0.6s ease-out',

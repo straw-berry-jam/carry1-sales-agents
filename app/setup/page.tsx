@@ -315,7 +315,7 @@ export default function SetupPage() {
                   <motion.div
                     animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.6, 0.3] }}
                     transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                    className="absolute inset-0 bg-plum/20 rounded-full blur-xl"
+                    className="absolute inset-0 bg-gold/20 rounded-full blur-xl"
                   />
                 </div>
                 
@@ -344,13 +344,13 @@ export default function SetupPage() {
               >
                 <div className="mb-12">
                   <div className="flex items-center justify-between mb-4">
-                    <span className="text-sm font-semibold uppercase tracking-wider text-gradient-red">Step {step} of 3</span>
+                    <span className="text-sm font-semibold uppercase tracking-wider text-gold-light">Step {step} of 3</span>
                     <div className="flex gap-2">
                       {[1, 2, 3].map((s) => (
                         <div
                           key={s}
                           className={`w-12 h-1 rounded-full ${
-                            s <= step ? 'bg-gradient-primary' : 'bg-white/10'
+                            s <= step ? 'bg-gradient-primary' : 'bg-gold/10'
                           }`}
                         />
                       ))}
@@ -458,7 +458,7 @@ export default function SetupPage() {
                               : 'bg-white/5 border-white/10 hover:border-white/20'
                           }`}
                         >
-                          <div className={`p-3 rounded-xl ${formData.interactionMode === 'voice' ? 'bg-gradient-primary text-white' : 'bg-white/5 text-white/40'}`}>
+                          <div className={`p-3 rounded ${formData.interactionMode === 'voice' ? 'bg-gradient-primary text-navy' : 'bg-white/5 text-white/40'}`}>
                             <Mic className="w-6 h-6" />
                           </div>
                           <div>
@@ -476,7 +476,7 @@ export default function SetupPage() {
                               : 'bg-white/5 border-white/10 hover:border-white/20'
                           }`}
                         >
-                          <div className={`p-3 rounded-xl ${formData.interactionMode === 'text' ? 'bg-gradient-primary text-white' : 'bg-white/5 text-white/40'}`}>
+                          <div className={`p-3 rounded ${formData.interactionMode === 'text' ? 'bg-gradient-primary text-navy' : 'bg-white/5 text-white/40'}`}>
                             <MessageSquare className="w-6 h-6" />
                           </div>
                           <div>
@@ -561,7 +561,7 @@ export default function SetupPage() {
                                   <div className="space-y-2">
                                     <div className="h-2 w-full bg-white/5 rounded-full overflow-hidden">
                                       <motion.div 
-                                        className="h-full bg-gradient-primary"
+                                        className="h-full bg-gradient-primary rounded"
                                         animate={{ width: `${Math.min(100, (testVolume / 50) * 100)}%` }}
                                         transition={{ type: 'spring', bounce: 0, duration: 0.1 }}
                                       />

@@ -9,48 +9,58 @@
 
 @layer base {
   :root {
-    --font-heading: 'Inter', system-ui, sans-serif;
+    --font-heading: 'Montserrat', system-ui, sans-serif;
   }
   
   * {
   }
   
   body {
-    @apply bg-plum-dark text-white antialiased;
-    font-family: 'Inter', system-ui, sans-serif;
+    @apply bg-navy text-white antialiased;
+    font-family: 'Montserrat', system-ui, sans-serif;
   }
 }
 
 @layer components {
   /* Glassmorphism Card */
   .glass-card {
-    @apply bg-white/10 backdrop-blur-glass border border-white/20 rounded-[32px] shadow-glass;
+    @apply bg-white/10 backdrop-blur-glass rounded-[32px] shadow-glass;
+    border: 1px solid rgba(189, 125, 61, 0.3);
   }
   
   .glass-card:hover {
-    @apply bg-white/[0.12] border-white/30;
+    @apply bg-white/[0.12];
+    border-color: rgba(255, 206, 153, 0.4);
     transition: all 300ms ease;
   }
   
   /* Primary CTA Button */
   .btn-primary {
-    @apply bg-gradient-primary text-white px-10 py-4 rounded-xl font-semibold shadow-glow;
+    background: linear-gradient(90deg, #FFCE99, #BD7D3D);
+    color: #142F5A;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    border: none;
+    border-radius: 4px;
+    @apply px-10 py-4 rounded shadow-glow;
     transition: transform 200ms ease, box-shadow 200ms ease;
   }
   
   .btn-primary:hover {
     @apply scale-[1.02];
-    box-shadow: 0 6px 24px rgba(232, 72, 85, 0.5);
+    box-shadow: 0 6px 24px rgba(189, 125, 61, 0.5);
   }
   
   /* Secondary Ghost Button */
   .btn-secondary {
-    @apply bg-transparent border-2 border-white/30 text-white px-10 py-4 rounded-xl font-semibold;
+    @apply bg-transparent border text-white px-10 py-4 rounded font-semibold;
+    border-width: 1px;
+    border-color: #BD7D3D;
     transition: border-color 200ms ease;
   }
   
   .btn-secondary:hover {
-    @apply border-white/50;
+    border-color: #FFCE99;
   }
   
   /* Text link */
@@ -61,8 +71,8 @@
   /* Background gradient overlay */
   .bg-textured-gradient {
     background: 
-      radial-gradient(circle at center, rgba(232, 72, 85, 0.15) 0%, rgba(155, 89, 182, 0.15) 100%),
-      #2D1B3D;
+      radial-gradient(circle at center, rgba(255, 206, 153, 0.08) 0%, rgba(189, 125, 61, 0.08) 100%),
+      #142F5A;
   }
   
   /* Gradient text */

@@ -1,4 +1,4 @@
-# SEI Sales Coach Project Constitution
+# CARRY1 Sales Coach Project Constitution
 
 ---
 
@@ -74,7 +74,7 @@ All new features must follow TDD Red-Green-Refactor cycle:
 
 The coach's behavior is driven by a knowledge base and RAG retrieval. Changes must preserve retrieval quality and agent consistency.
 
-- **Knowledge base** — Documents and chunks in Supabase (pgvector); 7 categories: `methodology`, `buyer_persona`, `account_intelligence`, `sei_products`, `sei_capabilities`, `case_studies`, `evaluation_criteria`. Admin UI at `/admin` (Knowledge Base tab).
+- **Knowledge base** — Documents and chunks in Supabase (pgvector); 7 categories: `methodology`, `buyer_persona`, `account_intelligence`, `carry1_products`, `carry1_capabilities`, `case_studies`, `evaluation_criteria`. Admin UI at `/admin` (Knowledge Base tab).
 - **Retrieval** — OpenAI embeddings, similarity search via `/api/admin/retrieve`; filters must align with `agentConfig` and Prisma schema.
 - **Agent config** — All copy, scenario types, onboarding, and persona live in `lib/agentConfig.ts`. Do not hardcode coach behavior elsewhere.
 
@@ -106,11 +106,11 @@ When a bug recurs, add **automated prevention**, not just documentation.
 
 **Core entities**
 
-- **Consultant** — Internal SEI user; uses the app to practice sales conversations.
+- **Sales Rep** — CARRY1 user; uses the app to practice sales conversations.
 - **Session** — A single practice run: onboarding choices, chat/voice transcript, and optional scorecard.
 - **Scorecard** — Post-session summary and performance feedback tied to methodology.
 - **Knowledge base** — Documents and chunks used for RAG; managed in admin.
-- **Agent / Coach** — AI persona (Anthropic Claude) driven by `agentConfig`, system instructions, and RAG context.
+- **Agent / Coach** — AI persona (Anthropic Claude) driven by `agentConfig`, system instructions, and RAG context. Primary coach: **Liz**.
 
 **Key flows**
 
@@ -168,9 +168,29 @@ When a bug recurs, add **automated prevention**, not just documentation.
 
 ## Brand & Design Guidelines
 
-- **Visual**: Dark plum backgrounds; red-to-purple gradients; Lang Gothic typography.
-- **Positioning**: "Fresh perspectives with absolute accountability."
-- **Personality**: Masterful, All-in, Good-Humored, Vigilant.
+**Logo**: CARRY1 wordmark with a compass/C icon. Two lockups: horizontal (icon + wordmark) and circular badge.
+
+**Colors**:
+| Name | Hex | Use |
+|------|-----|-----|
+| Navy | `#142F5A` | Primary background |
+| Gold Light | `#FFCE99` | Text, borders, highlights |
+| Gold Dark | `#BD7D3D` | Accents, gradient end |
+| Gold Gradient | `linear-gradient(90deg, #FFCE99, #BD7D3D)` | Buttons, CTAs |
+| White | `#FFFFFF` | Body text on dark backgrounds |
+
+**Typography**:
+- Font: `Montserrat` (Google Fonts)
+- Weights: 300 (Light) for body, 600/700 for headings
+- Import: `https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap`
+
+**Buttons**: Gold gradient background, navy text, Montserrat 600, no border, border-radius 4px.
+
+**Borders/outlines**: `1px solid #BD7D3D`
+
+**Positioning**: "Master Every Sales Pitch."
+**Coach persona**: Liz — warm, direct, performance-focused.
+**Tone**: Professional, confident, encouraging.
 
 ---
 
@@ -178,8 +198,8 @@ When a bug recurs, add **automated prevention**, not just documentation.
 
 | Route | Purpose |
 |-------|---------|
-| `/coach/*` | Outward-facing client tools (SPIN Sales Coach) |
-| `/guide/*` | Internal SEI tools (Assessment Agent, future agents) |
+| `/coach/*` | Outward-facing client tools (CARRY1 Sales Coach) |
+| `/guide/*` | Internal tools (Assessment Agent, future agents) |
 
 Do not rename or redirect `/coach` routes — they serve different audiences.
 
@@ -189,10 +209,10 @@ Do not rename or redirect `/coach` routes — they serve different audiences.
 
 | Agent | UUID | ElevenLabs ID |
 |-------|------|---------------|
-| SPIN Sales Coach (Marcus Webb) | `f73fc51c-6544-4278-94e6-0fdf00d766cf` | `agent_3901kgz4a3s5f15vy08c02s2v13c` |
+| CARRY1 Sales Coach (Liz) | `f73fc51c-6544-4278-94e6-0fdf00d766cf` | `agent_3901kgz4a3s5f15vy08c02s2v13c` |
 | AI Assessment & Strategy Agent | `ASSESSMENT_COACH_ID` (env var) | `ELEVENLABS_ASSESSMENT_AGENT_ID` (env var) |
 
-**SPIN Eval Criteria KB doc**: `8a89e77d-45bb-493d-afcb-ee503767ba71`
+**Eval Criteria KB doc**: `8a89e77d-45bb-493d-afcb-ee503767ba71`
 **Supabase pooler**: `aws-0-us-west-2.pooler.supabase.com` — always use pooler, direct host is unreachable
 
 ---
@@ -206,7 +226,7 @@ Creating agents is a **developer task** — no UI for this. New agents appear in
 **New agent setup checklist:**
 1. Insert agent row in Supabase with `agent_type` set
 2. Create ElevenLabs agent with blank system prompt
-3. Set Custom LLM URL to `https://sei-sales-coach.vercel.app/api/voice-llm/chat/completions`
+3. Set Custom LLM URL to `https://carry1-sales-coach.vercel.app/api/voice-llm/chat/completions`
 4. Set Custom LLM API Key to Bearer Token (match `INTERVIEW_COACH_CUSTOM_LLM_API_KEY`)
 5. Add agent UUID and ElevenLabs ID to `.env.local` and Vercel env vars
 6. Add system prompt in Prompt Control and set status to Active
@@ -216,17 +236,17 @@ Creating agents is a **developer task** — no UI for this. New agents appear in
 
 ---
 
-### SPIN Sales Coach — System Prompt is Hardcoded, Not from Database
+### CARRY1 Sales Coach (Liz) — System Prompt is Hardcoded, Not from Database
 
-**CRITICAL**: The SPIN Sales Coach (Marcus Webb) system prompt is intentionally hardcoded in the `agentConfig` template inside `lib/coaching.ts`.
+**CRITICAL**: The CARRY1 Sales Coach (Liz) system prompt is intentionally hardcoded in the `agentConfig` template inside `lib/coaching.ts`.
 
-`agent.prompt` from the database is NOT used for the SPIN agent. The hardcoded template dynamically injects `preferredName`, `resumeText`, `company`, `interviewType`, and RAG context at runtime. The Prompt Control system prompt for SPIN is NOT what Marcus Webb uses during voice sessions.
+`agent.prompt` from the database is NOT used for the CARRY1 Sales Coach. The hardcoded template dynamically injects `preferredName`, `resumeText`, `company`, `interviewType`, and RAG context at runtime. The Prompt Control system prompt for the CARRY1 Sales Coach is NOT what Liz uses during voice sessions.
 
-**Do not move the SPIN persona to `agent.prompt` or Prompt Control** — it will lose dynamic context injection and break the persona.
+**Do not move the Liz persona to `agent.prompt` or Prompt Control** — it will lose dynamic context injection and break the persona.
 
 This was confirmed by reverting commit `3b8863b` which incorrectly switched `streamCoachResponse()` to use `agent.prompt`.
 
-For non-SPIN agents (e.g. Assessment), `agent.prompt` IS used as the system prompt, with `preferredName`, `resumeText`, and RAG context appended.
+For non-CARRY1 agents (e.g. Assessment), `agent.prompt` IS used as the system prompt, with `preferredName`, `resumeText`, and RAG context appended.
 
 ---
 
@@ -235,7 +255,7 @@ For non-SPIN agents (e.g. Assessment), `agent.prompt` IS used as the system prom
 When multiple agents are active, the voice LLM pipeline can serve the wrong agent's system prompt. The agent connects and responds — just with the wrong persona.
 
 **How the system prompt is selected in `streamCoachResponse()`:**
-- If `sessionContext.coachId` matches the SPIN UUID (`f73fc51c-...`) → use hardcoded `agentConfig` template
+- If `sessionContext.coachId` matches the CARRY1 Sales Coach UUID (`f73fc51c-...`) → use hardcoded `agentConfig` template
 - Any other `coachId` → use `agent.prompt` from the database, append session context and RAG
 
 **When adding a new agent, verify:**
@@ -326,7 +346,7 @@ Never use the `overall` field from the Claude response — it is unreliable.
 
 ### Knowledge Base Schema
 
-7 categories: `methodology`, `buyer_persona`, `account_intelligence`, `sei_products`, `sei_capabilities`, `case_studies`, `evaluation_criteria`
+7 categories: `methodology`, `buyer_persona`, `account_intelligence`, `carry1_products`, `carry1_capabilities`, `case_studies`, `evaluation_criteria`
 
 Agent scoping: `agents[]` array on documents. `agents = ['all']` means universal. Retrieval filter:
 ```sql
@@ -345,7 +365,7 @@ Event types: `eval_docs_fallback`, `eval_docs_retrieval_error`, `elevenlabs_sign
 
 ---
 
-## Live Research Capability (SEI-39)
+## Live Research Capability
 
 A per-agent live research feature is partially built.
 
@@ -361,13 +381,12 @@ A per-agent live research feature is partially built.
 **Architecture notes:**
 - 40 second timeout — too slow for blocking session-start flow
 - Correct UX pattern: async pre-session research, not blocking
-- The geopolitical analysis agent is the primary intended use case
 - `/api/research/company` is reusable for any agent
 - Do NOT add a UI toggle for this — it is a dev-time decision per agent
 
 ---
 
-## AI Assessment Agent (SEI-38)
+## AI Assessment Agent
 
 - **Onboarding**: `/guide/assessment`
 - **Session**: `/guide/assessment/session` — 5 min voice/text
@@ -383,7 +402,7 @@ A per-agent live research feature is partially built.
 ## Pending Items (as of March 19, 2026)
 
 - [ ] Wire live research into session flow for geopolitical agent
-- [ ] Fallback rubric for SPIN when eval criteria count: 0
+- [ ] Fallback rubric for CARRY1 Sales Coach when eval criteria count: 0
 - [ ] System health logging on 3 remaining routes (`/api/elevenlabs-signed-url`, `/api/onboarding/session`, `/api/voice-llm/chat/completions`)
 - [ ] Remove debug logging from voice LLM pipeline
 - [ ] Fix `live_research_enabled` not returned by agents GET endpoint on reload
@@ -402,4 +421,4 @@ A per-agent live research feature is partially built.
 
 ---
 
-**Version**: 1.3.1 | **Updated**: 2026-03-19 | **Source**: /bootstrap
+**Version**: 2.0.0 | **Updated**: 2026-03-19 | **Source**: /bootstrap

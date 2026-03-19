@@ -22,11 +22,11 @@ export default function AboutPage() {
           
           <div className="space-y-8 text-white/80 leading-relaxed text-lg">
             <p className="text-white font-medium text-xl">
-              SEI designs and delivers innovative AI solutions that help clients build better businesses.
+              CARRY1 designs and delivers innovative AI solutions that help clients build better businesses.
             </p>
             
             <p>
-              For over three decades, SEI has combined deep industry expertise with cutting-edge technology to create tools and platforms that drive real outcomes. We focus on understanding what makes organizations succeed and embedding that knowledge into intelligent solutions our clients can use every day.
+              CARRY1 combines deep industry expertise with cutting-edge technology to create tools and platforms that drive real outcomes. We focus on understanding what makes organizations succeed and embedding that knowledge into intelligent solutions our clients can use every day.
             </p>
 
             <p>
@@ -36,12 +36,12 @@ export default function AboutPage() {
             <p>
               If you'd like to learn more about how we work and what we do, visit{' '}
               <a 
-                href="https://www.sei.com" 
+                href="https://www.carry1.com" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="text-white hover:text-gradient-red transition-colors inline-flex items-center gap-1 font-semibold"
+                className="text-gold-light hover:text-white transition-colors inline-flex items-center gap-1 font-semibold"
               >
-                sei.com <ExternalLink className="w-4 h-4" />
+                carry1.com <ExternalLink className="w-4 h-4" />
               </a>.
             </p>
 

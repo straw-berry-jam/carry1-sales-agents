@@ -90,7 +90,7 @@ export default function SystemHealthTab() {
     <div className="p-8 text-gray-900">
       <div className="max-w-7xl mx-auto">
         {loading && (
-          <p className="text-plum/60">Loading system events…</p>
+          <p className="text-gold-dark/80">Loading system events…</p>
         )}
         {error && (
           <div className="rounded-lg border border-amber-200 bg-amber-50 text-amber-800 px-4 py-3">
@@ -119,11 +119,11 @@ export default function SystemHealthTab() {
             </div>
 
             {/* Event table */}
-            <div className="rounded-xl border border-plum/10 bg-white overflow-hidden">
+            <div className="rounded-xl border border-gold-dark/20 bg-white overflow-hidden">
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-plum/10 bg-plum/5">
+                    <tr className="border-b border-gold-dark/20 bg-gold/5">
                       <th className="text-left py-3 px-4 font-semibold text-gray-700">Time</th>
                       <th className="text-left py-3 px-4 font-semibold text-gray-700">Severity</th>
                       <th className="text-left py-3 px-4 font-semibold text-gray-700">Description</th>
@@ -141,7 +141,7 @@ export default function SystemHealthTab() {
                       </tr>
                     ) : (
                       data.events.map((row) => (
-                        <tr key={row.id} className="border-b border-plum/5 hover:bg-plum/5">
+                        <tr key={row.id} className="border-b border-gold/10 hover:bg-gold/5">
                           <td className="py-2 px-4 text-gray-600 whitespace-nowrap">{formatTime(row.created_at)}</td>
                           <td className="py-2 px-4">
                             <SeverityBadge severity={row.severity} />

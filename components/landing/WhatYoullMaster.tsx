@@ -43,8 +43,8 @@ export default function WhatYoullMaster() {
               className="glass-card p-8 hover:-translate-y-1 transition-transform duration-300"
             >
               {/* Icon */}
-              <div className="w-12 h-12 rounded-xl bg-gradient-primary flex items-center justify-center mb-6">
-                <feature.icon className="w-6 h-6 text-white" />
+              <div className="w-12 h-12 rounded bg-gradient-primary flex items-center justify-center mb-6">
+                <feature.icon className="w-6 h-6 text-navy" />
               </div>
 
               {/* Title */}

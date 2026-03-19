@@ -14,7 +14,7 @@ const steps = agentConfig.landing.yourPath.steps.map((s, i) => ({
 
 export default function YourPath() {
   return (
-    <section id="how-it-works" className="py-24 px-6 bg-black/20">
+    <section id="how-it-works" className="py-24 px-6 bg-navy/50">
       <div className="max-w-7xl mx-auto">
         {/* Section header */}
         <motion.div
@@ -46,8 +46,8 @@ export default function YourPath() {
               >
                 {/* Number badge */}
                 <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-gradient-primary flex items-center justify-center text-3xl font-bold relative z-10">
-                  <step.icon className="w-10 h-10 text-white" />
-                  <div className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-white text-plum-dark text-sm flex items-center justify-center shadow-lg">
+                  <step.icon className="w-10 h-10 text-navy" />
+                  <div className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-white text-navy text-sm flex items-center justify-center shadow-lg">
                     {step.number}
                   </div>
                 </div>
@@ -79,8 +79,8 @@ export default function YourPath() {
             >
               {/* Number/Icon badge */}
               <div className="w-16 h-16 flex-shrink-0 rounded-full bg-gradient-primary flex items-center justify-center relative">
-                <step.icon className="w-8 h-8 text-white" />
-                <div className="absolute -top-1 -right-1 w-6 h-6 rounded-full bg-white text-plum-dark text-xs flex items-center justify-center font-bold">
+                <step.icon className="w-8 h-8 text-navy" />
+                <div className="absolute -top-1 -right-1 w-6 h-6 rounded-full bg-white text-navy text-xs flex items-center justify-center font-bold">
                   {step.number}
                 </div>
               </div>

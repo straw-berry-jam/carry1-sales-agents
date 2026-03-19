@@ -36,12 +36,12 @@ function AdminPageContent() {
   return (
     <div className="min-h-screen bg-[#FDFBF7] text-gray-900">
       {/* Tab bar */}
-      <div className="sticky top-0 z-30 border-b border-plum/10 bg-white/95 backdrop-blur-sm">
+      <div className="sticky top-0 z-30 border-b border-gold-dark/20 bg-white/95 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-8 pt-6 pb-0">
           <div className="flex items-center gap-6 mb-4">
             <Link
               href="/"
-              className="flex items-center gap-2 text-plum/60 hover:text-plum-dark transition-colors text-sm font-medium"
+              className="flex items-center gap-2 text-gold-dark/80 hover:text-navy transition-colors text-sm font-medium"
             >
               <ChevronLeft className="w-4 h-4" />
               Back to app
@@ -49,7 +49,7 @@ function AdminPageContent() {
           </div>
           <div className="flex flex-wrap items-center gap-4">
             {/* Knowledge Base | Prompt Control toggles */}
-            <div className="flex gap-1 p-1 bg-plum/5 rounded-xl border border-plum/10">
+            <div className="flex gap-1 p-1 bg-gold/5 rounded border border-gold-dark/20">
               {TOGGLE_TABS.map((tab) => {
                 const Icon = tab.icon;
                 return (
@@ -58,8 +58,8 @@ function AdminPageContent() {
                     onClick={() => setTab(tab.id)}
                     className={`flex items-center gap-2 px-6 py-3 rounded-lg text-sm font-bold transition-all ${
                       activeTab === tab.id
-                        ? 'bg-plum-dark text-white shadow-md'
-                        : 'text-plum/60 hover:text-plum-dark hover:bg-plum/10'
+                        ? 'bg-navy text-white shadow-md'
+                        : 'text-gold-dark/80 hover:text-navy hover:bg-gold/10'
                     }`}
                   >
                     <Icon className="w-4 h-4" />
@@ -73,22 +73,22 @@ function AdminPageContent() {
               onClick={() => setTab('test')}
               className={`flex items-center gap-2 px-6 py-3 rounded-xl border text-sm font-bold transition-all ${
                 activeTab === 'test'
-                  ? 'bg-plum-dark text-white border-plum-dark shadow-md'
-                  : 'border-plum/20 text-plum/60 hover:text-plum-dark hover:border-plum/40 hover:bg-plum/5'
+                  ? 'bg-navy text-white border-navy shadow-md'
+                  : 'border-gold-dark/30 text-gold-dark/80 hover:text-navy hover:border-gold/50 hover:bg-gold/5'
               }`}
             >
               Test Console
               <ChevronRight className="w-4 h-4" />
             </button>
             {/* Separator: config tabs (KB, Prompt, Test Console) vs monitoring (System Health) */}
-            <div className="h-6 w-px bg-plum/20 flex-shrink-0" aria-hidden />
+            <div className="h-6 w-px bg-gold/30 flex-shrink-0" aria-hidden />
             {/* System Health — monitoring tab */}
             <button
               onClick={() => setTab('system-health')}
               className={`flex items-center gap-2 px-6 py-3 rounded-xl border text-sm font-bold transition-all ${
                 activeTab === 'system-health'
-                  ? 'bg-plum-dark text-white border-plum-dark shadow-md'
-                  : 'border-plum/20 text-plum/60 hover:text-plum-dark hover:border-plum/40 hover:bg-plum/5'
+                  ? 'bg-navy text-white border-navy shadow-md'
+                  : 'border-gold-dark/30 text-gold-dark/80 hover:text-navy hover:border-gold/50 hover:bg-gold/5'
               }`}
             >
               <Activity className="w-4 h-4" />
@@ -111,7 +111,7 @@ function AdminPageContent() {
 
 export default function AdminPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-[#FDFBF7] flex items-center justify-center text-plum-dark font-bold">Loading...</div>}>
+    <Suspense fallback={<div className="min-h-screen bg-[#FDFBF7] flex items-center justify-center text-navy font-bold">Loading...</div>}>
       <AdminPageContent />
     </Suspense>
   );

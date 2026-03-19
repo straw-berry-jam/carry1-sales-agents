@@ -316,7 +316,7 @@ export default function SpinSetupPage() {
                   <motion.div
                     animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.6, 0.3] }}
                     transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                    className="absolute inset-0 bg-plum/20 rounded-full blur-xl"
+                    className="absolute inset-0 bg-gold/20 rounded-full blur-xl"
                   />
                 </div>
                 
@@ -345,7 +345,7 @@ export default function SpinSetupPage() {
               >
                 <div className="mb-12">
                   <div className="flex items-center justify-between mb-4">
-                    <span className="text-sm font-semibold uppercase tracking-wider text-gradient-red">Step {step} of 2</span>
+                    <span className="text-sm font-semibold uppercase tracking-wider text-gold-light">Step {step} of 2</span>
                     <div className="flex gap-2">
                       {[1, 2].map((s) => (
                         <div

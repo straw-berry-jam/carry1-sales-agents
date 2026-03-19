@@ -6,7 +6,7 @@ import { agentConfig } from '@/lib/agentConfig';
 
 export default function FinalCTA() {
   return (
-    <section className="py-24 px-6 bg-black/20">
+    <section className="py-24 px-6 bg-navy/50">
       <motion.div
         initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -25,14 +25,14 @@ export default function FinalCTA() {
         <div className="flex flex-row gap-4 justify-center items-center flex-wrap">
           <Link
             href="/coach/spin"
-            className="flex-1 max-w-[240px] text-center bg-gradient-primary text-white px-8 py-4 rounded-xl font-semibold shadow-glow hover:opacity-95 transition-opacity"
+            className="flex-1 max-w-[240px] text-center bg-gradient-primary text-navy px-8 py-4 rounded font-semibold shadow-glow hover:opacity-95 transition-opacity"
           >
             {agentConfig.landing.finalCta.primaryCta ?? 'Get Started'}
           </Link>
           {agentConfig.landing.finalCta.secondaryCta && agentConfig.landing.finalCta.secondaryCtaHref && (
             <a
               href={agentConfig.landing.finalCta.secondaryCtaHref}
-              className="flex-1 max-w-[240px] text-center px-8 py-4 rounded-xl border border-white/40 text-white font-semibold hover:border-white/80 transition-colors bg-transparent"
+              className="flex-1 max-w-[240px] text-center px-8 py-4 rounded border border-gold-dark text-white font-semibold hover:border-gold-light transition-colors bg-transparent"
             >
               {agentConfig.landing.finalCta.secondaryCta}
             </a>

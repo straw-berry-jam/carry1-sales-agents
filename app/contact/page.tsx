@@ -22,7 +22,7 @@ export default function ContactPage() {
           
           <div className="space-y-12 text-white/80 leading-relaxed text-lg">
             <p>
-              Have questions about the SEI Sales Agent Platform? We'd love to hear from you.
+              Have questions about the CARRY1 Sales Coach? We'd love to hear from you.
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -33,7 +33,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <h3 className="font-bold text-white mb-1">Headquarters</h3>
-                    <p className="text-white/60">Systems Evolution, Inc.<br />215 Park Avenue South, 11th Floor<br />New York, NY 10003<br />(646) 493-9756</p>
+                    <p className="text-gold-light/80">CARRY1<br />215 Park Avenue South, 11th Floor<br />New York, NY 10003<br />(646) 493-9756</p>
                   </div>
                 </div>
 
@@ -43,14 +43,14 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <h3 className="font-bold text-white mb-1">Website</h3>
-                    <a href="https://sei.com" target="_blank" rel="noopener noreferrer" className="text-white hover:text-gradient-red transition-colors">
-                      sei.com
+                    <a href="https://carry1.com" target="_blank" rel="noopener noreferrer" className="text-gold-light hover:text-white transition-colors">
+                      carry1.com
                     </a>
                   </div>
                 </div>
               </div>
 
-              <div className="bg-white/5 border border-white/10 rounded-2xl p-8">
+              <div className="bg-white/5 border border-gold-dark/30 rounded-2xl p-8">
                 <h3 className="text-xl font-bold mb-6 text-white text-center">Ready to Get Started?</h3>
                 <p className="text-sm text-white/60 mb-8 text-center">
                   If you're looking to try the platform right now, head back to our setup page.

@@ -28,7 +28,7 @@ export default function TermsPage() {
             <section className="space-y-4">
               <h2 className="text-2xl font-bold text-white">Acceptance of Terms</h2>
               <p>
-                By accessing or using the SEI Interview Coach, you agree to be bound by these Terms of Service.
+                By accessing or using the CARRY1 Sales Coach, you agree to be bound by these Terms of Service.
               </p>
             </section>
 
@@ -42,14 +42,14 @@ export default function TermsPage() {
             <section className="space-y-4">
               <h2 className="text-2xl font-bold text-white">Intellectual Property</h2>
               <p>
-                The service and its original content, features, and functionality are and will remain the exclusive property of Systems Evolution, Inc.
+                The service and its original content, features, and functionality are and will remain the exclusive property of CARRY1.
               </p>
             </section>
 
             <section className="space-y-4">
               <h2 className="text-2xl font-bold text-white">Disclaimer</h2>
               <p>
-                The SEI Interview Coach is provided "as is" and "as available" without any warranties of any kind, either express or implied.
+                The CARRY1 Sales Coach is provided "as is" and "as available" without any warranties of any kind, either express or implied.
               </p>
             </section>
           </div>

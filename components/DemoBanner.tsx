@@ -7,10 +7,10 @@ export default function DemoBanner() {
   const [dismissed, setDismissed] = useState(false);
   if (dismissed) return null;
   return (
-    <div className="fixed top-0 left-0 right-0 z-50 w-full bg-black/60 backdrop-blur-sm border-b border-white/10 px-4 py-2 flex items-center justify-between gap-4 text-sm text-white/90">
+    <div className="fixed top-0 left-0 right-0 z-50 w-full bg-navy backdrop-blur-sm border-b border-gold-dark px-4 py-2 flex items-center justify-between gap-4 text-sm text-white">
       <p>
         You are viewing a demo configured with sample sales data.{' '}
-        <a href="mailto:cminer@sei.com?subject=SEI%20Sales%20Agent%20Platform%20Inquiry" className="underline hover:text-white transition-colors font-medium">
+        <a href="mailto:cminer@carry1.com?subject=CARRY1%20Sales%20Agent%20Platform%20Inquiry" className="underline hover:text-gold-light transition-colors font-medium text-gold-light">
           Contact us
         </a>
         {' '}to build a custom AI agent for your organization.

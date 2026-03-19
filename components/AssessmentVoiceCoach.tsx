@@ -125,7 +125,7 @@ export const AssessmentVoiceCoach = memo(function AssessmentVoiceCoach({
   }, [isMuted]);
 
   return (
-    <div className="flex flex-col items-center justify-center space-y-12 p-12 bg-plum/5 rounded-3xl border border-plum/10 shadow-sm w-full max-w-lg mx-auto">
+    <div className="flex flex-col items-center justify-center space-y-12 p-12 bg-gold/5 rounded-3xl border border-gold-dark/20 shadow-sm w-full max-w-lg mx-auto">
       <style>{`
         @keyframes waveform {
           0%, 100% { height: 12px; }
@@ -161,7 +161,7 @@ export const AssessmentVoiceCoach = memo(function AssessmentVoiceCoach({
                 <div className="waveform-bar" style={{ animationDelay: '0.45s' }} />
                 <div className="waveform-bar" style={{ animationDelay: '0.6s' }} />
               </div>
-              <p className="text-plum font-bold uppercase tracking-widest text-sm animate-pulse">
+              <p className="text-gold-dark font-bold uppercase tracking-widest text-sm animate-pulse">
                 Guide Speaking...
               </p>
             </div>
@@ -170,21 +170,21 @@ export const AssessmentVoiceCoach = memo(function AssessmentVoiceCoach({
               <div className="relative w-24 h-24 flex items-center justify-center">
                 <div className="ripple" />
                 <div className="ripple" style={{ animationDelay: '1s' }} />
-                <div className="relative z-10 w-20 h-20 rounded-full bg-plum/20 flex items-center justify-center text-plum border border-plum/20">
+                <div className="relative z-10 w-20 h-20 rounded-full bg-gold/20 flex items-center justify-center text-gold-dark border border-gold/30">
                   <Mic className="w-10 h-10" />
                 </div>
               </div>
-              <p className="text-plum/60 font-bold uppercase tracking-widest text-sm">
+              <p className="text-gold-dark/80 font-bold uppercase tracking-widest text-sm">
                 Listening...
               </p>
             </div>
           )
         ) : (
           <div className="flex flex-col items-center gap-6">
-            <div className="w-24 h-24 rounded-full bg-plum/5 flex items-center justify-center text-plum/20 border border-plum/10">
+            <div className="w-24 h-24 rounded-full bg-gold/5 flex items-center justify-center text-gold/30 border border-gold/20">
               <MicOff className="w-10 h-10" />
             </div>
-            <p className="text-plum/30 font-bold uppercase tracking-widest text-sm">
+            <p className="text-gold-dark/50 font-bold uppercase tracking-widest text-sm">
               Ready to Start
             </p>
           </div>
@@ -197,7 +197,7 @@ export const AssessmentVoiceCoach = memo(function AssessmentVoiceCoach({
             <button 
               onClick={startConversation} 
               disabled={isConnecting}
-              className="rounded-full px-10 py-4 bg-gradient-primary shadow-glow hover:scale-105 transition-all text-white font-bold flex items-center justify-center min-w-[240px]"
+              className="rounded-full px-10 py-4 bg-gradient-primary shadow-glow hover:scale-105 transition-all text-navy font-bold flex items-center justify-center min-w-[240px]"
             >
               {isConnecting ? (
                 <>
@@ -218,7 +218,7 @@ export const AssessmentVoiceCoach = memo(function AssessmentVoiceCoach({
                 className={`rounded-full w-14 h-14 flex items-center justify-center transition-all border ${
                   isMuted 
                     ? 'bg-red-500/10 border-red-500/20 text-red-500' 
-                    : 'bg-plum/10 border-plum/20 text-plum hover:bg-plum/20'
+                    : 'bg-gold/10 border-gold-dark/30 text-gold-dark hover:bg-gold/20'
                 }`}
               >
                 {isMuted ? <VolumeX className="h-6 w-6" /> : <Volume2 className="h-6 w-6" />}

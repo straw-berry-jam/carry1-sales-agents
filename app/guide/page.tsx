@@ -10,7 +10,7 @@ export default function GuidePage() {
       <div className="max-w-4xl mx-auto">
         <header className="mb-16">
           <Link href="/" className="text-2xl font-bold tracking-tighter">
-            SEI <span className="text-white/60">Internal Tools</span>
+            CARRY1 <span className="text-gold-light/80">Internal Tools</span>
           </Link>
         </header>
 
@@ -24,7 +24,7 @@ export default function GuidePage() {
               Internal Tools
             </h1>
             <p className="text-xl text-white/60 max-w-2xl">
-              AI-powered tools for SEI consultants. Practice, prepare, and perform.
+              AI-powered tools for CARRY1 consultants. Practice, prepare, and perform.
             </p>
           </div>
 
@@ -55,7 +55,7 @@ export default function GuidePage() {
             </Link>
           </div>
 
-          <div className="pt-8 border-t border-white/10">
+          <div className="pt-8 border-t border-gold-dark/30">
             <Link 
               href="/coach/spin" 
               className="text-white/60 hover:text-white transition-colors text-sm"
