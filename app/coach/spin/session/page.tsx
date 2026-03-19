@@ -704,27 +704,34 @@ function SpinSessionPage() {
           </div>
 
           <div className="flex flex-col gap-6 h-full min-h-[650px]">
-            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="glass-card p-6 flex-grow">
-              <div className="flex items-center gap-2 mb-4">
-                <Target className="w-5 h-5 text-red-500" />
-                <h3 className="font-bold">Key Objectives</h3>
+            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="flex-grow">
+              <div className="bg-navy/50 border border-gold/20 rounded-xl p-5">
+                <h3 className="text-gold-light font-semibold text-sm uppercase tracking-wider mb-4">
+                  Session Checklist
+                </h3>
+                <div className="space-y-4">
+                  <div>
+                    <p className="text-gold font-semibold text-sm">Hook</p>
+                    <p className="text-white/70 text-xs mt-0.5">Find a real human connection before you pitch anything.</p>
+                  </div>
+                  <div>
+                    <p className="text-gold font-semibold text-sm">Qualify</p>
+                    <p className="text-white/70 text-xs mt-0.5">Near-term opportunity or longer relationship? Know early.</p>
+                  </div>
+                  <div>
+                    <p className="text-gold font-semibold text-sm">Discover</p>
+                    <p className="text-white/70 text-xs mt-0.5">Ask below the surface. Listen more than you talk.</p>
+                  </div>
+                  <div>
+                    <p className="text-gold font-semibold text-sm">Read the Room</p>
+                    <p className="text-white/70 text-xs mt-0.5">Adapt in real time. Confident language only.</p>
+                  </div>
+                  <div>
+                    <p className="text-gold font-semibold text-sm">Close</p>
+                    <p className="text-white/70 text-xs mt-0.5">Catch the signal. Propose a specific next step.</p>
+                  </div>
+                </div>
               </div>
-              <ul className="space-y-4">
-                {[
-                  { letter: 'S', name: 'Situation', tip: 'Confirm context quickly. Do your homework first — don\'t ask what you should already know.' },
-                  { letter: 'P', name: 'Problem', tip: 'Find the real pain. Dig past the stated issue to what\'s actually not working.' },
-                  { letter: 'I', name: 'Implication', tip: 'Explore the consequences. What happens if this doesn\'t get solved?' },
-                  { letter: 'N', name: 'Need-Payoff', tip: 'Let them say the value. Ask what solving this would mean — don\'t tell them.' },
-                ].map(({ letter, name, tip }) => (
-                  <li key={letter} className="flex items-start gap-3 text-sm">
-                    <span className="font-semibold text-white flex-shrink-0" aria-hidden>{letter}</span>
-                    <div>
-                      <span className="font-bold text-white/90">{name}</span>
-                      <p className="text-xs text-white/60 mt-0.5 leading-snug">{tip}</p>
-                    </div>
-                  </li>
-                ))}
-              </ul>
             </motion.div>
 
             <motion.div initial={false} animate={{ opacity: 1, y: 0 }}>

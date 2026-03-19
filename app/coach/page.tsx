@@ -545,45 +545,34 @@ export default function CoachPage() {
               </div>
             </motion.div>
 
-            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="glass-card p-6 flex-grow">
-              <div className="flex items-center gap-2 mb-4">
-                <Target className="w-5 h-5 text-yellow-500" />
-                <h3 className="font-bold">Key Objectives</h3>
-              </div>
-              <ul className="space-y-4">
-                {isLoadingObjectives ? (
-                  <div className="flex flex-col gap-3">
-                    {[1, 2, 3, 4].map((i) => (
-                      <div key={i} className="flex items-center gap-3">
-                        <div className="w-1.5 h-1.5 rounded-full bg-white/10" />
-                        <div className="h-4 w-full bg-white/5 rounded animate-pulse" />
-                      </div>
-                    ))}
+            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="flex-grow">
+              <div className="bg-navy/50 border border-gold/20 rounded-xl p-5">
+                <h3 className="text-gold-light font-semibold text-sm uppercase tracking-wider mb-4">
+                  Session Checklist
+                </h3>
+                <div className="space-y-4">
+                  <div>
+                    <p className="text-gold font-semibold text-sm">Hook</p>
+                    <p className="text-white/70 text-xs mt-0.5">Find a real human connection before you pitch anything.</p>
                   </div>
-                ) : (
-                  keyObjectives.length > 0 ? (
-                    keyObjectives.map((obj, i) => (
-                      <li key={i} className="flex items-start gap-3 text-sm text-white/70">
-                        <div className="mt-1.5">
-                          {i === 0 && <Zap className="w-3.5 h-3.5 text-yellow-400" />}
-                          {i === 1 && <Target className="w-3.5 h-3.5 text-blue-400" />}
-                          {i === 2 && <Users className="w-3.5 h-3.5 text-green-400" />}
-                          {i === 3 && <Trophy className="w-3.5 h-3.5 text-gold" />}
-                          {i >= 4 && <div className="w-1.5 h-1.5 rounded-full bg-white/20" />}
-                        </div>
-                        <span className="leading-tight">{obj}</span>
-                      </li>
-                    ))
-                  ) : (
-                    ['Uncover prospect pain points', 'Articulate clear value proposition', 'Handle objections confidently', 'Ask discovery questions'].map((obj, i) => (
-                      <li key={obj} className="flex items-center gap-3 text-sm text-white/70">
-                        <div className="w-1.5 h-1.5 rounded-full bg-white/20" />
-                        {obj}
-                      </li>
-                    ))
-                  )
-                )}
-              </ul>
+                  <div>
+                    <p className="text-gold font-semibold text-sm">Qualify</p>
+                    <p className="text-white/70 text-xs mt-0.5">Near-term opportunity or longer relationship? Know early.</p>
+                  </div>
+                  <div>
+                    <p className="text-gold font-semibold text-sm">Discover</p>
+                    <p className="text-white/70 text-xs mt-0.5">Ask below the surface. Listen more than you talk.</p>
+                  </div>
+                  <div>
+                    <p className="text-gold font-semibold text-sm">Read the Room</p>
+                    <p className="text-white/70 text-xs mt-0.5">Adapt in real time. Confident language only.</p>
+                  </div>
+                  <div>
+                    <p className="text-gold font-semibold text-sm">Close</p>
+                    <p className="text-white/70 text-xs mt-0.5">Catch the signal. Propose a specific next step.</p>
+                  </div>
+                </div>
+              </div>
             </motion.div>
 
             <motion.div initial={false} animate={{ opacity: 1, y: 0 }}>

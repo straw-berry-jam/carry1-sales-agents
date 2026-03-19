@@ -8,5 +8,5 @@ WHERE agent_type IS NULL;
 -- Also ensure common SPIN agent name variants are explicitly set (idempotent).
 UPDATE agents
 SET agent_type = 'Guide'
-WHERE name IN ('SPIN Sales Coach', 'SPIN Sales Agent', 'AI Assessment Coach')
+WHERE name IN ('CARRY1 Sales Coach', 'AI Assessment Coach')
   AND (agent_type IS NULL OR agent_type <> 'Guide');

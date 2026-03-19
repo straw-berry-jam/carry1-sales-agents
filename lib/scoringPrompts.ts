@@ -1,34 +1,33 @@
 /**
- * SPIN scoring prompt templates for the score-session API.
+ * CARRY1 scoring prompt templates for the score-session API.
  * Each prompt describes session type and duration, includes {{TRANSCRIPT}},
  * and instructs the model to return only valid JSON (no preamble, no markdown).
- * Calibration differs by session type per spec (SEI-27).
  */
 
-/**
- * Fallback rubric used when no evaluation_criteria documents are found in the KB.
- * Ensures scoring never runs with zero rubric context. Import and use in score-session route.
- */
 export const FALLBACK_RUBRIC = `EVALUATION CRITERIA (fallback — no KB docs found)
 
-Situation (1-5): Did the rep establish context clearly? Strong scores for specific, relevant background (role, company, initiative). Penalize vague or missing context. Commentary must reference a specific moment in the transcript.
+Preparation & Research (1-5): Did the rep walk in knowing the buyer's business? Strong scores for specific, accurate details and a clear point of view before discovery starts. Penalize generic questions that show no prior research.
 
-Problem (1-5): Did the rep uncover or acknowledge a clear problem/pain? Strong scores for a well-articulated problem tied to the situation. Penalize skipping problem or multiple shallow problems. Reward depth on one core problem.
+Personal Connection (1-5): Did the rep find a real human entry point before pitching? Strong scores for something personal, warm, and specific. Penalize going straight to the pitch with no warmup.
 
-Implication (1-5): Did the rep explore consequences or stakes of the problem? Strong scores for clear "so what" — cost, risk, or impact. Penalize missing or superficial implication. In short sessions this may be partial.
+Storytelling (1-5): Did the rep use a personal or client-led story relevant to the buyer? Strong scores for specific stories connected to the platform's mission or value. Penalize facts-and-features only.
 
-Need-payoff (1-5): Did the rep connect to value, capability, or next step? Strong scores for explicit link to solution value or clear next step. In outreach/short sessions this may be light; in discovery it should be present.
+Discovery & Qualification (1-5): Did the rep ask below-the-surface questions? Did they identify near-term vs. longer-cycle? Strong scores for getting the buyer talking about challenges in their own words. Penalize surface-level questions and too much talking.
 
-Overall (1-5): Average the four dimensions with professional judgment. Weight dimensions per session type (e.g. outreach prioritizes S+P).`;
+Reading the Room & EQ (1-5): Did the rep adapt in real time? Was their language confident and direct? Strong scores for pivoting when the conversation shifts and answering objections cleanly. Penalize weak hedging language and over-explaining.
+
+Creating Tension & Closing (1-5): Did the rep catch the buying signal and move confidently toward a close? Strong scores for specific next steps with a timeline. Penalize missing the signal or leaving next steps vague.`;
 
 const OUTPUT_SCHEMA = `
 Return ONLY a valid JSON object with this exact structure. No preamble, no markdown, no explanation.
 {
   "scores": {
-    "situation": { "score": <1-5>, "commentary": "<2-3 sentences grounded in a specific moment from the transcript>" },
-    "problem": { "score": <1-5>, "commentary": "<2-3 sentences grounded in a specific moment>" },
-    "implication": { "score": <1-5>, "commentary": "<2-3 sentences grounded in a specific moment>" },
-    "need_payoff": { "score": <1-5>, "commentary": "<2-3 sentences grounded in a specific moment>" },
+    "preparation": { "score": <1-5>, "commentary": "<2-3 sentences grounded in a specific moment from the transcript>" },
+    "connection": { "score": <1-5>, "commentary": "<2-3 sentences grounded in a specific moment>" },
+    "storytelling": { "score": <1-5>, "commentary": "<2-3 sentences grounded in a specific moment>" },
+    "discovery": { "score": <1-5>, "commentary": "<2-3 sentences grounded in a specific moment>" },
+    "eq": { "score": <1-5>, "commentary": "<2-3 sentences grounded in a specific moment>" },
+    "closing": { "score": <1-5>, "commentary": "<2-3 sentences grounded in a specific moment>" },
     "overall": <1-5>
   },
   "strengths": ["<specific thing they did well>", "<specific thing they did well>"],
@@ -40,28 +39,28 @@ Return ONLY a valid JSON object with this exact structure. No preamble, no markd
 Scores are integers 1-5. Provide exactly 2 strengths and 2 growth_areas. Headline must be one sentence.`;
 
 export const SCORING_PROMPTS: Record<string, string> = {
-  outreach_15: `You are scoring a 15-minute SPIN outreach practice session. Session type: outreach; duration: 15 minutes. Expectations: Situation and Problem are the priority. Implication is lightly penalized if underdeveloped. Need-payoff is not expected in this short outreach window.
+  outreach_15: `You are scoring a 15-minute CARRY1 Method outreach practice session. Session type: outreach; duration: 15 minutes. Expectations: Preparation, Personal Connection, and Storytelling are the priority. Discovery and Closing are lightly penalized if underdeveloped in this short window.
 
 ${OUTPUT_SCHEMA}
 
 Transcript to score:
 {{TRANSCRIPT}}`,
 
-  outreach_30: `You are scoring a 30-minute SPIN outreach practice session. Session type: outreach; duration: 30 minutes. Expectations: All four SPIN elements (Situation, Problem, Implication, Need-payoff) are expected. Implication and Need-payoff should be developed; score accordingly if they are missing or shallow.
+  outreach_30: `You are scoring a 30-minute CARRY1 Method outreach practice session. Session type: outreach; duration: 30 minutes. Expectations: All six CARRY1 categories are expected. Discovery and Closing should be developed — score accordingly if missing or shallow.
 
 ${OUTPUT_SCHEMA}
 
 Transcript to score:
 {{TRANSCRIPT}}`,
 
-  discovery_15: `You are scoring a 15-minute SPIN discovery practice session. Session type: discovery; duration: 15 minutes. Expectations: Tight, focused Situation. Deep on one core problem rather than many. Reward depth over breadth. Implication and Need-payoff may be partial in this window.
+  discovery_15: `You are scoring a 15-minute CARRY1 Method discovery practice session. Session type: discovery; duration: 15 minutes. Expectations: Strong on Preparation, Personal Connection, and Discovery. Reading the Room and Closing may be partial in this window.
 
 ${OUTPUT_SCHEMA}
 
 Transcript to score:
 {{TRANSCRIPT}}`,
 
-  discovery_30: `You are scoring a 30-minute SPIN discovery practice session. Session type: discovery; duration: 30 minutes. Expectations: Full development of all four SPIN elements. Need-payoff must explicitly connect to SEI capability or value. Score accordingly if any element is missing or weak.
+  discovery_30: `You are scoring a 30-minute CARRY1 Method discovery practice session. Session type: discovery; duration: 30 minutes. Expectations: Full development of all six CARRY1 categories. Closing must include a specific next step. Score accordingly if any category is missing or weak.
 
 ${OUTPUT_SCHEMA}
 

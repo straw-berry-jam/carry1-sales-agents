@@ -342,7 +342,7 @@ export default function PromptControlTab() {
                 className={`w-full px-4 py-2.5 rounded-xl border text-gray-900 ${
                   nameError ? 'border-red-400' : 'border-gold-dark/30'
                 } focus:outline-none focus:ring-2 focus:ring-gold/40`}
-                placeholder="e.g. SPIN Sales Coach"
+                placeholder="e.g. CARRY1 Sales Coach"
               />
               {nameError && (
                 <p className="text-gold-dark text-xs font-medium mt-1">

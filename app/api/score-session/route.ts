@@ -1,6 +1,6 @@
 /**
  * POST /api/score-session
- * Scores a session transcript using the active SPIN Sales Coach prompt from the DB
+ * Scores a session transcript using the active CARRY1 Sales Coach prompt from the DB
  * and returns a structured JSON scorecard. When present, KB evaluation_criteria
  * documents (assigned to the active agent) are injected above the transcript as rubric.
  *
@@ -19,7 +19,7 @@ import { FALLBACK_RUBRIC, SCORING_PROMPTS, VALID_SESSION_TYPES } from '@/lib/sco
 import { logSystemEvent } from '@/lib/logSystemEvent';
 
 const NO_ACTIVE_AGENT_MESSAGE =
-  'No active SPIN Sales Coach agent found. Set status to active in Prompt Control.';
+  'No active CARRY1 Sales Coach agent found. Set status to active in Prompt Control.';
 
 /**
  * Prepares raw model output for JSON.parse: trim, strip markdown fences,

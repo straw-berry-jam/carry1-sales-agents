@@ -16,6 +16,8 @@ import {
   Loader2,
   Download,
   CheckCircle2,
+  Search,
+  Eye,
 } from 'lucide-react';
 
 const VALID_SESSION_TYPES = ['outreach_15', 'outreach_30', 'discovery_15', 'discovery_30'] as const;
@@ -36,11 +38,13 @@ type ApiScorecard = {
 
 type ScorecardState = 'no_data' | 'loading' | 'success' | 'error';
 
-const SPIN_LABELS: { key: keyof ApiScorecard['scores']; label: string; icon: typeof Zap }[] = [
-  { key: 'situation', label: 'Situation', icon: Target },
-  { key: 'problem', label: 'Problem', icon: MessageSquare },
-  { key: 'implication', label: 'Implication', icon: Zap },
-  { key: 'need_payoff', label: 'Need-Payoff', icon: Trophy },
+const CARRY1_LABELS: { key: string; label: string; icon: typeof Zap }[] = [
+  { key: 'preparation', label: 'Preparation & Research', icon: Target },
+  { key: 'connection', label: 'Personal Connection', icon: Zap },
+  { key: 'storytelling', label: 'Storytelling', icon: MessageSquare },
+  { key: 'discovery', label: 'Discovery & Qualification', icon: Search },
+  { key: 'eq', label: 'Reading the Room & EQ', icon: Eye },
+  { key: 'closing', label: 'Creating Tension & Closing', icon: TrendingUp },
 ];
 
 /** Overall score as percentage: average of the four dimension scores (each 1–5), then (avg/5)*100. */
@@ -215,7 +219,7 @@ export default function SpinScorecardPage() {
                 <p className="text-xl text-white/60">Analysing your session...</p>
               </header>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12 opacity-50">
-                {SPIN_LABELS.map(({ label }, i) => (
+                {CARRY1_LABELS.map(({ label }, i) => (
                   <div
                     key={label}
                     className="glass-card p-6 flex flex-col items-center text-center opacity-70"
@@ -295,7 +299,7 @@ export default function SpinScorecardPage() {
               </header>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-                {SPIN_LABELS.map(({ key, label, icon: Icon }, i) => {
+                {CARRY1_LABELS.map(({ key, label, icon: Icon }, i) => {
                   const dim = scorecard.scores[key];
                   if (dim && typeof dim === 'object' && 'score' in dim && 'commentary' in dim) {
                     const pct = Math.round((dim.score / 5) * 100);

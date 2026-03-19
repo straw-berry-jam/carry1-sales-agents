@@ -60,7 +60,7 @@ export default function GuidePage() {
               href="/coach/spin" 
               className="text-white/60 hover:text-white transition-colors text-sm"
             >
-              ← Back to SPIN Sales Coach
+              ← Back to CARRY1 Sales Coach
             </Link>
           </div>
         </motion.div>
