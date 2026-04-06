@@ -129,3 +129,82 @@ model InterviewSession {
   @@index([createdAt])
   @@map("interview_sessions")
 }
+
+model assessment_comments {
+  id            String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  assessment_id String      @db.Uuid
+  version_id    String?     @db.Uuid
+  anchor_text   String
+  body          String
+  author_id     String      @db.Uuid
+  tagged_users  String[]    @default([]) @db.Uuid
+  resolved      Boolean     @default(false)
+  created_at    DateTime    @default(now()) @db.Timestamptz(6)
+  assessments   assessments @relation(fields: [assessment_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([assessment_id])
+  @@map("assessment_comments")
+}
+
+model assessment_documents {
+  id               String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  assessment_id    String            @db.Uuid
+  filename         String
+  file_size        Int
+  storage_path     String
+  extracted_text   String?
+  uploaded_at      DateTime          @default(now()) @db.Timestamptz(6)
+  assessments      assessments       @relation(fields: [assessment_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  document_chunks  document_chunks[]
+
+  @@index([assessment_id])
+  @@map("assessment_documents")
+}
+
+model assessment_versions {
+  id              String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  assessment_id   String      @db.Uuid
+  version_number  String
+  content_json    Json
+  summary         String?
+  created_by      String      @db.Uuid
+  created_at      DateTime    @default(now()) @db.Timestamptz(6)
+  assessments     assessments @relation(fields: [assessment_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([assessment_id])
+  @@map("assessment_versions")
+}
+
+model assessments {
+  id                   String                 @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  created_by           String                 @db.Uuid
+  client_name          String
+  stakeholders         String[]               @default([])
+  project_brief        String?
+  draft_content        Json?
+  status               String                 @default("new")
+  created_at           DateTime               @default(now()) @db.Timestamptz(6)
+  updated_at           DateTime               @updatedAt @db.Timestamptz(6)
+  deleted_at           DateTime?              @db.Timestamptz(6)
+  assessment_comments  assessment_comments[]
+  assessment_documents assessment_documents[]
+  assessment_versions  assessment_versions[]
+
+  @@index([created_by])
+  @@index([status])
+  @@map("assessments")
+}
+
+model document_chunks {
+  id                    String                 @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  assessment_id         String                 @db.Uuid
+  document_id           String                 @db.Uuid
+  chunk_index           Int
+  content               String
+  embedding             Unsupported("vector(1536)")?
+  assessment_documents  assessment_documents   @relation(fields: [document_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([assessment_id])
+  @@index([document_id])
+  @@map("document_chunks")
+}

@@ -1,7 +1,14 @@
 import OpenAI from 'openai';
 import prisma from './prisma';
 
+/** OpenAI text-embedding-3-small output size (used for pgvector column width). */
+export const EMBEDDING_DIMENSIONS = 1536;
+
 let openai: OpenAI | null = null;
+
+function getEmbeddingModel(): string {
+  return process.env.EMBEDDING_MODEL ?? 'text-embedding-3-small';
+}
 
 function getOpenAIClient() {
   if (!openai) {
@@ -49,7 +56,7 @@ export async function generateEmbedding(text: string): Promise<number[]> {
   try {
     const client = getOpenAIClient();
     const response = await client.embeddings.create({
-      model: 'text-embedding-3-small',
+      model: getEmbeddingModel(),
       input: text.replace(/\n/g, ' '),
     });
 
@@ -58,6 +65,11 @@ export async function generateEmbedding(text: string): Promise<number[]> {
     console.error('Error generating embedding:', error);
     throw new Error('Failed to generate embedding');
   }
+}
+
+/** Alias for assessment builder and RAG helpers (respects EMBEDDING_MODEL). */
+export async function embedText(text: string): Promise<number[]> {
+  return generateEmbedding(text);
 }
 
 /**
@@ -73,7 +85,7 @@ export async function generateEmbeddings(texts: string[]): Promise<number[][]> {
       const batch = texts.slice(i, i + batchSize).map(t => t.replace(/\n/g, ' '));
       
       const response = await client.embeddings.create({
-        model: 'text-embedding-3-small',
+        model: getEmbeddingModel(),
         input: batch,
       });
 
