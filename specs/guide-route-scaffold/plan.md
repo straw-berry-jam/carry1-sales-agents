@@ -6,7 +6,7 @@
 
 ### What We're Building
 
-Creating `/guide` route structure for internal SEI tools, parallel to `/coach` (client-facing).
+Creating `/guide` route structure for internal CARRY1 tools, parallel to `/coach` (client-facing).
 
 ### Files to Create
 

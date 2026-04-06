@@ -1,4 +1,4 @@
-# Implementation Log: SEI Geopolitical Intelligence — Live Brief Generation API (MVP)
+# Implementation Log: CARRY1 Geopolitical Intelligence — Live Brief Generation API (MVP)
 
 **Ticket**: SEI-41  
 **Spec**: `specs/features/SEI-41-geopolitical-live-brief-generation-api-mvp.md`  

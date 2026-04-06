@@ -7,11 +7,11 @@ async function main() {
 
   // 1. Create the "CARRY1 Sales Coach" coach
   const coach = await prisma.coach.upsert({
-    where: { slug: 'sei-interview-coach' },
+    where: { slug: 'carry1-sales-coach' },
     update: {},
     create: {
       name: 'CARRY1 Sales Coach',
-      slug: 'sei-interview-coach',
+      slug: 'carry1-sales-coach',
       description: 'AI-powered interview practice tool backed by 30+ years of hiring expertise.',
     },
   });

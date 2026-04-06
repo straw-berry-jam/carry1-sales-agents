@@ -6,7 +6,7 @@
 
 ## Summary
 
-Created `/guide` route structure for internal SEI tools, parallel to existing `/coach` routes.
+Created `/guide` route structure for internal CARRY1 tools, parallel to existing `/coach` routes.
 
 ## Files Created
 

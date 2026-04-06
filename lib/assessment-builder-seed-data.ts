@@ -1,6 +1,6 @@
 import type { DashboardRow } from '@/lib/assessment-builder-dashboard';
 
-/** Static seed rows aligned with public/prototypes/sei-assessment-builder-v8.html PROJECTS. */
+/** Static seed rows aligned with public/prototypes/sei-assessment-builder-v8.html PROJECTS (prototype filename unchanged). */
 export const ASSESSMENT_BUILDER_SEED_ROWS: DashboardRow[] = [
   {
     id: 'seed-meridian',

@@ -199,7 +199,7 @@ function parseSuggestionsFromResponse(raw: unknown): Partial<Record<DraftSection
 function buildIntroHtml(clientName: string): string {
   const n = clientName.trim() || 'the client';
   const safe = n.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-  return `Hi — I'm here to help you build the AI Assessment for <strong>${safe}</strong>. I've read through what you shared and generated a first draft on the right — you can start editing it now.<br><br>I have a few questions that will help me sharpen the content as we work through it.`;
+  return `Hi — I'm here to help you build the Sales Diagnostic for <strong>${safe}</strong>. I've read through what you shared and generated a first draft on the right — you can start editing it now.<br><br>I have a few questions that will help me sharpen the content as we work through it.`;
 }
 
 const Q1_HTML =
@@ -229,12 +229,12 @@ const PIPELINE_STEPS = [
   'Reviewing uploaded documents',
   'Extracting key information from transcripts',
   'Retrieving CARRY1 methodology',
-  'Building your Discovery draft',
+  'Building your Sales Diagnostic draft',
 ] as const;
 
 /**
  * Builder shell: left panel animation, document canvas with extract → generate pipeline,
- * contenteditable draft, toolbar, CARRY1 Guide chat, refine with suggestion cards for dirty sections.
+ * contenteditable draft, toolbar, Liz chat, refine with suggestion cards for dirty sections.
  */
 export function AssessmentBuilderWorkspace({
   assessment,
@@ -430,7 +430,7 @@ export function AssessmentBuilderWorkspace({
 
   /**
    * After the document is painted: prototype DEMO timing — first agent bubble after 500ms,
-   * second agent bubble 900ms later (see next() in sei-assessment-builder-v8.html).
+   * second agent bubble 900ms later (see next() in public/prototypes/sei-assessment-builder-v8.html).
    */
   useEffect(() => {
     if (!documentPainted) return;
@@ -1049,7 +1049,7 @@ export function AssessmentBuilderWorkspace({
             <Link href="/guide/assessment-builder" className="ab-back-btn">
               ← All assessments
             </Link>
-            <div className="ab-cfg-eye">Assessment</div>
+            <div className="ab-cfg-eye">Sales Diagnostic</div>
             <h2 className="ab-cfg-title">Who are we building this for?</h2>
             <p className="ab-cfg-sub">
               Add what you have. Rough notes are fine, the agent will guide you through the rest
@@ -1265,7 +1265,7 @@ export function AssessmentBuilderWorkspace({
               </div>
             </div>
           </div>
-          <div className="ab-msgs" aria-label="CARRY1 Guide messages">
+          <div className="ab-msgs" aria-label="Liz messages">
             {pipelineChecklistVisible ? (
               <div className="ab-pipeline-checklist-card" aria-live="polite">
                 <div className="ab-pipeline-checklist-title">Preparing your draft</div>
@@ -1337,7 +1337,7 @@ export function AssessmentBuilderWorkspace({
               if (msg.role === 'a') {
                 return (
                   <div key={i} className="ab-msg-row">
-                    <span className="ab-msg-who ab-msg-who-a">CARRY1 Guide</span>
+                    <span className="ab-msg-who ab-msg-who-a">Liz</span>
                     <div className="ab-bubble ab-bubble-a" dangerouslySetInnerHTML={{ __html: msg.html }} />
                   </div>
                 );
@@ -1351,7 +1351,7 @@ export function AssessmentBuilderWorkspace({
             })}
             {sending ? (
               <div className="ab-msg-row ab-msg-row-typing" aria-live="polite" aria-busy="true">
-                <span className="ab-msg-who ab-msg-who-a">CARRY1 Guide</span>
+                <span className="ab-msg-who ab-msg-who-a">Liz</span>
                 <div className="ab-bubble ab-bubble-a">
                   <span className="ab-typing-dots" aria-hidden>
                     <span className="ab-typing-dot" />
@@ -1371,8 +1371,8 @@ export function AssessmentBuilderWorkspace({
                   !documentPainted || pipelinePhase === 'loading'
                     ? 'Preparing draft…'
                     : !scriptSequenceComplete
-                      ? 'CARRY1 Guide will ask a question first…'
-                      : 'Message CARRY1 Guide…'
+                      ? 'Liz will ask a question first…'
+                      : 'Message Liz…'
                 }
                 disabled={!chatEnabled || sending}
                 rows={1}

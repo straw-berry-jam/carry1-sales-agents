@@ -1,5 +1,5 @@
 ---
-linear: https://linear.app/sei-interview-app/issue/SEI-32/rebuild-knowledge-base-schema
+linear: https://linear.app/issue/SEI-32/rebuild-knowledge-base-schema
 ticket: SEI-32
 ---
 
@@ -8,7 +8,7 @@ ticket: SEI-32
 **Feature Branch**: `SEI-32-rebuild-knowledge-base-schema`
 **Created**: 2026-03-08
 **Status**: Draft
-**Linear Ticket**: [SEI-32](https://linear.app/sei-interview-app/issue/SEI-32/rebuild-knowledge-base-schema)
+**Linear Ticket**: [SEI-32](https://linear.app/issue/SEI-32/rebuild-knowledge-base-schema)
 
 **Input**: Replace the existing Q&A-based Knowledge Base (interview coach schema) with a new category-based schema. New tables `knowledge_base_documents` and `knowledge_base_chunks`; new Admin Knowledge Base tab UI; RAG retrieval filtered by agent assignment. Do not touch /coach, /coach/spin, scoring engine, or Prompt Control / Test Console tabs.
 
@@ -42,7 +42,7 @@ As an admin, I can add or edit a document in the Knowledge Base tab with require
 **Why this priority**: Core flow for populating the new KB.
 **Independent Test**: Open `/admin` → Knowledge Base → Add New Document; select category (e.g. Methodology), fill title and content, assign to one agent or All Agents; Save Draft then Edit and Publish; confirm document and chunks exist in DB.
 **Acceptance Scenarios**:
-1. **Given** I am on the Knowledge Base tab, **When** I click Add New Document, **Then** I see category cards (Methodology, Buyer Persona, Account Intelligence, SEI Products, SEI Capabilities, Case Studies, Evaluation Criteria) with descriptions; selecting Buyer Persona shows Archetype / Real Account sub-toggle.
+1. **Given** I am on the Knowledge Base tab, **When** I click Add New Document, **Then** I see category cards (Methodology, Buyer Persona, Account Intelligence, CARRY1 Products, CARRY1 Capabilities, Case Studies, Evaluation Criteria) with descriptions; selecting Buyer Persona shows Archetype / Real Account sub-toggle.
 2. **Given** I have selected a category and entered title and content and at least one agent, **When** I click Publish, **Then** the document is saved with status `published` and chunks are created with embeddings; **When** I click Save Draft, **Then** the document is saved with status `draft` and no chunks are created.
 3. **Given** I have selected "All Agents", **Then** the document's `agents` is stored as `['all']` and individual agent checkboxes are dimmed.
 

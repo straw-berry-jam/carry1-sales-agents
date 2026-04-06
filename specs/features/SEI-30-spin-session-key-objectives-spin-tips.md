@@ -1,5 +1,5 @@
 ---
-linear: https://linear.app/sei-interview-app/issue/SEI-30/spin-session-key-objectives-spin-elements-and-tips
+linear: https://linear.app/issue/SEI-30/spin-session-key-objectives-spin-elements-and-tips
 ticket: SEI-30
 ---
 
@@ -8,7 +8,7 @@ ticket: SEI-30
 **Feature Branch**: `SEI-30-spin-session-key-objectives-spin-tips`
 **Created**: 2026-03-08
 **Status**: Draft
-**Linear Ticket**: https://linear.app/sei-interview-app/issue/SEI-30/spin-session-key-objectives-spin-elements-and-tips
+**Linear Ticket**: https://linear.app/issue/SEI-30/spin-session-key-objectives-spin-elements-and-tips
 **Input**: Update the Key Objectives panel in app/coach/spin/session/page.tsx to replace the current generic objectives list with the four SPIN elements (S, P, I, N) and a coaching tip for each. Styling: SPIN letter prominent via accent color only (same size as body text), dimension name bold, tip smaller and muted; match existing panel card styling. Always show the four items (no loading state). Do not modify any other part of the session page, Live Feedback, or files outside app/coach/spin/session/.
 
 **Design**: [SEI-30-spin-key-objectives-design.md](../designs/SEI-30-spin-key-objectives-design.md) — Decisions: accent color only for letters; always show, no loading skeleton.

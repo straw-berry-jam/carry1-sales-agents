@@ -1,6 +1,6 @@
-# SEI Sales Coach
+# CARRY1 Sales Coach
 
-AI-powered sales practice platform. Run a short **demo** (text or voice) to experience the coach, then get in touch with SEI for full coaching built on your team's data.
+AI-powered sales practice platform. Run a short **demo** (text or voice) to experience the coach, then get in touch with CARRY1 for full coaching built on your team's data.
 
 ## 🚀 Key Features
 
@@ -71,4 +71,4 @@ For detailed structure and behavior, see **PROJECT_DOCUMENTATION.md**.
 
 ---
 
-© 2026 Systems Evolution, Inc. All rights reserved.
+© 2026 CARRY1. All rights reserved.

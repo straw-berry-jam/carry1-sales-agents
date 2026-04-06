@@ -6,7 +6,7 @@
 
 ## Summary
 
-Created the AI Assessment & Strategy Agent — a Guide agent that helps SEI consultants learn the AI Assessment product. Follows the exact same architecture as SPIN Sales Coach.
+Created the AI Assessment & Strategy Agent — a Guide agent that helps CARRY1 consultants learn the AI Assessment product. Follows the exact same architecture as SPIN Sales Coach.
 
 ## Files Created
 

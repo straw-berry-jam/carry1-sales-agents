@@ -7,7 +7,7 @@
 
 ## User Journey
 
-**Jordan** is an SEI admin who manages the sales coach: they upload and edit Knowledge Base documents, tune agent prompts in Prompt Control, run test retrievals in the Test Console, and (once System Health is live) check for warnings and errors when something goes wrong.
+**Jordan** is a CARRY1 admin who manages the sales coach: they upload and edit Knowledge Base documents, tune agent prompts in Prompt Control, run test retrievals in the Test Console, and (once System Health is live) check for warnings and errors when something goes wrong.
 
 1. **Jordan opens the admin area** from the main app (e.g. a link or "Back to app" in reverse). They land on the admin home with a single tab bar: **Knowledge Base**, **Prompt Control**, and **Test Console**. A "Back to app" link at the top left takes them back to the coach experience.
 2. **They pick what to do by clicking a tab.** The URL updates (e.g. `?tab=kb` or `?tab=prompt`) so they can bookmark or share. The main content area below the tab bar shows that section — document list and filters (KB), agent form (Prompt Control), or retrieval tester (Test Console).

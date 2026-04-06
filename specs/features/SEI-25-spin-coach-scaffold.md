@@ -1,5 +1,5 @@
 ---
-linear: https://linear.app/sei-interview-app/issue/SEI-25/spin-selling-coach-scaffold
+linear: https://linear.app/issue/SEI-25/spin-selling-coach-scaffold
 ticket: SEI-25
 ---
 
@@ -8,7 +8,7 @@ ticket: SEI-25
 **Feature Branch**: `SEI-25-spin-coach-scaffold`
 **Created**: 2026-03-07
 **Status**: Draft
-**Linear Ticket**: [SEI-25](https://linear.app/sei-interview-app/issue/SEI-25/spin-selling-coach-scaffold)
+**Linear Ticket**: [SEI-25](https://linear.app/issue/SEI-25/spin-selling-coach-scaffold)
 **Input**: User description: "We are building a new SPIN selling coach experience alongside the existing general sales coach. The existing coach must not be touched or modified in any way. Scaffold: branch, routes (copy from existing), agents table migration. Home CTA update deferred."
 
 ## Summary

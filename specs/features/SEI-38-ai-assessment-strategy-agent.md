@@ -1,5 +1,5 @@
 ---
-linear: https://linear.app/sei-interview-app/issue/SEI-38/ai-assessment-and-strategy-agent
+linear: https://linear.app/issue/SEI-38/ai-assessment-and-strategy-agent
 ticket: SEI-38
 ---
 
@@ -8,12 +8,12 @@ ticket: SEI-38
 **Feature Branch**: `SEI-38-ai-assessment-strategy-agent`
 **Created**: 2026-03-10
 **Status**: Code Complete (pending manual setup)
-**Linear Ticket**: [SEI-38](https://linear.app/sei-interview-app/issue/SEI-38/ai-assessment-and-strategy-agent)
-**Input**: User description: "Build the AI Assessment & Strategy Agent — a Guide agent that helps SEI consultants learn the AI Assessment product"
+**Linear Ticket**: [SEI-38](https://linear.app/issue/SEI-38/ai-assessment-and-strategy-agent)
+**Input**: User description: "Build the AI Assessment & Strategy Agent — a Guide agent that helps CARRY1 consultants learn the AI Assessment product"
 
 ## Context
 
-This is a **Guide agent** — a teaching tool that helps SEI consultants learn the AI Assessment product. It is **not a role-play agent**. The output is a **learning summary**, not a scorecard.
+This is a **Guide agent** — a teaching tool that helps CARRY1 consultants learn the AI Assessment product. It is **not a role-play agent**. The output is a **learning summary**, not a scorecard.
 
 The implementation follows the exact same architecture as the SPIN Sales Coach at `/coach/spin`, adapted for the Assessment learning context.
 
@@ -24,7 +24,7 @@ The implementation follows the exact same architecture as the SPIN Sales Coach a
 ## User Scenarios & Testing (mandatory)
 
 ### User Story 1 - Complete Assessment Learning Session (Priority: P1)
-An SEI consultant navigates to `/guide/assessment`, completes onboarding (name, email, knowledge level), starts a voice session with the AI Assessment Agent, and receives a learning summary at the end.
+A CARRY1 consultant navigates to `/guide/assessment`, completes onboarding (name, email, knowledge level), starts a voice session with the AI Assessment Agent, and receives a learning summary at the end.
 
 **Why this priority**: This is the core end-to-end flow; all other stories depend on this working.
 
@@ -179,7 +179,7 @@ After session end, the transcript is fetched from ElevenLabs using the same poll
 The wrapper prompt sent to Claude (all rubric detail comes from KB document):
 
 ```
-You are generating a learning summary from a conversation between an SEI consultant and the AI Assessment & Strategy Agent. Use the evaluation criteria provided to structure your output.
+You are generating a learning summary from a conversation between a CARRY1 consultant and the AI Assessment & Strategy Agent. Use the evaluation criteria provided to structure your output.
 
 Return valid JSON only, no preamble:
 

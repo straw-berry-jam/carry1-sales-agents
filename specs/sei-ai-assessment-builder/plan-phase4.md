@@ -23,7 +23,7 @@
 | `components/assessment-builder/AssessmentPublishedView.tsx` (or split: `PublishedNav`, `VersionHistoryPanel`, `ReadOnlyDocument`) | Client UI: back link, badge, finalize button, timeline, restore links, download + toast. |
 | `components/assessment-builder/FinalizeToast.tsx` (optional small module) | Bottom-center toast: styling per Phase 4 brief, 3200ms dismiss. |
 | `lib/assessment-builder-versioning.ts` | Pure helpers: next version string (`v1.0` → `v1.1`), parse existing rows, build one-line **summary** from draft HTML (strip tags, truncate). |
-| `lib/assessment-builder-docx.ts` | Build `docx` `Document` from structured draft: SEI header, client name, date, five section headings + body; map HTML to paragraphs / bullets / bold where feasible. |
+| `lib/assessment-builder-docx.ts` | Build `docx` `Document` from structured draft: CARRY1 header, client name, date, five section headings + body; map HTML to paragraphs / bullets / bold where feasible. |
 | `lib/__tests__/assessment-builder-versioning.test.ts` | TDD for version bump and summary helper. |
 | `lib/__tests__/assessment-builder-docx.test.ts` | TDD for HTML stripping / paragraph structure (smoke-level). |
 | `prisma/migrations/*_assessment_versions_summary/` | Add `summary` column to `assessment_versions` (mirror Supabase `ALTER`). |
@@ -75,7 +75,7 @@ Consultants can **publish** the current Discovery draft in one reliable save: a 
    New route under `/guide/assessment-builder/[id]/published`: **dark top bar** (`#1e1130`), **white** main document area (same typography and layout as the editor via shared HTML builder), **260px** right column (`#faf9f7`) listing all versions **newest first**. **Dot timeline**: newest = **purple + glow**; older = **gray** dots. Each row shows version label, timestamp, summary; non-current rows get **Restore this version** → API updates `draft_content` from that row’s `content_json` and sends the user **back to the builder** (`/guide/assessment-builder/[id]`).
 
 4. **DOCX export (about 1.5–2 days)**  
-   `POST /api/assessment-builder/export-docx` with `assessmentId`. Server reads **`draft_content`** from `assessments` (per Phase 4 product brief), converts the five sections into a Word file using the **`docx`** library: cover line for SEI, client name, date, then each section as heading + paragraphs; strip HTML cleanly and preserve **bold** and **bullet** structure where practical. Respond with a downloadable file named like **`[ClientName]-Discovery-Assessment.docx`** (sanitize filename). **Finalize & Download** on the published view calls this and triggers the browser download.
+   `POST /api/assessment-builder/export-docx` with `assessmentId`. Server reads **`draft_content`** from `assessments` (per Phase 4 product brief), converts the five sections into a Word file using the **`docx`** library: cover line for CARRY1, client name, date, then each section as heading + paragraphs; strip HTML cleanly and preserve **bold** and **bullet** structure where practical. Respond with a downloadable file named like **`[ClientName]-Discovery-Assessment.docx`** (sanitize filename). **Finalize & Download** on the published view calls this and triggers the browser download.
 
 5. **Success toast (about 0.5 day)**  
    After a successful download, show a fixed **bottom-center** toast: dark background `#1a1a2e`, green border, checkmark, title **Document finalized and downloaded**, subtitle with client name and version, auto-dismiss **3200ms**.

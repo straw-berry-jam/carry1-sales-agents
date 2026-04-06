@@ -9,7 +9,7 @@
 ## Progress
 
 ### Phase 1: Scoring prompts and agent helper ✅
-- **lib/scoringPrompts.ts**: Added `SCORING_PROMPTS` with keys `outreach_15`, `outreach_30`, `discovery_15`, `discovery_30`. Each prompt describes session type and duration, includes `{{TRANSCRIPT}}`, and instructs the model to return only valid JSON with the required scorecard shape. Calibration wording per spec (e.g. outreach_15 S+P priority; discovery_30 full SPIN with N-P tied to SEI). Exported `VALID_SESSION_TYPES` for the API.
+- **lib/scoringPrompts.ts**: Added `SCORING_PROMPTS` with keys `outreach_15`, `outreach_30`, `discovery_15`, `discovery_30`. Each prompt describes session type and duration, includes `{{TRANSCRIPT}}`, and instructs the model to return only valid JSON with the required scorecard shape. Calibration wording per spec (e.g. outreach_15 S+P priority; discovery_30 full SPIN with N-P tied to CARRY1). Exported `VALID_SESSION_TYPES` for the API.
 - **lib/agents.ts**: Added `getActiveSpinCoachPrompt()` — returns the `prompt` for the agent with `name = 'SPIN Sales Coach'` and `status = 'active'`, or null. Used by score-session so the system prompt is never hardcoded.
 - Commit: `SEI-27 Add scoring prompts (four session types) and getActiveSpinCoachPrompt`
 

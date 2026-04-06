@@ -1,5 +1,5 @@
 ---
-linear: https://linear.app/sei-interview-app/issue/SEI-26/admin-prompt-control-tab
+linear: https://linear.app/issue/SEI-26/admin-prompt-control-tab
 ticket: SEI-26
 ---
 
@@ -8,7 +8,7 @@ ticket: SEI-26
 **Feature Branch**: `SEI-26-admin-prompt-control-tab`
 **Created**: 2026-03-07
 **Status**: Draft
-**Linear Ticket**: [SEI-26](https://linear.app/sei-interview-app/issue/SEI-26/admin-prompt-control-tab)
+**Linear Ticket**: [SEI-26](https://linear.app/issue/SEI-26/admin-prompt-control-tab)
 **Input**: Add a third "Prompt Control" tab to /admin that displays and edits existing agents only (no creation). List/dropdown selector, editable fields, Save Changes. If no agents exist, show "No agents configured. Agents are added by a developer." One seeded default agent so the tab has something to display after setup.
 
 ## User Scenarios & Testing (mandatory)

@@ -33,8 +33,8 @@ describe('paragraphsFromSectionHtml', () => {
 
 describe('discoveryAssessmentFilename', () => {
   it('sanitizes client name for download', () => {
-    expect(discoveryAssessmentFilename('Acme Corp')).toBe('Acme Corp-Discovery-Assessment.docx');
-    expect(discoveryAssessmentFilename('Bad<>Name!')).toBe('BadName-Discovery-Assessment.docx');
+    expect(discoveryAssessmentFilename('Acme Corp')).toBe('Acme Corp-Sales-Diagnostic.docx');
+    expect(discoveryAssessmentFilename('Bad<>Name!')).toBe('BadName-Sales-Diagnostic.docx');
   });
 });
 

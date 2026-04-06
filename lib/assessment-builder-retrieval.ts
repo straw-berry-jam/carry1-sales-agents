@@ -4,7 +4,7 @@ import { embedText } from '@/lib/embeddings';
 /**
  * Knowledge base rows are scoped by `agents` on chunks (UUID strings). Set
  * `ASSESSMENT_BUILDER_AGENT_ID` in env to the `agents.agent_id` from Prompt Control after running
- * the INSERT for the Assessment Builder agent.
+ * the INSERT for the Sales Diagnostic Builder agent.
  */
 export const ASSESSMENT_BUILDER_AGENT_ID =
   process.env.ASSESSMENT_BUILDER_AGENT_ID?.trim() ?? '';
@@ -49,7 +49,7 @@ export async function retrieveAssessmentChunks(
 }
 
 /**
- * Top-K KB chunks scoped to the Assessment Builder agent (or all) on published documents.
+ * Top-K KB chunks scoped to the Sales Diagnostic Builder agent (or all) on published documents.
  */
 export async function retrieveKbChunksForBuilder(
   queryText: string,

@@ -1,5 +1,5 @@
 /**
- * Plain-text transcript lines for the Assessment Builder document drawer.
+ * Plain-text transcript lines for the Sales Diagnostic Builder document drawer.
  * Consultant lines: trimmed content starts with "Q:" or "Interviewer:" (case-insensitive).
  * Blank lines are preserved for vertical rhythm.
  */

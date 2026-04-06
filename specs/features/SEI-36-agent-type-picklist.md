@@ -1,5 +1,5 @@
 ---
-linear: https://linear.app/sei-interview-app/issue/SEI-36/agent-type-picklist-schema-prompt-control-kb-filter
+linear: https://linear.app/issue/SEI-36/agent-type-picklist-schema-prompt-control-kb-filter
 ticket: SEI-36
 ---
 
@@ -8,7 +8,7 @@ ticket: SEI-36
 **Feature Branch**: `SEI-36-agent-type-picklist`
 **Created**: 2026-03-09
 **Status**: Draft
-**Linear Ticket**: [SEI-36](https://linear.app/sei-interview-app/issue/SEI-36/agent-type-picklist-schema-prompt-control-kb-filter)
+**Linear Ticket**: [SEI-36](https://linear.app/issue/SEI-36/agent-type-picklist-schema-prompt-control-kb-filter)
 **Input**: Agent Type picklist — schema, Prompt Control, KB filter. Add agent_type enum and column; Prompt Control UI dropdown (required); KB dashboard filter by agent type; one-time SQL update for existing agents.
 
 ## User Scenarios & Testing (mandatory)

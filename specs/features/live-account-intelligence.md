@@ -1,5 +1,5 @@
 ---
-linear: https://linear.app/sei-interview-app/issue/SEI-31/live-account-intelligence
+linear: https://linear.app/issue/SEI-31/live-account-intelligence
 ticket: SEI-31
 ---
 
@@ -8,7 +8,7 @@ ticket: SEI-31
 **Feature Branch**: `SEI-31-live-account-intelligence`
 **Created**: 2026-03-08
 **Status**: Draft
-**Linear Ticket**: https://linear.app/sei-interview-app/issue/SEI-31/live-account-intelligence
+**Linear Ticket**: https://linear.app/issue/SEI-31/live-account-intelligence
 **Input**: "Live Account Intelligence give the agent the ability to pull live market data in and load that into the experience if the user wants to practice against a specific company."
 
 ## User Scenarios & Testing (mandatory)
@@ -31,7 +31,7 @@ During the practice session (text or voice), the coach's responses are informed 
 2. **Given** live data could not be loaded (e.g. provider unavailable), **When** the session runs, **Then** the coach still operates (e.g. with existing KB or generic context) and the user is not blocked; optional: show a non-blocking message that "live data unavailable, using standard context."
 
 ### User Story 3 - Admin or config can control data source and availability (Priority: P2)
-The source of "live market data" (e.g. which API or provider, credentials, which fields to pull) is configurable so SEI can plug in the chosen provider without code changes. Optionally, an admin or feature flag controls whether the "practice against a company" option is available to consultants.
+The source of "live market data" (e.g. which API or provider, credentials, which fields to pull) is configurable so CARRY1 can plug in the chosen provider without code changes. Optionally, an admin or feature flag controls whether the "practice against a company" option is available to consultants.
 **Why this priority**: Enables safe rollout and provider flexibility.
 **Independent Test**: Change configuration (e.g. env or admin setting); verify behavior or visibility of the company-practice flow changes accordingly.
 **Acceptance Scenarios**:
@@ -43,7 +43,7 @@ The source of "live market data" (e.g. which API or provider, credentials, which
 - **Company not found**: User enters or selects a company the provider doesn't recognize — show clear message and allow retry or continue without live data.
 - **Rate limits / quota**: External API rate limits or quota exceeded — cache recent results per company where possible; otherwise degrade gracefully (no live data for this session).
 - **Data freshness**: — NEEDS CLARIFICATION: How fresh must data be? Cache TTL (e.g. 24h per company)? Real-time every session?
-- **PII / compliance**: Live data may contain sensitive company information — ensure usage aligns with SEI data policies; no storage of raw payloads in logs beyond what is necessary for debugging (NEEDS CLARIFICATION: retention and logging rules).
+- **PII / compliance**: Live data may contain sensitive company information — ensure usage aligns with CARRY1 data policies; no storage of raw payloads in logs beyond what is necessary for debugging (NEEDS CLARIFICATION: retention and logging rules).
 
 ## Requirements (mandatory)
 

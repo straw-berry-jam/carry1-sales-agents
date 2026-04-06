@@ -8,7 +8,7 @@
 
 ### What We're Building (Summary)
 
-We're creating a second AI agent — the "AI Assessment & Strategy Agent" — that lives at `/guide/assessment`. Unlike the SPIN Sales Coach (which role-plays as a buyer), this agent **teaches** SEI consultants about the AI Assessment product through conversation. At the end, users see a **learning summary** with confidence indicator instead of a performance score.
+We're creating a second AI agent — the "AI Assessment & Strategy Agent" — that lives at `/guide/assessment`. Unlike the SPIN Sales Coach (which role-plays as a buyer), this agent **teaches** CARRY1 consultants about the AI Assessment product through conversation. At the end, users see a **learning summary** with confidence indicator instead of a performance score.
 
 Think of it as the difference between a practice test (SPIN) and a study guide (Assessment).
 

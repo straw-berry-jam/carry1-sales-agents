@@ -132,7 +132,7 @@ export function AssessmentDashboard({ initialRows }: { initialRows: DashboardRow
     <div className="ab-dash">
       <div className="ab-db-top">
         <div className="ab-db-head">
-          <h1>AI Assessment Builder</h1>
+          <h1>Sales Diagnostic Builder</h1>
           <p>Turn Discovery findings into structured, client-ready deliverables.</p>
         </div>
         <Link href="/guide/assessment-builder/new" className="ab-btn-new">

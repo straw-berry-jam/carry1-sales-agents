@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 export function AssessmentBuilderSidenav() {
   return (
-    <nav className="ab-snav" aria-label="Assessment Builder">
+    <nav className="ab-snav" aria-label="Sales Diagnostic Builder">
       <div className="ab-snav-logo" aria-hidden>
         C
       </div>

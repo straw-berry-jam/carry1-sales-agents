@@ -1,7 +1,7 @@
 # Design Exploration: SPIN Scorecard Real API Integration
 
 **Related spec**: [SEI-29-spin-scorecard-real-api.md](../features/SEI-29-spin-scorecard-real-api.md)  
-**Linear**: [SEI-29](https://linear.app/sei-interview-app/issue/SEI-29/spin-scorecard-real-api-integration)  
+**Linear**: [SEI-29](https://linear.app/issue/SEI-29/spin-scorecard-real-api-integration)  
 **Created**: 2026-03-08
 
 ---

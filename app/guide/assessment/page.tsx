@@ -170,7 +170,7 @@ export default function AssessmentOnboardingPage() {
                       <label className="block text-sm font-medium text-white/60 mb-2">Email</label>
                       <input
                         type="email"
-                        placeholder="you@sei.com"
+                        placeholder="you@carry1.com"
                         className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-white/30 transition-colors"
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}

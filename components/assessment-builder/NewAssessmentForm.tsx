@@ -129,7 +129,7 @@ export function NewAssessmentForm() {
         <Link href="/guide/assessment-builder" className="ab-back-btn">
           ← All assessments
         </Link>
-        <div className="ab-cfg-eye">New Assessment</div>
+        <div className="ab-cfg-eye">New Sales Diagnostic</div>
         <h1 className="ab-cfg-title">Who are we building this for?</h1>
         <p className="ab-cfg-sub">
           Add what you have. Rough notes are fine, the agent will guide you through the rest

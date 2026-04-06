@@ -1,15 +1,15 @@
 ---
-linear: https://linear.app/sei-interview-app/issue/SEI-41/sei-geopolitical-intelligence-live-brief-generation-api-mvp
+linear: https://linear.app/issue/SEI-41/carry1-geopolitical-intelligence-live-brief-generation-api-mvp
 ticket: SEI-41
 ---
 
-# Feature Specification: SEI Geopolitical Intelligence - Live Brief Generation API (MVP)
+# Feature Specification: CARRY1 Geopolitical Intelligence - Live Brief Generation API (MVP)
 
 **Feature Branch**: `SEI-41-geopolitical-live-brief-generation-api-mvp`
 **Created**: 2026-03-17
 **Status**: Draft
-**Linear Ticket**: https://linear.app/sei-interview-app/issue/SEI-41/sei-geopolitical-intelligence-live-brief-generation-api-mvp
-**Input**: User description: "SEI Geopolitical Intelligence — Live Brief Generation API (MVP)"
+**Linear Ticket**: https://linear.app/issue/SEI-41/carry1-geopolitical-intelligence-live-brief-generation-api-mvp
+**Input**: User description: "CARRY1 Geopolitical Intelligence — Live Brief Generation API (MVP)"
 
 ## User Scenarios & Testing (mandatory)
 
@@ -176,7 +176,7 @@ The **geopolitical frontend wiring spec** MUST require: on onboarding submit, **
 - **NC-002 (Region taxonomy)**: `regions[]` MUST be drawn from a controlled list only: `North America`, `Western Europe`, `Eastern Europe`, `Middle East`, `Southeast Asia`, `China / North Asia`, `Latin America`, `Sub-Saharan Africa`. Any other region string MUST be rejected with a `400` validation error.
 - **NC-003 (Error logging)**: Use structured logs only for Perplexity and Claude errors in MVP. Do **not** write to `system_events` yet. Add `// TODO: wire to system_events` comments in catch blocks to mark future integration points. Claude malformed JSON responses SHOULD emit a console error with the full raw response for easier debugging during early testing.
 - **NC-004 (Claude JSON enforcement)**: Rely on prompt-only JSON compliance plus server-side `JSON.parse` with a **single retry**. On first parse failure, make one more Claude call with the same prompt plus: _"Your previous response was not valid JSON. Return only the JSON object with no other text."_ If the retry still fails parsing or schema checks, return `500` and include the raw response in the structured error object.
-- **NC-005 (TTL vs exec demos)**: **30 minutes** remains the MVP TTL. **Extend session** or longer TTL is explicitly **v2**; controlled exec demos re-init on expiry if needed. Does **not** block SEI-41 implementation.
+- **NC-005 (TTL vs exec demos)**: **30 minutes** remains the MVP TTL. **Extend session** or longer TTL is explicitly **v2**; controlled exec demos re-init on expiry if needed. Does **not** block ticket 41 implementation.
 - **NC-006 (Frontend wiring — out of scope here, required in frontend spec)**: To avoid a sluggish “Enter briefing room” transition when Perplexity is slow, the **frontend** MUST **fire `POST /api/research/init` immediately on form submit**, **not** await the response before showing the chat UI, and **store `researchId` in session state when it arrives** (chat questions buy time for research). This ticket does not implement that UI; the follow-on frontend spec MUST state this explicitly.
 
 ## Success Criteria (mandatory)

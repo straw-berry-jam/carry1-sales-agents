@@ -1,5 +1,5 @@
 ---
-linear: https://linear.app/sei-interview-app/issue/SEI-33/coach-to-guide-routes-rename
+linear: https://linear.app/issue/SEI-33/coach-to-guide-routes-rename
 ticket: SEI-33
 ---
 
@@ -8,7 +8,7 @@ ticket: SEI-33
 **Feature Branch**: `SEI-33-coach-to-guide-routes`
 **Created**: 2026-03-08
 **Status**: Draft
-**Linear Ticket**: [SEI-33](https://linear.app/sei-interview-app/issue/SEI-33/coach-to-guide-routes-rename)
+**Linear Ticket**: [SEI-33](https://linear.app/issue/SEI-33/coach-to-guide-routes-rename)
 **Input**: User description: "update 'coach' routes to 'guide' routes across the application"
 
 ## User Scenarios & Testing (mandatory)

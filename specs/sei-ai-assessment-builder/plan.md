@@ -1,4 +1,4 @@
-## Implementation Plan: SEI AI Assessment Builder (MVP)
+## Implementation Plan: CARRY1 Sales Diagnostic Builder (MVP)
 
 **Branch**: `SEI-42-sei-ai-assessment-builder`  
 **Spec**: [specs/features/SEI-42-sei-ai-assessment-builder.md](../features/SEI-42-sei-ai-assessment-builder.md)  
@@ -19,7 +19,7 @@
 
 ### What We're Building (Summary)
 
-Internal consultants get a **Guide** tool under `/guide/assessment-builder` where they capture client context and uploads, receive a **five-section Discovery draft** grounded in their files and scoped **knowledge base** content, **refine** it through a short **SEI Guide** chat (with **manual edits** protected from blind overwrites), then **publish** and **download a Word document**. This turns messy Discovery inputs into a structured, reviewable, client-ready package without leaving the platform.
+Internal consultants get a **Guide** tool under `/guide/assessment-builder` where they capture client context and uploads, receive a **five-section Discovery draft** grounded in their files and scoped **knowledge base** content, **refine** it through a short **Liz** chat (with **manual edits** protected from blind overwrites), then **publish** and **download a Word document**. This turns messy Discovery inputs into a structured, reviewable, client-ready package without leaving the platform.
 
 ---
 
@@ -35,7 +35,7 @@ We will deliver value in **layers** so something is demoable early:
 
 4. **Builder UX** — **Layout** and **animations** match **`sei-assessment-builder-v8.html`** (timings are part of **NFR-004**). **Shimmer** while waiting; **contenteditable** document with **toolbar**, **status chips**, and **`data-manually-edited`** per section. **CSS approach**: explicit tokens from the spec and prototype (**NFR-005**), not shadcn defaults or app-wide dark mode classes. Outcome: the product matches the Builder visual system, not a generic admin theme.
 
-5. **Refine loop** — **Chat** with scripted **SEI Guide** behavior; **`/api/refine-section`** updates sections. **Decision 4**: untouched sections get **direct** updates; **dirty** sections get **suggestion cards** with **Apply**. Outcome: consultants keep control when they have already edited copy.
+5. **Refine loop** — **Chat** with scripted **Liz** behavior; **`/api/refine-section`** updates sections. **Decision 4**: untouched sections get **direct** updates; **dirty** sections get **suggestion cards** with **Apply**. Outcome: consultants keep control when they have already edited copy.
 
 6. **Publish and ship** — **Publish Draft** with **inline button loading** (no full-screen compile overlay), **published** read-only view, **version timeline** with **restore**, export API and success **toast**. Outcome: sign-off moment plus an offline file for the client.
 
@@ -178,7 +178,7 @@ We will deliver value in **layers** so something is demoable early:
 
 **Rollback**: Revert deployment; new tables unused until launch. No client-facing `/coach` behavior changes.
 
-**New voice / Prompt Control agent**: **Not required** for this feature — SEI Guide is **text** + API Claude, not a new ElevenLabs agent row. **KB documents** must include **`assessment-builder`** in `agents` where appropriate; that is **content and admin** work, not a new `agents` table insert.
+**New voice / Prompt Control agent**: **Not required** for this feature — Liz is **text** + API Claude, not a new ElevenLabs agent row. **KB documents** must include **`assessment-builder`** in `agents` where appropriate; that is **content and admin** work, not a new `agents` table insert.
 
 ---
 

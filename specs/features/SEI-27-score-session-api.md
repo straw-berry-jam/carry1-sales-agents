@@ -1,5 +1,5 @@
 ---
-linear: https://linear.app/sei-interview-app/issue/SEI-27/spin-score-session-api-and-scoring-prompts
+linear: https://linear.app/issue/SEI-27/spin-score-session-api-and-scoring-prompts
 ticket: SEI-27
 ---
 
@@ -8,7 +8,7 @@ ticket: SEI-27
 **Feature Branch**: `SEI-27-score-session-api`
 **Created**: 2026-03-08
 **Status**: Draft
-**Linear Ticket**: [SEI-27](https://linear.app/sei-interview-app/issue/SEI-27/spin-score-session-api-and-scoring-prompts)
+**Linear Ticket**: [SEI-27](https://linear.app/issue/SEI-27/spin-score-session-api-and-scoring-prompts)
 **Input**: Add `lib/scoringPrompts.ts` with SPIN scoring prompt templates and `app/api/score-session/route.ts` POST endpoint that scores a session transcript using the active SPIN Sales Coach agent prompt from Supabase and returns a structured JSON scorecard. No UI wiring; no changes to existing files or admin/coach routes.
 
 ## User Scenarios & Testing (mandatory)
@@ -20,7 +20,7 @@ As a developer or backend consumer, I can use `SCORING_PROMPTS` from `lib/scorin
 **Acceptance Scenarios**:
 1. **Given** `lib/scoringPrompts.ts` exists, **When** I import `SCORING_PROMPTS`, **Then** it has keys `outreach_15`, `outreach_30`, `discovery_15`, `discovery_30`.
 2. **Given** any value of `SCORING_PROMPTS`, **When** I inspect the string, **Then** it contains the literal `{{TRANSCRIPT}}` and instructs the model to return only valid JSON with `scores` (situation, problem, implication, need_payoff, overall), `strengths`, `growth_areas`, `next_step_quality`, `next_step_note`, `headline`.
-3. **Given** the four prompts, **When** I compare calibration guidance, **Then** outreach_15 prioritizes S+P and lightly penalizes underdeveloped I; outreach_30 expects all four elements; discovery_15 rewards depth over breadth; discovery_30 expects full development and N-P explicitly connected to SEI capability.
+3. **Given** the four prompts, **When** I compare calibration guidance, **Then** outreach_15 prioritizes S+P and lightly penalizes underdeveloped I; outreach_30 expects all four elements; discovery_15 rewards depth over breadth; discovery_30 expects full development and N-P explicitly connected to CARRY1 capability.
 
 ### User Story 2 - POST /api/score-session returns scorecard from transcript (Priority: P1)
 As a client (or future scorecard UI), I POST `{ transcript: string, sessionType: string }` to `/api/score-session` and receive a parsed JSON scorecard object when the active SPIN Sales Coach agent exists in Supabase. The system prompt used for scoring is the agent’s `prompt` from the database, not hardcoded, so admins can edit it in Prompt Control.
@@ -51,7 +51,7 @@ As a client, I receive clear 400/404/500 responses when the request is invalid, 
 ### Functional Requirements
 - **FR-001**: The file `lib/scoringPrompts.ts` MUST export an object `SCORING_PROMPTS` with exactly four keys: `outreach_15`, `outreach_30`, `discovery_15`, `discovery_30`. Each value MUST be a string prompt that describes the session type and duration expectations, includes the literal placeholder `{{TRANSCRIPT}}`, and instructs the model to return ONLY a valid JSON object with this structure: `scores` (situation, problem, implication, need_payoff each with `score` and `commentary`; `overall` number), `strengths` (array of strings), `growth_areas` (array of strings), `next_step_quality` ("Yes" | "Partial" | "No"), `next_step_note` (string), `headline` (string). No preamble, no markdown, valid JSON only.
 - **FR-002**: Scoring rules for all four prompts: scores are integers 1–5; commentary is 2–3 sentences grounded in a specific moment from the transcript; strengths = 2 specific things done well; growth_areas = 2 specific things to work on with a concrete suggestion; headline = one sentence summary used as scorecard subheading.
-- **FR-003**: Calibration per session type: outreach_15 — S+P priority, I lightly penalized if underdeveloped, N-P not expected; outreach_30 — all four elements expected, I and N-P developed; discovery_15 — tight S, deep on one core problem, reward depth over breadth; discovery_30 — full development of all four expected, N-P must explicitly connect to SEI capability.
+- **FR-003**: Calibration per session type: outreach_15 — S+P priority, I lightly penalized if underdeveloped, N-P not expected; outreach_30 — all four elements expected, I and N-P developed; discovery_15 — tight S, deep on one core problem, reward depth over breadth; discovery_30 — full development of all four expected, N-P must explicitly connect to CARRY1 capability.
 - **FR-004**: The API route `app/api/score-session/route.ts` MUST implement POST only. It MUST accept JSON body `{ transcript: string, sessionType: string }`, validate both fields present, and return 400 if either is missing.
 - **FR-005**: The API MUST fetch the active SPIN Sales Coach agent from Supabase: `SELECT prompt FROM agents WHERE name = 'SPIN Sales Coach' AND status = 'active' LIMIT 1`. If no row is returned, the API MUST return 404 with body message "No active SPIN Sales Coach agent found. Set status to active in Prompt Control."
 - **FR-006**: The API MUST resolve the scoring prompt by key from `SCORING_PROMPTS` using `sessionType` (must be one of outreach_15, outreach_30, discovery_15, discovery_30); if invalid, return 400. It MUST replace `{{TRANSCRIPT}}` in that prompt with the request `transcript`.

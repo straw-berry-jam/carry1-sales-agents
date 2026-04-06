@@ -1,14 +1,14 @@
 # Design Exploration: Admin Prompt Control Tab (SEI-26)
 
 **Related spec**: [SEI-26-admin-prompt-control-tab.md](../features/SEI-26-admin-prompt-control-tab.md)  
-**Linear**: [SEI-26](https://linear.app/sei-interview-app/issue/SEI-26/admin-prompt-control-tab)  
+**Linear**: [SEI-26](https://linear.app/issue/SEI-26/admin-prompt-control-tab)  
 **Created**: 2026-03-07
 
 ---
 
 ## User Journey
 
-**Jordan** is an SEI admin who manages how the sales coach agents behave. They need to edit system prompts and metadata (like which document tags an agent uses) without touching code or the database directly.
+**Jordan** is a CARRY1 admin who manages how the sales coach agents behave. They need to edit system prompts and metadata (like which document tags an agent uses) without touching code or the database directly.
 
 1. **Jordan goes to the admin area** (e.g. from "Back to app" they already use for Knowledge Base or Test Console). They see the same tab bar with three options: Knowledge Base, Test Console, and **Prompt Control**.
 2. **They click "Prompt Control"**. The URL updates (e.g. `?tab=prompt`) so they can bookmark or share the tab. The main content area shows the Prompt Control screen.
@@ -135,4 +135,4 @@ No new constitution update is suggested; this stays within existing admin and br
 
 1. Review this design exploration.
 2. Remaining design choice: agent selector — dropdown (recommended) vs list. Save at bottom and two statuses (draft | active) are decided.
-3. Run /plan for SEI-26 to create the implementation plan, then implement.
+3. Run /plan for ticket 26 to create the implementation plan, then implement.

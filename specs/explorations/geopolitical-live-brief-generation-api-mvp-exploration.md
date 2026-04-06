@@ -1,7 +1,7 @@
-# Exploration: SEI Geopolitical Intelligence — Live Brief Generation API (MVP)
+# Exploration: CARRY1 Geopolitical Intelligence — Live Brief Generation API (MVP)
 
 **Spec**: [specs/features/SEI-41-geopolitical-live-brief-generation-api-mvp.md](../features/SEI-41-geopolitical-live-brief-generation-api-mvp.md)  
-**Linear**: [SEI-41](https://linear.app/sei-interview-app/issue/SEI-41/sei-geopolitical-intelligence-live-brief-generation-api-mvp)  
+**Linear**: [SEI-41](https://linear.app/issue/SEI-41/carry1-geopolitical-intelligence-live-brief-generation-api-mvp)  
 **Plan**: [specs/geopolitical-live-brief-generation-api-mvp/plan.md](../geopolitical-live-brief-generation-api-mvp/plan.md)  
 **Explored**: 2026-03-17  
 **Status**: Ready to plan
@@ -44,7 +44,7 @@ Your geopolitical briefing product needs a reliable way to turn **fresh world ne
 ## Risks to Consider
 
 - **User experience (latency)**: If both Perplexity calls on init are slow, a UI that **waits** for `researchId` before showing chat will feel sluggish. **Mitigation**: architecture already fits **background init**; the **frontend wiring spec** must be explicit — **fire `POST /api/research/init` on form submit, do not await before showing chat, store `researchId` asynchronously** (chat questions absorb the wait). See spec **NC-006**.
-- **Trust and quality**: Partial or empty research must not read as overconfident. **Mitigation in SEI-41**: **FR-019** — Claude must use **hedged language** where context is missing and **must not fabricate** company- or region-specific detail to fill gaps.
+- **Trust and quality**: Partial or empty research must not read as overconfident. **Mitigation in ticket 41**: **FR-019** — Claude must use **hedged language** where context is missing and **must not fabricate** company- or region-specific detail to fill gaps.
 - **Security**: These endpoints have **no auth** in MVP. Anyone who can hit your deployment could burn API credits or pull briefs if URLs leak. Fine for internal demo; **not** fine for public launch without protection.
 - **Performance / scale**: In-memory storage **resets** on server restarts (typical on serverless). A user mid-flow could lose `researchId` — they re-onboard. Acceptable for MVP; not for high traffic.
 - **Timeline**: Prompt tuning (Perplexity + Claude) and JSON shape stability often take **extra iteration** beyond the first working pass — plan already budgets for that.
@@ -67,6 +67,6 @@ Your geopolitical briefing product needs a reliable way to turn **fresh world ne
 
 ## Suggested Next Steps
 
-1. **Implement** SEI-41 on branch `SEI-41-geopolitical-live-brief-generation-api-mvp` (tests first for pure logic + mocked AI); include **FR-019** in the synthesis prompt.
+1. **Implement** ticket 41 on branch `SEI-41-geopolitical-live-brief-generation-api-mvp` (tests first for pure logic + mocked AI); include **FR-019** in the synthesis prompt.
 2. **Run** `npx ts-node scripts/test-brief-pipeline.ts` until **PASS** and spot-check grounding.
 3. **Frontend spec** next: **async init** (NC-006), enrich, brief pane, **410** re-init copy; optional future UI for “limited research” if still needed after FR-019.

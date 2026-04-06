@@ -1,5 +1,5 @@
 ---
-linear: https://linear.app/sei-interview-app/issue/SEI-39/live-research-capability-per-agent-toggle
+linear: https://linear.app/issue/SEI-39/live-research-capability-per-agent-toggle
 ticket: SEI-39
 ---
 
@@ -8,7 +8,7 @@ ticket: SEI-39
 **Feature Branch**: `SEI-39-live-research-per-agent`
 **Created**: 2026-03-16
 **Status**: Draft
-**Linear Ticket**: https://linear.app/sei-interview-app/issue/SEI-39/live-research-capability-per-agent-toggle
+**Linear Ticket**: https://linear.app/issue/SEI-39/live-research-capability-per-agent-toggle
 **Input**: "Build a lightweight live research capability that can be toggled per agent. This is a new foundational feature — build it cleanly so it can be reused by future agents."
 
 ## User Scenarios & Testing (mandatory)

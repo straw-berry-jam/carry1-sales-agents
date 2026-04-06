@@ -1,16 +1,16 @@
-# SEI Sales Coach — Project Documentation
+# CARRY1 Sales Coach — Project Documentation
 
-This document describes the current state of the SEI Sales Coach application: structure, features, configuration, and implementation details.
+This document describes the current state of the CARRY1 Sales Coach application: structure, features, configuration, and implementation details.
 
 ---
 
 ## 1. Overview
 
-**SEI Sales Coach** is an AI-powered sales practice platform. Users can run short **demo** sessions (text or voice) to experience the coach, then are directed to contact SEI for full coaching built on their team’s data.
+**CARRY1 Sales Coach** is an AI-powered sales practice platform. Users can run short **demo** sessions (text or voice) to experience the coach, then are directed to contact CARRY1 for full coaching built on their team’s data.
 
-- **Product name:** SEI Sales Coach  
-- **Metadata title:** "SEI Sales Coach | Master Every Sales Pitch"  
-- **Primary contact:** cminer@sei.com (mailto used in banner, demo-over message, and CTAs)
+- **Product name:** CARRY1 Sales Coach  
+- **Metadata title:** "CARRY1 Sales Coach | Master Every Sales Pitch"  
+- **Primary contact:** cminer@carry1.com (mailto used in banner, demo-over message, and CTAs)
 
 ---
 
@@ -98,7 +98,7 @@ Landing “Built by experts” block is only rendered when `agentConfig.landing.
 
 ```
 app/
-  layout.tsx          # Metadata: title "SEI Sales Coach | Master Every Sales Pitch", description (sales)
+  layout.tsx          # Metadata: title "CARRY1 Sales Coach | Master Every Sales Pitch", description (sales)
   page.tsx            # Landing
   setup/page.tsx      # 3-step onboarding
   coach/page.tsx      # Text + voice coach, 30s demo timer, demo-over overlay
@@ -129,7 +129,7 @@ lib/
 - **Coach demo:** One timer (30s) for both text and voice. No per-message or per-turn counting; `demoEnded` is purely time-based.
 - **Hero chat preview:** Decorative typewriter animation (first coach bubble → user bubble → “Listening…” waveform → second coach bubble), then 3s pause and replay. Implemented with `useState` + `useEffect` and character index / visibility state.
 - **DemoBanner:** Fixed `top-0 left-0 right-0 z-50`, `bg-black/60 backdrop-blur-sm`, dismissible.
-- **About:** Copy is generic SEI AI/solutions (“designs and delivers innovative AI solutions that help clients build better businesses”); no hiring/interview/culture copy. Contact: same mailto and “Get in touch” style where used.
+- **About:** Copy is generic CARRY1 AI/solutions (“designs and delivers innovative AI solutions that help clients build better businesses”); no hiring/interview/culture copy. Contact: same mailto and “Get in touch” style where used.
 
 ---
 
@@ -149,4 +149,4 @@ lib/
 
 ---
 
-*Last updated to reflect the current SEI Sales Coach demo flow, 30s timer, onboarding mapping, and sales-focused copy and config.*
+*Last updated to reflect the current CARRY1 Sales Coach demo flow, 30s timer, onboarding mapping, and sales-focused copy and config.*

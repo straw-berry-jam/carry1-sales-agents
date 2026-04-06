@@ -1,5 +1,5 @@
 ---
-linear: https://linear.app/sei-interview-app/issue/SEI-28/spin-setup-session-mode-and-duration-selectors
+linear: https://linear.app/issue/SEI-28/spin-setup-session-mode-and-duration-selectors
 ticket: SEI-28
 ---
 
@@ -8,7 +8,7 @@ ticket: SEI-28
 **Feature Branch**: `SEI-28-spin-setup-mode-duration`
 **Created**: 2026-03-08
 **Status**: Draft
-**Linear Ticket**: [SEI-28](https://linear.app/sei-interview-app/issue/SEI-28/spin-setup-session-mode-and-duration-selectors)
+**Linear Ticket**: [SEI-28](https://linear.app/issue/SEI-28/spin-setup-session-mode-and-duration-selectors)
 **Input**: Add Session Mode (Outreach / Discovery) and Session Duration (15 min / 30 min) as button toggles on the SPIN setup screen; combine into sessionType and pass to the session via URL; store sessionType in localStorage on the session page for later scorecard use. No scorecard wiring; no changes outside app/coach/spin/.
 
 ## User Scenarios & Testing (mandatory)

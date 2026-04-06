@@ -1,5 +1,5 @@
 ---
-linear: https://linear.app/sei-interview-app/issue/SEI-35/system-health-logging-table-admin-panel-alerts
+linear: https://linear.app/issue/SEI-35/system-health-logging-table-admin-panel-alerts
 ticket: SEI-35
 ---
 # Feature Specification: System Health Logging Table + Admin Panel Alerts
@@ -7,7 +7,7 @@ ticket: SEI-35
 **Feature Branch**: `SEI-35-system-health-logging-admin-alerts`
 **Created**: 2026-03-09
 **Status**: Draft
-**Linear Ticket**: [SEI-35](https://linear.app/sei-interview-app/issue/SEI-35/system-health-logging-table-admin-panel-alerts)
+**Linear Ticket**: [SEI-35](https://linear.app/issue/SEI-35/system-health-logging-table-admin-panel-alerts)
 **Input**: Add a Supabase-backed system events table, a logging utility, wire it into the score-session fallback and retrieval error paths, and expose a System Health admin view plus a dismissible banner on the KB tab when recent warnings/errors exist.
 
 ## User Scenarios & Testing (mandatory)

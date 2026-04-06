@@ -107,14 +107,14 @@ export function buildAssessmentDocx(
     new Paragraph({
       children: [
         new TextRun({
-          text: 'CARRY1 — Discovery Assessment',
+          text: 'CARRY1 — Sales Diagnostic',
           bold: true,
         }),
       ],
       alignment: AlignmentType.CENTER,
     }),
     new Paragraph({
-      text: 'AI Readiness Discovery Report',
+      text: 'Sales Diagnostic Report',
       heading: HeadingLevel.HEADING_1,
       alignment: AlignmentType.CENTER,
     }),
@@ -156,7 +156,7 @@ export async function packAssessmentDocx(doc: Document): Promise<Buffer> {
   return Buffer.from(await Packer.toBuffer(doc));
 }
 
-/** Safe filename for Content-Disposition: `[ClientName]-Discovery-Assessment.docx` */
+/** Safe filename for Content-Disposition: `[ClientName]-Sales-Diagnostic.docx` */
 export function discoveryAssessmentFilename(clientName: string): string {
   const safe = clientName
     .replace(/[^a-zA-Z0-9 _-]+/g, '')
@@ -164,5 +164,5 @@ export function discoveryAssessmentFilename(clientName: string): string {
     .trim()
     .slice(0, 80);
   const base = safe || 'Assessment';
-  return `${base}-Discovery-Assessment.docx`;
+  return `${base}-Sales-Diagnostic.docx`;
 }

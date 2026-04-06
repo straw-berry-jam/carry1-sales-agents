@@ -1,6 +1,6 @@
-# Deployment Guide: SEI Interview Coach
+# Deployment Guide: CARRY1 Sales Coach
 
-This guide details the steps to deploy the SEI Interview Coach to production using Vercel and Supabase.
+This guide details the steps to deploy the CARRY1 Sales Coach app to production using Vercel and Supabase.
 
 ## 1. Database Setup (Supabase)
 
@@ -61,4 +61,4 @@ Once deployed, you need to sync the database schema and seed the initial data:
 4.  **Test RAG:** Use the RAG Retrieval Test at `/admin/test-retrieval` to ensure similarity search is working.
 
 ---
-© 2026 Systems Evolution, Inc.
+© 2026 CARRY1.

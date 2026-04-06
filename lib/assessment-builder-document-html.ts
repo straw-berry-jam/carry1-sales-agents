@@ -65,8 +65,8 @@ export function buildFullEditorHtml(
   const sub = `${escapeHtml(clientName)} · ${d.toLocaleDateString(undefined, { month: 'long', year: 'numeric' })} · Confidential`;
   const locked = [
     `<div class="ab-doc-locked" contenteditable="false">`,
-    `<div class="ab-doc-eye">CARRY1 — Discovery Assessment</div>`,
-    `<div class="ab-doc-h1">AI Readiness Discovery Report</div>`,
+    `<div class="ab-doc-eye">CARRY1 — Sales Diagnostic</div>`,
+    `<div class="ab-doc-h1">Sales Diagnostic Report</div>`,
     `<div class="ab-doc-sub">${sub}</div>`,
     `</div>`,
   ].join('\n');

@@ -1,14 +1,14 @@
 # Design Exploration: SPIN Selling Coach Experience
 
 **Related spec**: [SEI-25-spin-coach-scaffold.md](../features/SEI-25-spin-coach-scaffold.md)  
-**Linear**: [SEI-25](https://linear.app/sei-interview-app/issue/SEI-25/spin-selling-coach-scaffold)  
+**Linear**: [SEI-25](https://linear.app/issue/SEI-25/spin-selling-coach-scaffold)  
 **Created**: 2026-03-07
 
 ---
 
 ## User Journey
 
-**Marcus** is an SEI consultant who wants to practice a sales conversation using the SPIN (Situation, Problem, Implication, Need-payoff) methodology. Here’s the experience we’re designing for:
+**Marcus** is a CARRY1 consultant who wants to practice a sales conversation using the SPIN (Situation, Problem, Implication, Need-payoff) methodology. Here’s the experience we’re designing for:
 
 1. **Marcus goes to the SPIN coach** (e.g. via a link like “Try SPIN” or from the home page once the CTA is updated). He lands on the **session setup** screen.
 2. **On the setup screen** he chooses his role, company, scenario type (e.g. Discovery Call), how long he wants to practice (Quick / Standard / Deep), and any deal context. The screen feels focused on “getting ready for a SPIN practice,” not generic sales. He taps **Start session** (or similar).

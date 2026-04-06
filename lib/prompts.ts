@@ -3,7 +3,7 @@ import type { AssessmentChunkHit, KbChunkHit } from '@/lib/assessment-builder-re
 
 /** Hardcoded system instructions for draft generation (fallback when `agents.prompt` is empty). */
 export function buildAssessmentDraftGenerationSystemFallback(): string {
-  return `You are a CARRY1 consultant drafting a Discovery document for an AI readiness assessment.
+  return `You are a CARRY1 consultant drafting a Discovery document for a Sales Diagnostic.
 
 Use the materials below. Do not invent specific quotes, numbers, or named facts that are not supported by the excerpts. If evidence is thin, say so in neutral professional language.
 
@@ -39,7 +39,7 @@ export function buildAssessmentDraftGenerationUserContent(params: {
       ? params.assessmentChunks.map((c, i) => `### Excerpt ${i + 1}\n${c.content}`).join('\n\n')
       : '(no chunks retrieved — ground the draft in methodology only and avoid inventing client facts)',
     '',
-    '## Knowledge base (methodology / criteria — scoped to assessment builder)',
+    '## Knowledge base (methodology / criteria — scoped to Sales Diagnostic Builder)',
     params.kbChunks.length
       ? params.kbChunks
           .map(
@@ -69,7 +69,7 @@ export function buildAssessmentRefineSystemFallback(): string {
 
 Respond with valid JSON only, no markdown fences. Always include "reply" as the first key:
 {
-  "reply": "1-3 sentences addressing the consultant in plain language (CARRY1 Guide chat bubble).",
+  "reply": "1-3 sentences addressing the consultant in plain language (Liz chat bubble).",
   "draft": {
     "findings": "... HTML ...",
     "interviews": "...",
@@ -121,7 +121,7 @@ export function buildAssessmentRefineUserContent(params: {
       : '(none)',
   ].join('\n');
 
-  return `You are the CARRY1 Guide helping refine an AI Readiness Discovery draft for ${params.clientName}.
+  return `You are Liz helping refine a Sales Diagnostic Report draft for ${params.clientName}.
 
 Project brief: ${params.projectBrief?.trim() || '(none)'}
 

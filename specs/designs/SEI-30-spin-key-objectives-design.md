@@ -1,7 +1,7 @@
 # Design Exploration: SPIN Session Key Objectives — SPIN Elements and Tips
 
 **Related spec**: [SEI-30-spin-session-key-objectives-spin-tips.md](../features/SEI-30-spin-session-key-objectives-spin-tips.md)  
-**Linear**: [SEI-30](https://linear.app/sei-interview-app/issue/SEI-30/spin-session-key-objectives-spin-elements-and-tips)  
+**Linear**: [SEI-30](https://linear.app/issue/SEI-30/spin-session-key-objectives-spin-elements-and-tips)  
 **Created**: 2026-03-08
 
 ---

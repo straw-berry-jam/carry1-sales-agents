@@ -1,5 +1,5 @@
 ---
-linear: https://linear.app/sei-interview-app/issue/SEI-37/guide-route-structure
+linear: https://linear.app/issue/SEI-37/guide-route-structure
 ticket: SEI-37
 ---
 
@@ -8,12 +8,12 @@ ticket: SEI-37
 **Feature Branch**: `SEI-37-guide-route-scaffold`
 **Created**: 2026-03-10
 **Status**: Complete
-**Linear Ticket**: [SEI-37](https://linear.app/sei-interview-app/issue/SEI-37/guide-route-structure)
+**Linear Ticket**: [SEI-37](https://linear.app/issue/SEI-37/guide-route-structure)
 **Input**: User description: "Create /guide route structure (do not rename /coach)"
 
 ## Context
 
-The `/coach/*` routes serve outward-facing client tools (SPIN Sales Coach). The `/guide/*` routes are for **internal SEI tools** — teaching and enablement agents used by SEI consultants.
+The `/coach/*` routes serve outward-facing client tools (SPIN Sales Coach). The `/guide/*` routes are for **internal CARRY1 tools** — teaching and enablement agents used by CARRY1 consultants.
 
 This scaffold creates the foundation for internal agents, starting with the AI Assessment Coach placeholder.
 
@@ -23,7 +23,7 @@ This scaffold creates the foundation for internal agents, starting with the AI A
 
 ### Functional Requirements
 
-- **FR-001**: Create `app/guide/page.tsx` — Landing page listing internal SEI tools
+- **FR-001**: Create `app/guide/page.tsx` — Landing page listing internal CARRY1 tools
 - **FR-002**: Create `app/guide/assessment/page.tsx` — Placeholder page for AI Assessment Coach
 - **FR-003**: Both pages MUST use existing brand tokens (plum backgrounds, glass-card styling)
 - **FR-004**: System MUST NOT modify any files under `app/coach/`

@@ -13,26 +13,37 @@ const validDraft = {
   opportunities: '<p>e</p>',
 };
 
+const defaultSection = '<p>No content generated.</p>';
+
 describe('parseDraftObject', () => {
   it('accepts five string sections', () => {
     expect(parseDraftObject(validDraft)).toEqual(validDraft);
   });
 
-  it('rejects missing keys', () => {
-    expect(() =>
+  it('fills missing keys with default HTML', () => {
+    expect(
       parseDraftObject({
         findings: '<p>a</p>',
       }),
-    ).toThrow();
+    ).toEqual({
+      findings: '<p>a</p>',
+      interviews: defaultSection,
+      hypothesis: defaultSection,
+      stakeholder_map: defaultSection,
+      opportunities: defaultSection,
+    });
   });
 
-  it('rejects non-string section', () => {
-    expect(() =>
+  it('uses default for non-string section', () => {
+    expect(
       parseDraftObject({
         ...validDraft,
         findings: 1,
       }),
-    ).toThrow();
+    ).toEqual({
+      ...validDraft,
+      findings: defaultSection,
+    });
   });
 });
 
@@ -44,6 +55,11 @@ describe('parseDraftJsonString', () => {
 
   it('parses JSON with preamble', () => {
     const raw = 'Here you go:\n' + JSON.stringify(validDraft);
+    expect(parseDraftJsonString(raw)).toEqual(validDraft);
+  });
+
+  it('parses wrapped { draft: ... } shape', () => {
+    const raw = JSON.stringify({ draft: validDraft });
     expect(parseDraftJsonString(raw)).toEqual(validDraft);
   });
 });
@@ -75,5 +91,16 @@ describe('parseRefineJsonString', () => {
     expect(out.draft).toEqual(validDraft);
     expect(out.reply).toBe('Here is an update.');
     expect(out.suggestions.findings).toBe('<p>suggested</p>');
+  });
+
+  it('parses flat draft (no draft key) with reply and suggestions', () => {
+    const payload = {
+      reply: 'Flat.',
+      suggestions: {},
+      ...validDraft,
+    };
+    const out = parseRefineJsonString(JSON.stringify(payload));
+    expect(out.draft).toEqual(validDraft);
+    expect(out.reply).toBe('Flat.');
   });
 });

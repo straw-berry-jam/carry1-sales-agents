@@ -71,7 +71,7 @@
 
 ### Follow-ups
 
-- Draft generation, contenteditable canvas, SEI Guide messages, publish overlay.
+- Draft generation, contenteditable canvas, Liz messages, publish overlay.
 
 ---
 
@@ -86,7 +86,7 @@
 - **Generate draft** — `POST /api/assessment-builder/generate-draft`: top 8 assessment chunks + top 4 KB chunks (`assessment-builder` or `all` on chunk agents), Claude JSON with five keys, validate, persist to `draft_content`.
 - **Refine** — `POST /api/assessment-builder/refine-section`: `reply` + `draft` + `suggestions`; `mergeRefinedDraft` keeps dirty sections from client; persists merged draft.
 - **Save draft** — `POST /api/assessment-builder/save-draft` for debounced editor saves.
-- **Builder UX** — On load without `draft_content`: extract then generate; with persisted draft: hydrate editor only. Shimmer until ready; live `contenteditable` with toolbar (`margin: -44px -52px 28px`), highlights, `data-manually-edited` on first keypress per section. Scripted SEI Guide intro + two questions (prototype copy); refine rounds add Q2 then closing line. Suggestion cards for dirty sections with Apply.
+- **Builder UX** — On load without `draft_content`: extract then generate; with persisted draft: hydrate editor only. Shimmer until ready; live `contenteditable` with toolbar (`margin: -44px -52px 28px`), highlights, `data-manually-edited` on first keypress per section. Scripted Liz intro + two questions (prototype copy); refine rounds add Q2 then closing line. Suggestion cards for dirty sections with Apply.
 
 ### TDD
 
@@ -96,7 +96,7 @@
 
 1. `SEI-42 Add draft_content column, chunk pipeline helpers, and unit tests`
 2. `SEI-42 Add assessment builder extract, generate-draft, refine-section, and save-draft APIs`
-3. `SEI-42 Wire builder workspace with draft editor, SEI Guide chat, and draft persistence`
+3. `SEI-42 Wire builder workspace with draft editor, Liz chat, and draft persistence`
 
 ### Files (high level)
 

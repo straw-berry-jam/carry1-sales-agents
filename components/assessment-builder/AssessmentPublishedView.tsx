@@ -102,7 +102,7 @@ export function AssessmentPublishedView({ assessmentId, clientName, draftContent
     <div className={`ab-pub-root ${entered ? 'ab-pub-enter' : ''}`}>
       <header className="ab-pub-nav">
         <div className="ab-pub-nav-title">
-          {clientName} — Discovery Assessment
+          {clientName} — Sales Diagnostic
         </div>
         <span className="ab-pub-nav-badge">Draft {currentVersionLabel}</span>
         <div className="ab-pub-nav-actions">

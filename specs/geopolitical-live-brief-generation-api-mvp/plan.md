@@ -1,4 +1,4 @@
-## Implementation Plan: SEI Geopolitical Intelligence — Live Brief Generation API (MVP)
+## Implementation Plan: CARRY1 Geopolitical Intelligence — Live Brief Generation API (MVP)
 
 **Branch**: `SEI-41-geopolitical-live-brief-generation-api-mvp`  
 **Spec**: [specs/features/SEI-41-geopolitical-live-brief-generation-api-mvp.md](../features/SEI-41-geopolitical-live-brief-generation-api-mvp.md)  

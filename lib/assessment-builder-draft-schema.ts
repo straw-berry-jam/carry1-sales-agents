@@ -1,14 +1,15 @@
 import type { DraftContent, DraftSectionKey } from '@/lib/assessment-builder-draft-types';
 import { DRAFT_SECTION_KEYS, isDraftSectionKey } from '@/lib/assessment-builder-draft-types';
 
+const DEFAULT_SECTION_HTML = '<p>No content generated.</p>';
+
 /** Strip markdown fences and slice to outermost JSON object (same idea as assessment-summary). */
 export function prepareDraftJsonForParse(raw: string): string {
   let s = raw
     .trim()
     .replace(/^```json\s*/i, '')
-    .replace(/```\s*$/i, '')
+    .replace(/```\s*$/, '')
     .trim();
-  s = s.replace(/^```(?:json)?\s*\n?/i, '').replace(/\n?```\s*$/i, '').trim();
   const firstBrace = s.indexOf('{');
   const lastBrace = s.lastIndexOf('}');
   if (firstBrace !== -1 && lastBrace !== -1 && lastBrace >= firstBrace) {
@@ -25,10 +26,7 @@ export function parseDraftObject(parsed: unknown): DraftContent {
   const out: Partial<DraftContent> = {};
   for (const k of DRAFT_SECTION_KEYS) {
     const v = o[k];
-    if (typeof v !== 'string') {
-      throw new Error(`Missing or invalid section "${k}" (expected string HTML)`);
-    }
-    out[k] = v;
+    out[k] = typeof v === 'string' ? v : DEFAULT_SECTION_HTML;
   }
   return out as DraftContent;
 }
@@ -36,7 +34,12 @@ export function parseDraftObject(parsed: unknown): DraftContent {
 export function parseDraftJsonString(raw: string): DraftContent {
   const s = prepareDraftJsonForParse(raw);
   const parsed = JSON.parse(s) as unknown;
-  return parseDraftObject(parsed);
+  if (typeof parsed !== 'object' || parsed === null) {
+    throw new Error('Draft JSON must be an object');
+  }
+  const root = parsed as Record<string, unknown>;
+  const draftObj = root.draft ?? root;
+  return parseDraftObject(draftObj);
 }
 
 /** Parse Prisma Json / DB payload into DraftContent if valid. */
@@ -50,7 +53,7 @@ export function draftContentFromDb(value: unknown): DraftContent | null {
 }
 
 export type RefineResponsePayload = {
-  /** Short CARRY1 Guide chat line shown to the consultant. */
+  /** Short Liz chat line shown to the consultant. */
   reply?: string;
   draft: DraftContent;
   /** Proposed HTML for manually edited sections only (no direct inject). */
@@ -63,10 +66,11 @@ export function parseRefineObject(parsed: unknown): RefineResponsePayload {
   }
   const o = parsed as Record<string, unknown>;
   const reply = typeof o.reply === 'string' ? o.reply : undefined;
-  if (!o.draft || typeof o.draft !== 'object') {
-    throw new Error('Refine JSON must include draft object');
+  const draftRaw = o.draft ?? o;
+  if (typeof draftRaw !== 'object' || draftRaw === null) {
+    throw new Error('Refine JSON must include draft content');
   }
-  const draft = parseDraftObject(o.draft);
+  const draft = parseDraftObject(draftRaw);
   const suggestions: Partial<Record<DraftSectionKey, string>> = {};
   const sug = o.suggestions;
   if (sug !== undefined) {

@@ -21,7 +21,7 @@ function parseStakeholders(raw: string | null): string[] {
 }
 
 /**
- * Phase 1 (SEI-42 Decision 7): open route, no session; created_by uses stub user.
+ * Phase 1 (assessment builder MVP decision 7): open route, no session; created_by uses stub user.
  * Multipart: clientName, projectBrief?, stakeholders (JSON array string), intent (save_exit | create_draft), files[].
  */
 export async function POST(req: NextRequest) {

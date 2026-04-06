@@ -1,4 +1,4 @@
-/* CARRY1 Assessment Builder — brand tokens (#142F5A navy, #FFCE99 / #BD7D3D gold). */
+/* CARRY1 Sales Diagnostic Builder — brand tokens (#142F5A navy, #FFCE99 / #BD7D3D gold). */
 
 .ab-wrap {
   font-family: var(--font-ab-sans), 'DM Sans', ui-sans-serif, system-ui;
@@ -915,7 +915,7 @@
   margin-top: 6px;
 }
 
-/* ── Builder workspace (sei-assessment-builder-v8.html #builder) ── */
+/* ── Builder workspace (assessment builder prototype v8 #builder) ── */
 .ab-workspace-page {
   display: flex;
   flex: 1;

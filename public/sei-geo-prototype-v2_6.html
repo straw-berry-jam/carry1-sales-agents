@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SEI Geopolitical Intelligence — Prototype</title>
+<title>CARRY1 Geopolitical Intelligence — Prototype</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&family=IBM+Plex+Mono:wght@300;400&display=swap" rel="stylesheet">
 
@@ -289,11 +289,11 @@ body{background:var(--bg);font-family:var(--font-body);color:var(--w);margin:0;}
   <nav class="l-nav">
     <div class="l-logo">
       <div class="l-mark"><svg width="28" height="16" viewBox="0 0 28 16" fill="none" xmlns="http://www.w3.org/2000/svg"><polygon points="2,8 26,1 26,15" fill="none" stroke="rgba(245,242,238,0.45)" stroke-width="1"/><polygon points="2,8 26,4 26,12" fill="#C0392B" opacity="0.75"/><circle cx="2" cy="8" r="1.5" fill="#C0392B"/></svg></div>
-      <span class="l-name">SEI &nbsp;/&nbsp; Geopolitical Intelligence</span>
+      <span class="l-name">CARRY1 &nbsp;/&nbsp; Geopolitical Intelligence</span>
     </div>
     <div class="l-nav-r">
       <span class="l-link">How it works</span>
-      <span class="l-link">About SEI</span>
+      <span class="l-link">About CARRY1</span>
       <button class="l-cta" onclick="showModal()">Request access</button>
     </div>
   </nav>
@@ -302,7 +302,7 @@ body{background:var(--bg);font-family:var(--font-body);color:var(--w);margin:0;}
     <div class="eyebrow"><div class="ey-line"></div><span class="ey-txt">Strategic intelligence for operating companies</span></div>
     <h1 class="h1">The world changed.<br><em>Your strategy</em><br>should too.</h1>
     <p class="h-sub">Geopolitical risk briefings tailored to your business — not the world in general.</p>
-    <p class="h-body">Most companies know the headlines. Few know what they mean for their supply chain, their contracts, or their next strategic move. SEI Geopolitical Intelligence closes that gap — translating global scenario analysis into decisions your team can actually act on.</p>
+    <p class="h-body">Most companies know the headlines. Few know what they mean for their supply chain, their contracts, or their next strategic move. CARRY1 Geopolitical Intelligence closes that gap — translating global scenario analysis into decisions your team can actually act on.</p>
     <div class="cta-row">
       <button class="btn-p" onclick="showModal()">Begin your briefing →</button>
       <button class="btn-g">See a sample report</button>
@@ -340,7 +340,7 @@ body{background:var(--bg);font-family:var(--font-body);color:var(--w);margin:0;}
   </div>
 
   <div class="sei-bar">
-    <span class="sei-t">Powered by <strong>SEI Management Consulting</strong></span>
+    <span class="sei-t">Powered by <strong>CARRY1</strong></span>
     <span class="sei-t">Geo-strategic framework &nbsp;·&nbsp; Scenario modeling &nbsp;·&nbsp; AI-assisted analysis</span>
   </div>
 </div>
@@ -397,7 +397,7 @@ body{background:var(--bg);font-family:var(--font-body);color:var(--w);margin:0;}
 <!-- MAIN APP -->
 <div class="app" id="app">
   <div class="topbar">
-    <div class="tl"><div class="t-mark"><svg width="24" height="14" viewBox="0 0 24 14" fill="none" xmlns="http://www.w3.org/2000/svg"><polygon points="2,7 22,1 22,13" fill="none" stroke="rgba(245,242,238,0.5)" stroke-width="1"/><polygon points="2,7 22,3.5 22,10.5" fill="#C0392B" opacity="0.7"/><circle cx="2" cy="7" r="1.2" fill="#C0392B"/></svg></div><span class="prod">SEI Geopolitical Intelligence</span></div>
+    <div class="tl"><div class="t-mark"><svg width="24" height="14" viewBox="0 0 24 14" fill="none" xmlns="http://www.w3.org/2000/svg"><polygon points="2,7 22,1 22,13" fill="none" stroke="rgba(245,242,238,0.5)" stroke-width="1"/><polygon points="2,7 22,3.5 22,10.5" fill="#C0392B" opacity="0.7"/><circle cx="2" cy="7" r="1.2" fill="#C0392B"/></svg></div><span class="prod">CARRY1 Geopolitical Intelligence</span></div>
     <div class="tr">
       <span class="user-tag" id="top-user">New session</span>
       <span class="stage-pill onboard" id="stage-pill">Onboarding</span>
@@ -511,13 +511,13 @@ function addAiMsg(text, opts, stepObj, afterCb){
   const msgs = document.getElementById('msgs-inner');
   const typing = document.createElement('div');
   typing.className='msg ai';
-  typing.innerHTML=`<div class="av ai">SEI</div><div class="typing-ind"><div class="td-dot"></div><div class="td-dot"></div><div class="td-dot"></div></div>`;
+  typing.innerHTML=`<div class="av ai">CARRY1</div><div class="typing-ind"><div class="td-dot"></div><div class="td-dot"></div><div class="td-dot"></div></div>`;
   msgs.appendChild(typing); document.getElementById('msgs').scrollTop=document.getElementById('msgs').scrollHeight;
 
   setTimeout(()=>{
     typing.remove();
     const div=document.createElement('div'); div.className='msg ai';
-    const av=document.createElement('div'); av.className='av ai'; av.textContent='SEI';
+    const av=document.createElement('div'); av.className='av ai'; av.textContent='CARRY1';
     const col=document.createElement('div'); col.className='msg-col';
     const bub=document.createElement('div'); bub.className='bubble';
     col.appendChild(bub);
@@ -575,14 +575,14 @@ function advance(){
 function showBriefChip(){
   const msgs=document.getElementById('msgs-inner');
   const div=document.createElement('div'); div.className='msg ai';
-  const av=document.createElement('div'); av.className='av ai'; av.textContent='SEI';
+  const av=document.createElement('div'); av.className='av ai'; av.textContent='CARRY1';
   const chip=document.createElement('div'); chip.className='brief-chip'; chip.onclick=openBrief;
   chip.innerHTML=`<div class="chip-l"><div class="chip-icon">◈</div><div><div class="chip-title">${userData.company} — Strategic Risk Profile</div><div class="chip-sub">3 scenarios · ${userData.regions.slice(0,2).join(' · ')} · March 2026</div></div></div><span class="chip-arr">→</span>`;
   div.appendChild(av); div.appendChild(chip); msgs.appendChild(div); document.getElementById('msgs').scrollTop=document.getElementById('msgs').scrollHeight;
 
   setTimeout(()=>{
     const div2=document.createElement('div'); div2.className='msg ai';
-    const av2=document.createElement('div'); av2.className='av ai'; av2.textContent='SEI';
+    const av2=document.createElement('div'); av2.className='av ai'; av2.textContent='CARRY1';
     const bub=document.createElement('div'); bub.className='bubble';
     div2.appendChild(av2); div2.appendChild(bub); msgs.appendChild(div2); document.getElementById('msgs').scrollTop=document.getElementById('msgs').scrollHeight;
     typeText(bub,`Your brief is ready — click it to open. Your most pressing exposure is <span class="hl">Eastern Europe</span>. Want me to walk you through what the baseline scenario means for your operations?`,14);
@@ -634,7 +634,7 @@ function openBrief(){
   setTimeout(()=>{
     const msgs=document.getElementById('msgs-inner');
     const div=document.createElement('div'); div.className='msg ai';
-    const av=document.createElement('div'); av.className='av ai'; av.textContent='SEI';
+    const av=document.createElement('div'); av.className='av ai'; av.textContent='CARRY1';
     const col=document.createElement('div'); col.className='msg-col';
     const bub=document.createElement('div'); bub.className='bubble';
     col.appendChild(bub);
@@ -658,12 +658,12 @@ function handleFollowUp(q){
   const resp = followUps[q]||`Let me think through what <span class="hl">${q}</span> means for your specific exposure profile...`;
   const msgs=document.getElementById('msgs-inner');
   const typing=document.createElement('div'); typing.className='msg ai';
-  typing.innerHTML=`<div class="av ai">SEI</div><div class="typing-ind"><div class="td-dot"></div><div class="td-dot"></div><div class="td-dot"></div></div>`;
+  typing.innerHTML=`<div class="av ai">CARRY1</div><div class="typing-ind"><div class="td-dot"></div><div class="td-dot"></div><div class="td-dot"></div></div>`;
   msgs.appendChild(typing); document.getElementById('msgs').scrollTop=document.getElementById('msgs').scrollHeight;
   setTimeout(()=>{
     typing.remove();
     const div=document.createElement('div'); div.className='msg ai';
-    const av=document.createElement('div'); av.className='av ai'; av.textContent='SEI';
+    const av=document.createElement('div'); av.className='av ai'; av.textContent='CARRY1';
     const col=document.createElement('div'); col.className='msg-col';
     const bub=document.createElement('div'); bub.className='bubble';
     col.appendChild(bub);
@@ -741,7 +741,7 @@ function buildBrief(){
       <div class="gate-feats">
         <div class="gf"><div class="gf-t">Live indicator tracking</div><div class="gf-b">12+ signals monitored daily. Automatic probability updates when the picture shifts.</div></div>
         <div class="gf"><div class="gf-t">Full 8-step framework</div><div class="gf-b">Complete scenario analysis including Seven Pillars, assumptions table, and full narratives.</div></div>
-        <div class="gf"><div class="gf-t">SEI analyst access</div><div class="gf-b">Direct line to SEI's geopolitical advisory team for interpretation and planning sessions.</div></div>
+        <div class="gf"><div class="gf-t">CARRY1 analyst access</div><div class="gf-b">Direct line to CARRY1's geopolitical advisory team for interpretation and planning sessions.</div></div>
       </div>
       <div class="gate-btns">
         <button class="gate-btn">Unlock full platform →</button>

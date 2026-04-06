@@ -1,5 +1,5 @@
 ---
-linear: https://linear.app/sei-interview-app/issue/SEI-29/spin-scorecard-real-api-integration
+linear: https://linear.app/issue/SEI-29/spin-scorecard-real-api-integration
 ticket: SEI-29
 ---
 
@@ -8,7 +8,7 @@ ticket: SEI-29
 **Feature Branch**: `SEI-29-spin-scorecard-real-api`
 **Created**: 2026-03-07
 **Status**: Draft
-**Linear Ticket**: [SEI-29](https://linear.app/sei-interview-app/issue/SEI-29/spin-scorecard-real-api-integration)
+**Linear Ticket**: [SEI-29](https://linear.app/issue/SEI-29/spin-scorecard-real-api-integration)
 **Input**: Update app/coach/spin/scorecard/page.tsx to replace the existing dummy scorecard with a real SPIN-scored scorecard that calls the scoring API. Read spinSessionType and spinTranscript from localStorage; call POST /api/score-session; show loading then render API-driven header, four SPIN score cards, and overall score.
 
 ## User Scenarios & Testing (mandatory)

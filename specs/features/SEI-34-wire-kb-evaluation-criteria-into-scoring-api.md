@@ -1,5 +1,5 @@
 ---
-linear: https://linear.app/sei-interview-app/issue/SEI-34/wire-kb-evaluation-criteria-into-scoring-api
+linear: https://linear.app/issue/SEI-34/wire-kb-evaluation-criteria-into-scoring-api
 ticket: SEI-34
 ---
 
@@ -8,7 +8,7 @@ ticket: SEI-34
 **Feature Branch**: `SEI-34-wire-kb-evaluation-criteria-into-scoring-api`
 **Created**: 2026-03-08
 **Status**: Draft
-**Linear Ticket**: [SEI-34](https://linear.app/sei-interview-app/issue/SEI-34/wire-kb-evaluation-criteria-into-scoring-api)
+**Linear Ticket**: [SEI-34](https://linear.app/issue/SEI-34/wire-kb-evaluation-criteria-into-scoring-api)
 **Input**: Wire Knowledge Base "Evaluation Criteria" documents into the score-session API so scoring uses admin-managed criteria when present. No fallback when no docs are found (makes KB retrieval clearly visible during testing).
 
 ## User Scenarios & Testing (mandatory)
